@@ -1,0 +1,101 @@
+{
+  "project_info": {
+    "project_number": "786734197191",
+    "firebase_url": "https://roamu-f58c1.firebaseio.com",
+    "project_id": "roamu-f58c1",
+    "storage_bucket": "roamu-f58c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786734197191:android:95ab52b1eb8680d3bd91e2",
+        "android_client_info": {
+          "package_name": "com.alaan.roamu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786734197191-30skiuiovqbaagf29v1h2q9j28aus2jv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alaan.roamu",
+            "certificate_hash": "c6e5acab188c46b2de2c56a2722dfed7235cabc3"
+          }
+        },
+        {
+          "client_id": "786734197191-5i8eprhk6hhl4v9emadpm5l2m539i08l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz5LUPeroK8LIPcvHEzXiQ54f2lRoltQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786734197191-5i8eprhk6hhl4v9emadpm5l2m539i08l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "786734197191-jjrmv0441jlkduebtuh71dfmhbb8parc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.roamudriver.net.RoamuDriver",
+                "app_store_id": "1509211736"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786734197191:android:472ac51531bb6d4dbd91e2",
+        "android_client_info": {
+          "package_name": "com.alaan.roamudriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786734197191-d6ml76v0k7nrpm17i5h452urd4icvjud.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alaan.roamudriver",
+            "certificate_hash": "eba4fd9239ac5995c09734c036e68ebb15957046"
+          }
+        },
+        {
+          "client_id": "786734197191-5i8eprhk6hhl4v9emadpm5l2m539i08l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz5LUPeroK8LIPcvHEzXiQ54f2lRoltQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786734197191-5i8eprhk6hhl4v9emadpm5l2m539i08l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "786734197191-jjrmv0441jlkduebtuh71dfmhbb8parc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.roamudriver.net.RoamuDriver",
+                "app_store_id": "1509211736"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

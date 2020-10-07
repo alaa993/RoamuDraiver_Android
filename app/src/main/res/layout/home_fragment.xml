@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layoutDirection="ltr"
+
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="invisible" />
+    <RelativeLayout
+        android:id="@+id/footer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="30dp"
+
+        android:visibility="visible">
+
+        <Button
+            android:id="@+id/show_erning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/detail_button"
+            android:drawableLeft="@drawable/ic_attach_money_black_24dp"
+            android:gravity="center"
+            android:text="@string/show_total_erning"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="20dip"
+        android:visibility="visible">
+
+        <include
+            layout="@layout/header"
+            android:id="@+id/header_search"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <include
+            android:visibility="visible"
+            layout="@layout/fotter"
+            android:layout_below="@+id/header_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+
+        android:layout_marginBottom="0dip"
+        android:visibility="gone">
+
+        <include
+            android:visibility="visible"
+            android:id="@+id/driver_ern"
+            layout="@layout/driver_earning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </RelativeLayout>
+
+</FrameLayout>

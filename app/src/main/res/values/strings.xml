@@ -1,0 +1,256 @@
+<resources>
+    <string name="app_name">Roamu Driver</string>
+
+
+    <!--Do not change this in localization -->
+    <string name="google_android_map_api_key" translatable="false">AIzaSyCa3yhDGMZM2xHCc5ieYeyz87SuHYDzozU</string>
+    <string name="mapboxkey">pk.eyJ1IjoiaWNhbnN0dWRpb3oiLCJhIjoiY2oyMXQ3dGRpMDAwdDJ3bXpmZHRkdTBtNyJ9.PxslIcrVRj_gVgiv-Y-jog</string>
+    <string name="allow_permission">Allow Permission</string>
+
+    <string name="mobile_number">Mobile Number</string>
+    <string name="email">Email</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="drop_up_location">drop location</string>
+    <string name="pick_up_location">pick up location</string>
+    <string name="update">Update</string>
+    <string name="online">you are online</string>
+    <string name="offline">you are offline</string>
+    <string name="coh_driver">Cash on your hand.</string>
+    <string name="change_password">CHANGE PASSWORD</string>
+    <string name="unpaid">UNPAID</string>
+    <string name="network_not_available">Network is not available</string>
+    <string name="try_again">Please try again!</string>
+    <string name="error_occurred">error occurred</string>
+    <string name="network">network is not available</string>
+    <string name="add_vehicleinfo">Add Vehicle Information</string>
+    <string name="upload_doc">Upload Document</string>
+    <string name="home">Home</string>
+    <string name="requests">Requests</string>
+    <string name="vehicle_info">Vehicle Information</string>
+    <string name="payment_history">Payment History</string>
+    <string name="profile">Profile</string>
+    <string name="success">Welcome to </string>
+    <string name="fiels_is_required">field is required</string>
+    <string name="email_invalid">email is invalid</string>
+    <string name="mobile_invalid">mobile number is invalid</string>
+    <string name="password_length">minimum password length is 6 characters</string>
+    <string name="password_nomatch">password didn\'t match</string>
+    <string name="ride_reuest_completed">ride request completed</string>
+    <string name="ride_reuest_cancelled">ride request cancelled</string>
+    <string name="accepted_request">Accepted Request</string>
+    <string name="ccancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="ride_completion">RIDE COMPLETION</string>
+    <string name="ride_cancellation">RIDE CANCELLATION</string>
+    <string name="track_ride">Track Ride</string>
+    <string name="passanger_info">Passenger Information</string>
+    <string name="taxi">TAXI</string>
+    <string name="pending_request">Pending Request</string>
+    <string name="cancelled_request">Cancelled Request</string>
+    <string name="completed_request">Completed Request</string>
+    <string name="couldnt_get_location">couldn\'t get your location</string>
+    <string name="direct_requesting">Direction Requesting...</string>
+    <string name="profile_updated">Profile Updated</string>
+    <string name="tryagian">try again</string>
+
+    <string name="profile_uploaded">profile uploaded</string>
+    <string name="change">CHANGE</string>
+    <string name="newpwd_required">new password is required</string>
+    <string name="password_updated">password Updated</string>
+    <string name="ride_acceptance">RIDE ACCEPTANCE</string>
+    <string name="ride_reuest_accepted">ride request accepted</string>
+    <string name="accept_ride">ACCEPT RIDE</string>
+    <string name="complete_ride">COMPLETE RIDE</string>
+    <string name="cancel_ride">CANCEL RIDE</string>
+    <string name="no_status">NO STATUS</string>
+    <string name="basefare">"Base Fare       "</string>
+    <string name="approve_payment_offline">APPROVE OFFLINE PAYMENT</string>
+    <string name="vehicle">vehicle</string>
+    <string name="doc">doc</string>
+    <string name="go">go</string>
+    <string name="invalid_location">Invalid location</string>
+    <string name="ride_completion_msg">Do you want to complete your accepted ride?</string>
+    <string name="ride_cancellation_msg">Do you want to cancel your accepted ride?</string>
+    <string name="ride_acceptance_msg">Do you want to accpect ride?</string>
+
+    <string name="re_login">re-login and try again</string>
+    <string name="password_required">password is required</string>
+    <string name="format_msg">jpg,png or gif is only accepted</string>
+    <string name="doo">do</string>
+    <string name="payment_receive_from_customer">Payment Received From Customer</string>
+    <string name="customer_number">Customer Number</string>
+
+    <string name="Pick_Customer">Pick Customer</string>
+    <string name="Start_Ride">Start Ride</string>
+    <string name="Ride_Started">Ride Started</string>
+    <string name="log_out">Log out</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="create_an_account">Create an Account</string>
+    <string name="total_rides">Transaction History</string>
+    <string name="earnings">Earnings</string>
+    <string name="today">Today</string>
+    <string name="this_week">This Week</string>
+    <string name="overall">Overall</string>
+    <string name="payment_status">Payment Status</string>
+    <string name="brand">BRAND</string>
+    <string name="vehicle_no">VEHICLE NO</string>
+    <string name="model">MODEL</string>
+    <string name="year">YEAR</string>
+    <string name="color">COLOR</string>
+    <string name="continue_btn">CONTINUE</string>
+    <string name="from">FROM</string>
+    <string name="to">TO</string>
+    <string name="date">DATE</string>
+    <string name="customer_name">CUSTOMER NAME</string>
+    <string name="new_password">New password</string>
+    <string name="password_reset">Password Reset</string>
+    <string name="registered_email">Enter your registered email address ,We will send you an email to reset your password</string>
+    <string name="registered_email_input">Registered Email</string>
+    <string name="reset_password">Reset password</string>
+    <string name="ride_payment_detail">RIDE PAYMENT DETAIL</string>
+    <string name="amount">Amount</string>
+    <string name="distance">Distance</string>
+    <string name="status">Status</string>
+    <string name="date_amp_time"><![CDATA[Date & Time]]></string>
+    <string name="driver_name">Driver Name</string>
+    <string name="paypal_id">PAYPAL ID</string>
+    <string name="dl">Please upload your drivinng licence</string>
+    <string name="vi">Please upload your vehicle insurance</string>
+    <string name="vp">Please upload your vehicle permit</string>
+    <string name="vr">Please upload your vehicle registration</string>
+    <string name="passanger_vehicle">Passanger Vehicle</string>
+    <string name="ride_complete_msg">Complete</string>
+    <string name="ride_cancel_msg">Cancelled</string>
+    <string name="ride_accept_msg">Accepted</string>
+    <string name="SetTime">Set Time </string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="drivers">Group</string>
+    <string name="phone">Phone</string>
+    <string name="search">Search For user</string>
+    <string name="lang">Language</string>
+    <string name="platform" translatable="false">Social Media Platform</string>
+    <string name="GOD">Group Management</string>
+    <string name="Rides">Your Rides</string>
+    <string name="Pending_Requests">Pending Requests</string>
+    <string name="AcceptedRequests">Accepted Requests</string>
+    <string name="CompletedRides">Completed Rides</string>
+    <string name="Cancelled">Cancelled</string>
+    <string name="changemobile">change mobile</string>
+    <string name="Capacity">Capacity</string>
+    <string name="persons">1-4 Persons</string>
+    <string name="PickupLocation">Pickup Location       </string>
+    <string name="DropLocation">Drop Location       </string>
+    <string name="Name1">Name       </string>
+    <string name="chat">chat</string>
+    <string name="No_Data_Found">No Data Found</string>
+    <string name="NewYorkNY">NewYork NY 10025</string>
+    <string name="TO">TO</string>
+    <string name="TIME">TIME</string>
+    <string name="INTERIOR_COLOR">INTERIOR COLOR</string>
+    <string name="left_start">left|start</string>
+    <string name="ratekm">ratekm</string>
+    <string name="Color_White">Color:White</string>
+    <string name="Add_Ride">Add Ride</string>
+    <string name="add_Driver">add Driver</string>
+    <string name="create_gruop">create_gruop</string>
+    <string name="remove_User">remove User</string>
+
+    <string name="English">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="ku">كردي</string>
+    <string name="Affordable_everyday_rides">Affordable,everyday rides</string>
+    <string name="date_And_time">Date And Time</string>
+    <string name="available_seats">available seats</string>
+    <string name="Bookedseats">Booked seats</string>
+    <string name="SetDate">Set Date </string>
+    <string name="fareperseat">fare per seat</string>
+    <string name="fare_calculating">fare_calculating</string>
+    <string name="confirm">confirm</string>
+    <string name="NoHistoryFound">No History Found</string>
+    <string name="DT">Date &amp; Time        </string>
+    <string name="paid">paid</string>
+    <string name="PaymentStatsus">Payment Statsus        </string>
+    <string name="DropAddress">To       </string>
+    <string name="PickupAddress">From       </string>
+    <string name="ELITEDRIVER">ELITE DRIVER</string>
+    <string name="QIBus_softui_txt_todo">To city</string>
+    <string name="QIBus_softui_hint_to_city">To city</string>
+    <string name="show_total_erning">Show Total Eran</string>
+    <string name="praicy">"General provisions By general provisions, we mean services related to both users and car owners. We are keen to clarify the nature of the service provided, which is in line with the requirements of participatory transportation recognized in the countries of the world, and as much as we are keen to provide advanced and integrated services, we confirm that achieving this goal requires full cooperation by car owners and users at the same time, and All parties must believe that everyone is a partner in this service, and that its success depends on the type and nature of cooperation, and that achieving the set of goals that we want to achieve will not be achieved without understanding the nature of our work, the depth of the goals, their importance and the need to develop these services. Participatory mobility seeks to achieve a major goal related to providing comfortable and distinct means of transportation, to reduce people from using their own vehicles, which contributes to serving the environment by reducing pollution, and providing mass transportation means at competitive prices, and contributes to reducing fuel consumption. The rumor of participatory mobility, according to the goals that we mentioned above, pushes all parties to this service to ensure cooperation and advance mobility to distinct levels. "</string>
+    <string name="about_us"><![CDATA["about the application The application works in the field of participatory mobility, with a pioneering feature in this type of transportation, as we gave both the owner of the means of transportation and the user the opportunity to reserve with the other freely, and when the traveler wants to go to an area within his city or to another city looking for available means of transportation At the appropriate time for him, and he chooses what he deems appropriate for his trip from among the available cars, and the driver is free to agree or apologize after seeing the traveler’s profile.  The driver searches for those who wish to travel at the time he leaves and the scheduled destination, and chooses the suitable travelers to travel with him, and the final approval of the traveler himself will be after reviewing the driver's file and its evaluation by others. The evaluation in the application is not limited to the vehicle and the performance of the driver only, but we have added an evaluation of the fare determined by the car owner, and our aim was to provide the best prices and outstanding service to travelers with the application. The passenger shall be aware, before booking, of the vehicle specifications  and the number of bags allowed And if smoking is allowed  During the trip or not. "]]></string>
+    <string name="about_uss">About us</string>
+    <string name="pricvys">General Provisions</string>
+    <string name="smoke">smkoe</string>
+    <string name="passenger">passenger</string>
+    <string name="travel_time">Travel Time</string>
+    <string name="smoked">Smoked</string>
+    <string name="passenger_one">1 Passnager</string>
+    <string name="add_travel">Save</string>
+    <string name="find_travel">Find Passnager</string>
+    <string name="smoking">smoking</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="reseve">RESERVE</string>
+    <string name="Driver_Phone_number">Driver Phone Number</string>
+    <string name="delet_driver">Delete Driver</string>
+    <string name="country">Country</string>
+    <string name="Create_group">Create New Gruop</string>
+
+    <string name="btn_advance">Advance (Auth)</string>
+    <string name="btn_basic">Basic (No Auth)</string>
+    <string name="btn_push">Push</string>
+    <string name="btn_remove_value">removeValue</string>
+    <string name="btn_set_value">setValue</string>
+    <string name="btn_update_children">updateChildren</string>
+    <string name="fail_read">Failed to read value: %s</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_title">Title</string>
+    <string name="hint_body">Write your post…</string>
+    <string name="hint_username">Username…</string>
+    <string name="menu_chat">Chat</string>
+    <string name="menu_logout">Log out</string>
+    <string name="send">SEND</string>
+    <string name="required">Required</string>
+
+    <string name="Post_Empty">please write a comment!</string>
+    <string name="Post_success">post added successfully!</string>
+    <string name="enter_number_of_passengers_trip_price">Enter number of passengers, trip price</string>
+    <string name="number_of_passengers_1">Number of Passengers, 1</string>
+    <string name="trip_price">Trip Price</string>
+    <string name="submit">Submit</string>
+    <string name="tryAgain">Please try Again</string>
+    <string name="enter_coubbon_number">Enter Coubbon number</string>
+    <string name="date_and_time">Date And Time</string>
+    <string name="empty_seats">Empty Seats</string>
+    <string name="driver_rate">Driver Rate</string>
+    <string name="travels_count">Travels Count</string>
+    <string name="pickup_point">Pickup Point</string>
+    <string name="what_is_on_your_mind">What is on your mind!</string>
+    <string name="add">Add</string>
+    <string name="post">ADD</string>
+    <string name="username">Current username: %s \n\n</string>
+    <string name="cancel">cancel</string>
+    <string name="set_date">Set Date</string>
+    <string name="ride_has_been_requested">Ride has been requested</string>
+
+    <string name="Travel_is_going_from">is going From: </string>
+    <string name="Travel_to">To: </string>
+    <string name="Travel_on">On: </string>
+    <string name="CheckBox">Add To Platform </string>
+
+
+    <string-array name="headings">
+        <item>Recent</item>
+        <item>My Posts</item>
+        <item>My Top Posts</item>
+    </string-array>
+
+</resources>

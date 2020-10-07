@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layoutDirection="ltr"
+    android:background="@drawable/bg"
+    android:layout_height="match_parent"
+    tools:context=".fragement.groups_driver">
+
+    <!-- TODO: Update blank fragment layout -->
+<!--button_add button_remove -->
+
+    <EditText
+
+        android:id="@+id/phone_numbers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/rounded_view"
+        android:gravity="center_vertical"
+        android:hint="@string/Driver_Phone_number"
+        android:inputType="text"
+        android:padding="@dimen/QIBus_softui_spacing_large"
+        android:singleLine="true"
+        android:textColorHint="@color/md_grey_200"
+        android:textSize="@dimen/QIBus_softui_font_large" />
+    <Button
+        android:id="@+id/button_add"
+        android:layout_below="@id/phone_numbers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/ronded_button1"
+        android:text="@string/add_Driver"
+        android:tint="@color/white" />
+    <Button
+        android:id="@+id/button_remove"
+        android:layout_below="@id/button_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ronded_button1"
+        android:text="@string/delet_driver"
+        android:tint="@color/white" />
+    <Button
+        android:id="@+id/button_create_gruop"
+        android:layout_marginTop="4dp"
+        android:layout_below="@id/button_remove"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ronded_button1"
+        android:text="@string/Create_group"
+        android:tint="@color/white" />
+
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/member_list"
+    android:layout_marginTop="1dp"
+    android:background="@drawable/bg"
+    android:layout_below="@id/button_create_gruop"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    />
+
+</RelativeLayout>

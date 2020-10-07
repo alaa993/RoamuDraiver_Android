@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="QIBus_softui_txt_todo">To city</string>
+    <string name="QIBus_softui_hint_to_city">To city</string>
+    <string name="show_total_erning">Show Total Eran</string>
+    <string name="praicy">"General provisions By general provisions, we mean services related to both users and car owners. We are keen to clarify the nature of the service provided, which is in line with the requirements of participatory transportation recognized in the countries of the world, and as much as we are keen to provide advanced and integrated services, we confirm that achieving this goal requires full cooperation by car owners and users at the same time, and All parties must believe that everyone is a partner in this service, and that its success depends on the type and nature of cooperation, and that achieving the set of goals that we want to achieve will not be achieved without understanding the nature of our work, the depth of the goals, their importance and the need to develop these services. Participatory mobility seeks to achieve a major goal related to providing comfortable and distinct means of transportation, to reduce people from using their own vehicles, which contributes to serving the environment by reducing pollution, and providing mass transportation means at competitive prices, and contributes to reducing fuel consumption. The rumor of participatory mobility, according to the goals that we mentioned above, pushes all parties to this service to ensure cooperation and advance mobility to distinct levels. "</string>
+    <string name="about_us"><![CDATA["about the application The application works in the field of participatory mobility, with a pioneering feature in this type of transportation, as we gave both the owner of the means of transportation and the user the opportunity to reserve with the other freely, and when the traveler wants to go to an area within his city or to another city looking for available means of transportation At the appropriate time for him, and he chooses what he deems appropriate for his trip from among the available cars, and the driver is free to agree or apologize after seeing the traveler’s profile.  The driver searches for those who wish to travel at the time he leaves and the scheduled destination, and chooses the suitable travelers to travel with him, and the final approval of the traveler himself will be after reviewing the driver's file and its evaluation by others. The evaluation in the application is not limited to the vehicle and the performance of the driver only, but we have added an evaluation of the fare determined by the car owner, and our aim was to provide the best prices and outstanding service to travelers with the application. The passenger shall be aware, before booking, of the vehicle specifications  and the number of bags allowed And if smoking is allowed  During the trip or not. "]]></string>
+    <string name="about_uss">about us</string>
+    <string name="pricvys">privacy</string>
+    <string name="smoking">smoking</string>
+
+    <string name="btn_advance">Advance (Auth)</string>
+    <string name="btn_basic">Basic (No Auth)</string>
+    <string name="btn_push">Push</string>
+    <string name="btn_remove_value">removeValue</string>
+    <string name="btn_set_value">setValue</string>
+    <string name="btn_update_children">updateChildren</string>
+    <string name="fail_read">Failed to read value: %s</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_title">Title</string>
+    <string name="hint_body">Write your post…</string>
+    <string name="hint_username">Username…</string>
+    <string name="menu_chat">Chat</string>
+    <string name="menu_logout">Log out</string>
+    <string name="post">Post</string>
+    <string name="send">SEND</string>
+    <string name="required">Required</string>
+
+    <string name="username">Current username: %s \n\n</string>
+
+    <string name="Travel_is_going_from">is going From: </string>
+    <string name="Travel_to">To: </string>
+    <string name="Travel_on">On: </string>
+    <string name="CheckBox">Add To Platform </string>
+
+    <string-array name="headings">
+        <item>Recent</item>
+        <item>My Posts</item>
+        <item>My Top Posts</item>
+    </string-array>
+</resources>

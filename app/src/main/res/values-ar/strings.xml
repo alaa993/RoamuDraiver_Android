@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Roamu Driver</string>
+
+    <!-- Do not change this in localization -->
+    <string name="mapboxkey">"pk.eyJ1IjoiaWNhbnN0dWRpb3oiLCJhIjoiY2oyMXQ3dGRpMDAwdDJ3bXpmZHRkdTBtNyJ9.PxslIcrVRj_gVgiv-Y-هرول"</string>
+
+    <string name="allow_permission">"اسمح بالسماح"</string>
+
+    <string name="mobile_number">"رقم الهاتف المحمول"</string>
+    <string name="email">"البريد الإلكتروني"</string>
+    <string name="name">"اسم"</string>
+    <string name="password">"كلمه السر"</string>
+    <string name="confirm_password">"تأكيد كلمة المرور"</string>
+    <string name="sign_up">"سجل"</string>
+    <string name="sign_in">"تسجيل الدخول"</string>
+    <string name="drop_up_location">إلى</string>
+    <string name="pick_up_location">من</string>
+    <string name="update">"تحديث"</string>
+    <string name="online">"أنت متصل"</string>
+    <string name="offline">"انت غير متصل"</string>
+    <string name="coh_driver">"النقدية على يدك."</string>
+    <string name="change_password">"تغيير كلمة السر"</string>
+    <string name="unpaid">"غير مأجور"</string>
+    <string name="network_not_available">"الشبكة غير متوفرة"</string>
+    <string name="try_again">"حاول مرة اخرى!"</string>
+    <string name="error_occurred">"حدث خطأ"</string>
+    <string name="network">"الشبكة غير متوفرة"</string>
+    <string name="add_vehicleinfo">"إضافة معلومات السيارة"</string>
+    <string name="upload_doc">"تحميل المستند"</string>
+    <string name="home">"الصفحة الرئيسية"</string>
+    <string name="requests">"طلبات"</string>
+    <string name="vehicle_info">"معلومات السيارة"</string>
+    <string name="payment_history">"تاريخ الدفع"</string>
+    <string name="profile">"الملف الشخصي"</string>
+    <string name="success">"مرحبا بك في"</string>
+    <string name="fiels_is_required">"الحقل مطلوب"</string>
+    <string name="email_invalid">"البريد الإلكتروني غير صالح"</string>
+    <string name="mobile_invalid">"رقم الجوال غير صالح"</string>
+    <string name="password_length">"الحد الأدنى لطول كلمة المرور هو 6 أحرف"</string>
+    <string name="password_nomatch">"كلمة المرور غير متطابقة"</string>
+    <string name="ride_reuest_completed">"اكتمل طلب الرحلة"</string>
+    <string name="ride_reuest_cancelled">"طلب الرحلة الملغى"</string>
+    <string name="accepted_request">"الطلبات المقبولة"</string>
+    <string name="ccancel">"إلغاء"</string>
+    <string name="ok">"حسنا"</string>
+    <string name="ride_completion">"اكتملت الرحلة"</string>
+    <string name="ride_cancellation">"إلغاء الإقلاع"</string>
+    <string name="track_ride">"مسار الرحلة"</string>
+    <string name="passanger_info">"معلومات الركاب"</string>
+    <string name="taxi">"سيارة اجره"</string>
+    <string name="pending_request">"الطلبات المعلقة"</string>
+    <string name="cancelled_request">"الطلبات الملغات"</string>
+    <string name="completed_request">"الطلبات المكتملة"</string>
+    <string name="couldnt_get_location">"لا يمكن الحصول على موقعك"</string>
+    <string name="direct_requesting">"طلب الاتجاه ..."</string>
+    <string name="profile_updated">"تحديث الملف الشخصي"</string>
+    <string name="tryagian">"حاول ثانية"</string>
+    <string name="profile_uploaded">"الملف الشخصي تم الرفع"</string>
+    <string name="change">"يتغيرون"</string>
+    <string name="newpwd_required">"كلمة المرور الجديدة مطلوبة"</string>
+    <string name="password_updated">"تم تحديث كلمة السر"</string>
+    <string name="ride_acceptance">"القبول القبول"</string>
+    <string name="ride_reuest_accepted">"قبول طلب القبول"</string>
+    <string name="accept_ride">"قبول ركوب"</string>
+    <string name="complete_ride">"انتهاء الرحلة"</string>
+    <string name="cancel_ride">"إلغاء الرحلة"</string>
+    <string name="no_status">"لا توجد حالة"</string>
+    <string name="basefare">"الاجرة الاساسية"</string>
+    <string name="approve_payment_offline">"الموافقة على الدفع دون اتصال بالإنترنت"</string>
+    <string name="vehicle">"مركبة"</string>
+    <string name="doc">"وثيقة"</string>
+    <string name="go">"اذهب"</string>
+    <string name="invalid_location">"موقع غير صالح"</string>
+    <string name="ride_completion_msg">"هل تريد إكمال رحلتك المقبولة؟"</string>
+    <string name="ride_cancellation_msg">"هل تريد إلغاء رحلتك المقبولة؟"</string>
+    <string name="ride_acceptance_msg">"هل ترغب الموافقة على الرحلة؟"</string>
+    <string name="re_login">"إعادة تسجيل الدخول وحاول مرة أخرى"</string>
+    <string name="password_required">"كلمة المرور مطلوبة"</string>
+    <string name="format_msg">"يتم قبول jpg أو png أو gif فقط"</string>
+    <string name="doo">"فعل"</string>
+    <string name="payment_receive_from_customer">"الدفعة المستلمة من العميل"</string>
+    <string name="customer_number">"رقم العميل"</string>
+
+    <string name="Pick_Customer">"اختيار العميل"</string>
+    <string name="Start_Ride">"بدء الرحلة"</string>
+    <string name="Ride_Started">" بدء الرحلة"</string>
+    <string name="log_out">الخروج</string>
+    <string name="forgot_password">هل نسيت كلمة المرور؟</string>
+    <string name="create_an_account">انشئ حساب</string>
+
+
+    <string name="total_rides">سجل التنقلات</string>
+    <string name="earnings">الأرباح</string>
+    <string name="today"> اليوم</string>
+    <string name="this_week"> هذا الأسبوع</string>
+    <string name="overall">الإجمالي </string>
+    <string name="payment_status">حالة الدفع</string>
+    <string name="brand">علامة تجارية</string>
+    <string name="vehicle_no">السيارة لا</string>
+    <string name="model">نموذج</string>
+    <string name="year">عام</string>
+    <string name="color">اللون</string>
+    <string name="continue_btn">استمر</string>
+    <string name="from">من</string>
+    <string name="to">إلى</string>
+    <string name="date">تاريخ</string>
+    <string name="customer_name">اسم العميل</string>
+    <string name="new_password">كلمة المرور الجديدة</string>
+    <string name="password_reset">إعادة تعيين كلمة المرور</string>
+    <string name="registered_email">أدخل عنوان بريدك الإلكتروني المسجل ، سنرسل لك رسالة بريد إلكتروني لإعادة تعيين كلمة المرور الخاصة بك</string>
+    <string name="registered_email_input"> البريد الإلكتروني المسجل </string>
+    <string name="reset_password">إعادة تعيين كلمة المرو</string>
+    <string name="ride_payment_detail">ركوب تفاصيل الدفع</string>
+    <string name="amount">المبلغ</string>
+    <string name="distance">المسافة</string>
+    <string name="status">الحالة</string>
+    <string name="date_amp_time">لتاريخ والوقت</string>
+    <string name="driver_name">اسم برنامج التشغيل</string>
+    <string name="paypal_id">معرف PAYPAL</string>
+    <string name="dl">يرجى تحميل رخصة القيادة الخاصة بك</string>
+    <string name="vi"> الرجاء تحميل تأمين مركبتك </string>
+    <string name="vp"> يرجى تحميل تصريح المركبة الخاصة بك</string>
+    <string name="vr"> الرجاء تحميل تسجيل سيارتك </string>
+    <string name="passanger_vehicle">سيارة ركاب</string>
+    <string name="search">البحث عن راكب</string>
+    <string name="lang">اللغة</string>
+    <string name="GOD">إدارة المجموعات</string>
+
+    <string name="Rides">رحلاتك</string>
+    <string name="Pending_Requests">الطلبات المعلقة</string>
+    <string name="AcceptedRequests">الطلبات المقبولة</string>
+    <string name="CompletedRides">الرحلات المكتملة</string>
+    <string name="Cancelled">الرحلات الملفية</string>
+    <string name="changemobile">تغيير الجوال</string>
+    <string name="Capacity">عدد الركاب</string>
+    <string name="persons">1-4 أشخاص</string>
+    <string name="PickupLocation">من</string>
+    <string name="DropLocation">إلى</string>
+    <string name="Name1">الاسم       </string>
+    <string name="chat">محادثة  </string>
+    <string name="No_Data_Found">لايوجد بيانات</string>
+    <string name="NewYorkNY">NewYork NY 10025</string>
+    <string name="TO">إلى</string>
+    <string name="TIME">الوقت</string>
+    <string name="INTERIOR_COLOR">اللون الداخلي</string>
+    <string name="left_start">غادر | ابدأ</string>
+    <string name="ratekm">قيمكم</string>
+    <string name="Color_White">اللون الابيض</string>
+    <string name="Add_Ride">أضف رحلة</string>
+    <string name="add_Driver">إضافة سائق</string>
+    <string name="create_gruop">إنشاء مجموعة</string>
+    <string name="remove_User">حذف مستخدم</string>
+    <string name="English">انكليزية</string>
+    <string name="arabic">عربي</string>
+    <string name="ku">كردي</string>
+    <string name="Affordable_everyday_rides">رحلات يومية بأسعار معقولة</string>
+    <string name="date_And_time">التاريخ و الوقت</string>
+    <string name="available_seats">المقاعد المتاحة</string>
+    <string name="Bookedseats">المقاعد المحجوزة</string>
+    <string name="SetTime">ضبط الوقت </string>
+    <string name="SetDate">حدد التاريخ </string>
+    <string name="fareperseat">fare per seat</string>
+
+    <string name="fare_calculating">حساب التذكرة</string>
+    <string name="confirm">تأكيد</string>
+    <string name="NoHistoryFound">لا يوجد تاريخ</string>
+    <string name="DT">تاريخ &amp; وقت        </string>
+    <string name="paid">دفع</string>
+    <string name="DropAddress">إلى</string>
+    <string name="PickupAddress">من</string>
+    <string name="ELITEDRIVER">سائق النخبة</string>
+    <string name="ride_complete_msg">Complete</string>
+    <string name="ride_cancel_msg">Cancelled</string>
+    <string name="ride_accept_msg">Accepted</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="drivers">Group</string>
+    <string name="phone">Phone</string>
+    <string name="PaymentStatsus">Payment Statsus        </string>
+    <string name="QIBus_softui_txt_todo">To city</string>
+    <string name="QIBus_softui_hint_to_city">To city</string>
+    <string name="show_total_erning">Show Total Eran</string>
+    <string name="praicy">"الأحكام العامة
+نقصد بالأحكام العامة ، ما يتعلق بالخدمات المقدمة لكل من المستخدمين و اصحاب السيارات.
+نحرص على توضيح طبيعة الخدمة المقدمة ، و التي تتوافق و متطلبات النقل التشاركي المتعارف عليه في دول العالم ، و بقدر ما نحرص على تقديم خدمات متقدمة و متكاملة  نؤكد أن بلوغ هذا الهدف يقتضي تعاونا تاما من قبل اصحاب السيارات و المستخدمين في آن واحد ، و على جميع الاطراف الايمان بأن الجميع شركاء في هذه الخدمة ، و أن نجاحها يعتمد على نوع التعاون و طبيعته ، و أن تحقيق مجموعة الأهداف التي نصبوا إليها ، لن يتحقق بدون فهم طبيعة عملنا و عمق الاهداف و اهميتها وضرورة تطوير هذه الخدمات.
+يسعى التنقل التشاركي إلى تحقيق هدف رئيسي يرتبط بتوفير وسائط تنقل مريحة و متميزة ،  ليقلل الناس من استخدام مركباتهم الخاصة ، ما يسهم في خدمة البيئة و ذلك بالتقليل من التلوث ، و توفير وسائط تنقل جماعية بأسعار تنافسية ، و يسهم في التقليل من استهلاك المحروقات .
+أن اشاعة التنقل التشاركي وفق الاهداف التي ذكرناها أعلاه ، تدفع بجميع اطراف هذه الخدمة للحرص على التعاون و الارتقاء بالتنقل إلى درجات متميزة  "</string>
+    <string name="about_us"><![CDATA["عن التطبيق
+يعمل التطبيق في مجال التنقل التشاركي ، مع ميزة رائدة في هذا النوع من التنقل ، إذ منحنا كلا من صاحب وسيلة النقل و المستخدم فرصة الحجز لدى الآخر بحرية تامة   و عندما يرغب المسافر الذهاب إلى منطقة داخل مدينته أو إلى مدينة اخرى يبحث عن وسائل النقل المتاحة في الوقت المناسب له ، و يختار ما يرى أنها مناسبة لرحلته من بين السيارات المتاحة ، و للسائق حرية الموافقة أو الاعتذار بعد مشاهدة ملف المسافر.
+و يبحث السائق عن الراغبين بالسفر في التوقيت الذي يغادر به و الوجهة المقررة ، و يختار المسافرين المناسبين للسفر معه ، و تكون الموافقة النهائية  للمسافر نفسه بعد الاطلاع على ملف السائق و تقييمه من قبل الآخرين.
+التقييم في التطبيق لا يقتصر على  المركبة  واداء السائق فقط ، بل اضفنا تقييما للأجرة التي يحددها صاحب السيارة ، و هدفنا  من ذلك تقديم افضل الأسعار و خدمة متميزة للمسافرين مع التطبيق.
+يكون المسافر على اطلاع قبل الحجز على مواصفات المركبة و عدد الحقائب المسموح بها ، و فيما إذا كان مسموحا بالتدخين خلال الرحلة من عدمه."]]></string>
+    <string name="about_uss">عن التطبيق</string>
+    <string name="pricvys">الأحكام العامة</string>
+    <string name="smoke">smkoe</string>
+    <string name="passenger">passenger</string>
+    <string name="travel_time">وقت رحلة</string>
+    <string name="smoked">تدخن</string>
+    <string name="passenger_one">١ مقعد</string>
+    <string name="add_travel">حفظ</string>
+    <string name="find_travel">البحث عن راكب</string>
+    <string name="smoking">smoking</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="btn_advance">Advance (Auth)</string>
+    <string name="btn_basic">Basic (No Auth)</string>
+    <string name="btn_push">Push</string>
+    <string name="btn_remove_value">removeValue</string>
+    <string name="btn_set_value">setValue</string>
+    <string name="btn_update_children">updateChildren</string>
+    <string name="fail_read">Failed to read value: %s</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_title">Title</string>
+    <string name="hint_body">Write your post…</string>
+    <string name="hint_username">Username…</string>
+    <string name="menu_chat">Chat</string>
+    <string name="menu_logout">Log out</string>
+    <string name="send">SEND</string>
+    <string name="required">Required</string>
+
+    <string name="username">Current username: %s \n\n</string>
+
+    <!--    by ibrahim-->
+
+    <string name="enter_number_of_passengers_trip_price">أدخل عدد الركاب وسعر الرحلة</string>
+    <string name="number_of_passengers_1">عدد الركاب، 1</string>
+    <string name="trip_price">سعر الرحلة</string>
+    <string name="submit">إرسال</string>
+    <string name="tryAgain">حاول مرة اخرى</string>
+    <string name="cancel">إلغاء</string>
+    <string name="enter_coubbon_number">أدخل رقم الكوبون</string>
+    <string name="date_and_time">التاريخ و الوقت</string>
+    <string name="reseve">حجز</string>
+    <string name="empty_seats">عدد المقاعد المتبقية</string>
+    <string name="driver_rate">تقييم السائق</string>
+    <string name="travels_count">الرحلات المنجزة</string>
+    <string name="pickup_point">نقطة التقاط</string>
+    <string name="platform">منصة التواصل الاجتماعي</string>
+    <string name="what_is_on_your_mind">ماذا يدور في ذهنك!!</string>
+    <string name="add">أضف</string>
+    <string name="post">إضافة</string>
+    <string name="Post_Empty">من فضلك املأ النص!</string>
+    <string name="Post_success">تمت إضافة المنشور بنجاح!</string>
+    <string name="set_date">اختر الوقت</string>
+    <string name="ride_has_been_requested">تمت إضافة الرحلة بنجاح</string>
+    <!--    by ibrahim-->
+
+    <string name="Travel_is_going_from">ذاهب من: </string>
+    <string name="Travel_to">إلى: </string>
+    <string name="Travel_on">بتاريخ: </string>
+    <string name="CheckBox">إضافة إلى المنصة </string>
+
+    <string-array name="headings">
+        <item>Recent</item>
+        <item>My Posts</item>
+        <item>My Top Posts</item>
+    </string-array>
+
+</resources>
