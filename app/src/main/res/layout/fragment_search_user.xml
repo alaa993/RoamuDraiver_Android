@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layoutDirection="ltr"
     android:background="@drawable/bg"
     android:layout_height="match_parent"
     tools:context=".fragement.SearchUser">
+
     <RelativeLayout
         android:id="@+id/search_box_rel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
 
-        android:layout_margin="10dp"
-        android:layout_marginBottom="20dip"
+        android:layout_gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="170dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:visibility="visible">
 
         <include
@@ -23,5 +27,15 @@
             android:layout_height="300dp" />
 
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="118dp"
+        app:srcCompat="@drawable/imageb1"
+        tools:layout_centerHorizontal="true"
+        tools:layout_centerVertical="false"
+        tools:layout_marginTop="20dp"
+        tools:src="@tools:sample/avatars" />
 
 </RelativeLayout>

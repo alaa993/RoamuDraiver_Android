@@ -250,7 +250,8 @@
     <string name="ride_has_been_requested">تمت إضافة الرحلة بنجاح</string>
     <!--    by ibrahim-->
 
-    <string name="Travel_is_going_from">ذاهب من: </string>
+    <string name="Travel_is_going_from">اتمنى لكم رحلة ممتعة معي
+من:  </string>
     <string name="Travel_to">إلى: </string>
     <string name="Travel_on">بتاريخ: </string>
     <string name="CheckBox">إضافة إلى المنصة </string>

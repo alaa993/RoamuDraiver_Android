@@ -73,6 +73,7 @@ public class AddPostActivity extends AppCompatActivity {
                 Map<String,Object> userObject = new HashMap<>();
                 userObject.put("author", author);
                 userObject.put("text", inputEditPost.getText().toString());
+                userObject.put("type", "1");
                 userObject.put("timestamp", ServerValue.TIMESTAMP);
                 databaseRef.setValue(userObject);
                 inputEditPost.getText().clear();

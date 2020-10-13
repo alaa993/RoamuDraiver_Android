@@ -388,6 +388,7 @@ public class SearchUser extends Fragment implements BackFragment {
                 Map<String,Object> userObject = new HashMap<>();
                 userObject.put("author", author);
                 userObject.put("text", text);
+                userObject.put("type", "1");
                 userObject.put("timestamp", ServerValue.TIMESTAMP);
                 databaseRef.setValue(userObject);
                 //inputEditPost.getText().clear();
@@ -458,7 +459,7 @@ public class SearchUser extends Fragment implements BackFragment {
                         date_time_search.setText(date_time_value);
 
                     }
-                }, mHour, mMinute, true);
+                }, mHour, 0, true);
         timePickerDialog.show();
     }
 

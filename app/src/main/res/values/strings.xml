@@ -241,7 +241,8 @@
     <string name="set_date">Set Date</string>
     <string name="ride_has_been_requested">Ride has been requested</string>
 
-    <string name="Travel_is_going_from">is going From: </string>
+    <string name="Travel_is_going_from">Have a nice trip with me
+from: </string>
     <string name="Travel_to">To: </string>
     <string name="Travel_on">On: </string>
     <string name="CheckBox">Add To Platform </string>

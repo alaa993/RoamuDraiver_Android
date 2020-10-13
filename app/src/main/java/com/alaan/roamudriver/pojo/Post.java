@@ -7,16 +7,18 @@ public class Post implements Serializable{
     public UserProfile author;
     public String text;
     public Long timestamp;
+    public String type;
 
     public Post()
     {
     }
 
-    public Post(String id, UserProfile author, String Text, Long timestamp)
+    public Post(String id, UserProfile author, String Text, Long timestamp,String type)
     {
         this.id = id;
         this.author = author;
         this.text = text;
         this.timestamp = timestamp;
+        this.type = type;
     }
 }
