@@ -255,6 +255,7 @@
     <string name="Travel_to">إلى: </string>
     <string name="Travel_on">بتاريخ: </string>
     <string name="CheckBox">إضافة إلى المنصة </string>
+    <string name="the_clock">الساعة: </string>
 
     <string-array name="headings">
         <item>Recent</item>

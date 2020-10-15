@@ -90,6 +90,7 @@ public class SearchUser extends Fragment implements BackFragment {
     private String driver_id, passanger_value, bag_value, smoke_value, date_time_value;
     Calendar date;
     String date_time = "";
+    String time_value="";
     int mYear;
     int mMonth;
     int mDay;
@@ -236,7 +237,7 @@ public class SearchUser extends Fragment implements BackFragment {
 //                                AddRide(String key, String pickup_adress, String drop_address, String pickup_location, String drop_locatoin, String amount, String distance, String a_set, String u_set, String s_time, String s_date)
                                     AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d, mPrice.getText().toString(), "50", mPassengers.getText().toString(), "", date_time_value, date_time_value);
                                     if(Checkbox.isChecked())
-                                        SavePost(pickup_address,drop_address,date_time_value);
+                                        SavePost(pickup_address,drop_address,date_time,time_value);
 //                                    Toast.makeText(getActivity(), "do tasked", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(SearchUser.this.getContext(),
@@ -364,7 +365,7 @@ public class SearchUser extends Fragment implements BackFragment {
 
         return rootView;
     }
-    public void SavePost(String pickup_address,String Drop_address,String date_time_value) {
+    public void SavePost(String pickup_address,String Drop_address,String date_time_value,String time_value) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
@@ -374,8 +375,8 @@ public class SearchUser extends Fragment implements BackFragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String UserName = dataSnapshot.child("username").getValue(String.class);
                 String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
-                String text = UserName+" "+getString(R.string.Travel_is_going_from)+pickup_address+" "+
-                        getString(R.string.Travel_to)+Drop_address+" "+getString(R.string.Travel_on)+date_time_value+" ";
+                String text = getString(R.string.Travel_is_going_from)+pickup_address+" "+
+                        getString(R.string.Travel_to)+Drop_address+" "+getString(R.string.Travel_on)+date_time_value+" "+getString(R.string.the_clock)+time_value+" ";
 //                log.i("tag","success by ibrahim");
 //                log.i("tag", UserName);
                 // Firebase code here
@@ -456,6 +457,7 @@ public class SearchUser extends Fragment implements BackFragment {
 //                        Toast.makeText(getContext(), "show time" + val_date, Toast.LENGTH_SHORT).show();
                         log.i("tag", "success by ibrahim");
                         log.i("tag", date_time_value);
+                        time_value= hourOfDay + ":" + minute+ "0";
                         date_time_search.setText(date_time_value);
 
                     }

@@ -245,6 +245,7 @@
 from: </string>
     <string name="Travel_to">To: </string>
     <string name="Travel_on">On: </string>
+    <string name="the_clock">The Clock: </string>
     <string name="CheckBox">Add To Platform </string>
 
 

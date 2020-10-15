@@ -104,6 +104,7 @@ public class PostActivity extends AppCompatActivity {
                 userObject.put("author", author);
                 userObject.put("text", inputEditComment.getText().toString());
                 userObject.put("timestamp", ServerValue.TIMESTAMP);
+                userObject.put("type", "1");
                 databaseRef.setValue(userObject);
                 inputEditComment.getText().clear();
             }

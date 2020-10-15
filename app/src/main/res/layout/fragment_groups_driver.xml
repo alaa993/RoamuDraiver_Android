@@ -25,6 +25,7 @@
         android:inputType="text"
         android:padding="@dimen/QIBus_softui_spacing_large"
         android:singleLine="true"
+        android:text="+"
         android:textColorHint="@color/md_grey_200"
         android:textSize="@dimen/QIBus_softui_font_large" />
     <Button

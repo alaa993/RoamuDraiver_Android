@@ -2,6 +2,7 @@ package com.alaan.roamudriver.pojo;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,8 @@ public class PostList extends ArrayAdapter<Post> {
         // Log.println(1,"tttttttt", type);
 
         if(type.equals("0")){
-            listViewItem.setBackgroundColor(Color.parseColor("#f5fafe"));
+            listViewItem.setBackgroundColor(Color.parseColor("#e4e4e4"));
+            textViewText.setTypeface(Typeface.create("Quranic fonts.ttf",Typeface.BOLD_ITALIC));
         }else if(type.equals("1")){
             listViewItem.setBackgroundColor(Color.WHITE);
             //listViewItem.setBackgroundResource(R.drawable.listview_item_border);

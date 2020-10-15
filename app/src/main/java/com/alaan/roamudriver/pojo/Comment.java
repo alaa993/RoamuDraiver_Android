@@ -6,6 +6,7 @@ public class Comment {
     public UserProfile author;
     public String text;
     public Long timestamp;
+    public String type;
 
     public Comment()
     {
