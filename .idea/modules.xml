@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/RoamuDraiver_Android.iml" filepath="$PROJECT_DIR$/.idea/modules/RoamuDraiver_Android.iml" group="RoamuDraiver_Android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/RoamuDraiver_Android-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/RoamuDraiver_Android-app.iml" group="RoamuDraiver_Android/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TaxiDriver_2.0.1.iml" filepath="$PROJECT_DIR$/.idea/modules/TaxiDriver_2.0.1.iml" group="TaxiDriver_2.0.1" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="TaxiDriver_2.0.1/app" />
     </modules>

@@ -135,7 +135,9 @@ public class platform extends Fragment implements BackFragment {
 
                     Post.id = postSnapshot.getKey();
                     //adding artist to the list
-                    posts.add(Post);
+                    if (Post.privacy.contains("1")) {
+                        posts.add(Post);
+                    }
 
 
 

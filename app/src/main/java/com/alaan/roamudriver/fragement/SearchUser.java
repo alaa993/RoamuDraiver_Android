@@ -208,6 +208,7 @@ public class SearchUser extends Fragment implements BackFragment {
                         View mView = getLayoutInflater().inflate(R.layout.dialog_addtravel_layout, null);
                         final EditText mPassengers = (EditText) mView.findViewById(R.id.etPassengers);
                         final EditText mPrice = (EditText) mView.findViewById(R.id.etPrice);
+                        final EditText mPickupPoint = (EditText) mView.findViewById(R.id.etPickupPoint);
                         Button mSubmit = (Button) mView.findViewById(R.id.btnSubmitDialog);
                         Button mCancel = (Button) mView.findViewById(R.id.btnCancelDialog);
                         CheckBox Checkbox = (CheckBox)mView.findViewById(R.id.checkBox);
@@ -218,7 +219,7 @@ public class SearchUser extends Fragment implements BackFragment {
                         mSubmit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                if (!mPassengers.getText().toString().isEmpty() && !mPrice.getText().toString().isEmpty()) {
+                                if (!mPassengers.getText().toString().isEmpty() && !mPrice.getText().toString().isEmpty() && !mPickupPoint.getText().toString().isEmpty()) {
 
                                     dialog.dismiss();
                                     log.i("tag", "success by ibrahim");
@@ -235,7 +236,7 @@ public class SearchUser extends Fragment implements BackFragment {
 
 //                                AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d,txt_fare.getText().toString(), distance,btn_ava.getNumber(),btn_book.getNumber(),val_timel,val_date);
 //                                AddRide(String key, String pickup_adress, String drop_address, String pickup_location, String drop_locatoin, String amount, String distance, String a_set, String u_set, String s_time, String s_date)
-                                    AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d, mPrice.getText().toString(), "50", mPassengers.getText().toString(), "", date_time_value, date_time_value);
+                                    AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d, mPrice.getText().toString(), "50", mPassengers.getText().toString(), "", date_time_value, time_value, mPickupPoint.getText().toString());
                                     if(Checkbox.isChecked())
                                         SavePost(pickup_address,drop_address,date_time,time_value);
 //                                    Toast.makeText(getActivity(), "do tasked", Toast.LENGTH_SHORT).show();
@@ -390,9 +391,46 @@ public class SearchUser extends Fragment implements BackFragment {
                 userObject.put("author", author);
                 userObject.put("text", text);
                 userObject.put("type", "1");
+                userObject.put("privacy" , "1");
                 userObject.put("timestamp", ServerValue.TIMESTAMP);
                 databaseRef.setValue(userObject);
-                //inputEditPost.getText().clear();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+            }
+        });
+    }
+
+
+    public void SavePrivatePost(String pickup_address,String Drop_address,String date_time_value,String time_value, String travel_id) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
+
+        databaseRefID.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String UserName = dataSnapshot.child("username").getValue(String.class);
+                String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
+                String text = getString(R.string.Travel_is_going_from)+pickup_address+" "+
+                        getString(R.string.Travel_to)+Drop_address+" "+getString(R.string.Travel_on)+date_time_value+" "+getString(R.string.the_clock)+time_value+" ";
+//                log.i("tag","success by ibrahim");
+//                log.i("tag", UserName);
+                // Firebase code here
+                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("posts").child(travel_id);
+                Map<String,Object> author = new HashMap<>();
+                author.put("uid" , user.getUid());
+                author.put("username" , UserName);
+                author.put("photoURL" , photoURL);
+
+                Map<String,Object> userObject = new HashMap<>();
+                userObject.put("author", author);
+                userObject.put("text", text);
+                userObject.put("type", "1");
+                userObject.put("privacy" , "0");
+                userObject.put("timestamp", ServerValue.TIMESTAMP);
+                databaseRef.setValue(userObject);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -453,15 +491,15 @@ public class SearchUser extends Fragment implements BackFragment {
                         mHour = hourOfDay;
                         mMinute = minute;
 
-                        date_time_value = date_time + " " + hourOfDay + ":" + minute + ":00";
+                        date_time_value = date_time + " " + hourOfDay + ":" + minute;
 //                        Toast.makeText(getContext(), "show time" + val_date, Toast.LENGTH_SHORT).show();
                         log.i("tag", "success by ibrahim");
                         log.i("tag", date_time_value);
-                        time_value= hourOfDay + ":" + minute+ "0";
-                        date_time_search.setText(date_time_value);
+                        time_value= hourOfDay + ":" + minute;
+                        date_time_search.setText(date_time + " " + String.format("%02d:%02d", hourOfDay, minute));
 
                     }
-                }, mHour, 0, true);
+                }, mHour, mMinute, true);
         timePickerDialog.show();
     }
 
@@ -506,7 +544,7 @@ public class SearchUser extends Fragment implements BackFragment {
 
     }
 
-    public void AddRide(String key, String pickup_adress, String drop_address, String pickup_location, String drop_locatoin, String amount, String distance, String a_set, String u_set, String s_time, String s_date) {
+    public void AddRide(String key, String pickup_adress, String drop_address, String pickup_location, String drop_locatoin, String amount, String distance, String a_set, String u_set, String s_date, String s_time, String PickupPoint) {
         final RequestParams params = new RequestParams();
 //        params.put("driver_id", driver_id);
         params.put("driver_id", SessionManager.getUserId());
@@ -514,6 +552,7 @@ public class SearchUser extends Fragment implements BackFragment {
         params.put("drop_address", drop_address);
         params.put("pickup_location", pickup_location);
         params.put("drop_location", drop_locatoin);
+        params.put("pickup_point", PickupPoint);
         params.put("distance", distance);
         params.put("amount", amount);
         params.put("avalable_set", a_set);
@@ -521,7 +560,8 @@ public class SearchUser extends Fragment implements BackFragment {
         //commited by ibrahim
         //params.put("travel_time",s_time);
 //        params.put("travel_date", "2023-10-18 15:18:00");
-        params.put("travel_date", s_time);
+        params.put("travel_date", s_date);
+        params.put("travel_time", s_time);
         params.put("somked", "1");
         params.put("status", "0");
 
@@ -540,6 +580,9 @@ public class SearchUser extends Fragment implements BackFragment {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         Toast.makeText(getActivity(), R.string.ride_has_been_requested, Toast.LENGTH_LONG).show();
                         ((HomeActivity) getActivity()).changeFragment(new SearchUser(), "fragment_search_user");
+                        //
+                        String travel_id = response.getString("travel_id");
+                        SavePrivatePost(pickup_address,drop_address,date_time,time_value, travel_id);
                     } else {
                         Toast.makeText(getActivity(), "tryAgain", Toast.LENGTH_LONG).show();
                     }
