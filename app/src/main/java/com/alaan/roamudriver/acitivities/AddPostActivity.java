@@ -74,8 +74,9 @@ public class AddPostActivity extends AppCompatActivity {
                 userObject.put("author", author);
                 userObject.put("text", inputEditPost.getText().toString());
                 userObject.put("type", "1");
+                userObject.put("privacy" , "1");
+                userObject.put("travel_id" , 0);
                 userObject.put("timestamp", ServerValue.TIMESTAMP);
-                userObject.put("privacy" , 1);
 
                 databaseRef.setValue(userObject);
                 inputEditPost.getText().clear();

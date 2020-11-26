@@ -42,8 +42,14 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alaan.roamudriver.BuildConfig;
+import com.alaan.roamudriver.fragement.Contact_usFragment;
 import com.alaan.roamudriver.fragement.Manage_travels;
+import com.alaan.roamudriver.fragement.NominateDriverFragment;
+import com.alaan.roamudriver.fragement.NotificationsFragment;
+import com.alaan.roamudriver.fragement.ProfitFragment;
 import com.alaan.roamudriver.fragement.SearchUser;
+import com.alaan.roamudriver.fragement.UsersCommentsFragment;
 import com.alaan.roamudriver.fragement.about_us;
 import com.alaan.roamudriver.fragement.lang;
 import com.alaan.roamudriver.fragement.platform;
@@ -217,7 +223,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
 
                 @Override
                 public void permissionDenied() {
-
                 }
 
                 @Override
@@ -225,15 +230,12 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                     openSettingsApp(getApplicationContext());
                 }
             });
-
         } else {
-
             setListener();
             // getLocation();
         }
-
-
     }
+
     public void getPhotoUri() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
@@ -245,21 +247,15 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                 String UserName = dataSnapshot.child("username").getValue(String.class);
                 String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
                 Glide.with(getApplicationContext()).load(photoURL).apply(new RequestOptions().error(R.drawable.user_default)).into(avatar);
-//                log.i("tag","success by ibrahim");
-//                log.i("tag", UserName);
-                // Firebase code here
-                // User user = SessionManager.getUser();
-                //user.setAvatar(photoURL);
-                // profile_pic.setImageURI(photoURL);
-                // profileUpdateListener.update(photoURL);
-
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
             }
         });
     }
+
     private void setupDrawer() {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -319,9 +315,34 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                 changeFragment(new platform(), getString(R.string.platform));
                 break;
 
+            case R.id.userComments:
+                addPost.setVisibility(View.GONE);
+                changeFragment(new UsersCommentsFragment(), getString(R.string.platform));
+                break;
+
             case R.id.privacy_policy:
                 addPost.setVisibility(View.GONE);
                 changeFragment(new privacy(), getString(R.string.pricvys));
+                break;
+
+            case R.id.profit:
+                addPost.setVisibility(View.GONE);
+                changeFragment(new ProfitFragment(), getString(R.string.pricvys));
+                break;
+
+            case R.id.Nominate_Driver:
+                addPost.setVisibility(View.GONE);
+                changeFragment(new NominateDriverFragment(), getString(R.string.profile));
+                break;
+
+            case R.id.contact_us:
+                addPost.setVisibility(View.GONE);
+                changeFragment(new Contact_usFragment(), getString(R.string.profile));
+                break;
+
+            case R.id.notifications:
+                addPost.setVisibility(View.GONE);
+                changeFragment(new NotificationsFragment(), getString(R.string.lang));
                 break;
 
             case R.id.group_of_drivers:
@@ -334,44 +355,12 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                 changeFragment(new Manage_travels(), getString(R.string.drivers));
                 break;
 
-            case R.id.pending_requests:
+            case R.id.my_requests:
                 addPost.setVisibility(View.GONE);
                 acceptedRequestFragment = new AcceptedRequestFragment();
-                bundle = new Bundle();
-                bundle.putString("status", "PENDING");
-                acceptedRequestFragment.setArguments(bundle);
-                changeFragment(acceptedRequestFragment, getString(R.string.requests));
-                break;
-
-//            case R.id.add_ride:
-//                addPost.setVisibility(View.GONE);
-//                changeFragment(new HomeFragment(), getString(R.string.home));
-//                break;
-
-            case R.id.accepted_requests:
-                addPost.setVisibility(View.GONE);
-                acceptedRequestFragment = new AcceptedRequestFragment();
-                bundle = new Bundle();
-                bundle.putString("status", "ACCEPTED");
-                acceptedRequestFragment.setArguments(bundle);
-                changeFragment(acceptedRequestFragment, getString(R.string.requests));
-                break;
-
-            case R.id.completed_rides:
-                addPost.setVisibility(View.GONE);
-                acceptedRequestFragment = new AcceptedRequestFragment();
-                bundle = new Bundle();
-                bundle.putString("status", "COMPLETED");
-                acceptedRequestFragment.setArguments(bundle);
-                changeFragment(acceptedRequestFragment, getString(R.string.requests));
-                break;
-
-            case R.id.cancelled:
-                addPost.setVisibility(View.GONE);
-                acceptedRequestFragment = new AcceptedRequestFragment();
-                bundle = new Bundle();
-                bundle.putString("status", "CANCELLED");
-                acceptedRequestFragment.setArguments(bundle);
+//                bundle = new Bundle();
+//                bundle.putString("status", "PENDING");
+//                acceptedRequestFragment.setArguments(bundle);
                 changeFragment(acceptedRequestFragment, getString(R.string.requests));
                 break;
 
@@ -388,6 +377,20 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             case R.id.profile:
                 addPost.setVisibility(View.GONE);
                 changeFragment(new ProfileFragment(), getString(R.string.profile));
+                break;
+
+            case R.id.shareApp:
+                try {
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "My application name");
+                    String shareMessage= "\nLet me recommend you this application\n\n";
+                    shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID +"\n\n";
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                    startActivity(Intent.createChooser(shareIntent, "choose one"));
+                } catch(Exception e) {
+                    //e.toString();
+                }
                 break;
 
             case R.id.logout:
@@ -461,8 +464,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         locationEngine.setInterval(10);
         locationEngine.setSmallestDisplacement(5);
         locationEngine.activate();
-
-
     }
 
     @SuppressLint("ParcelCreator")
@@ -507,7 +508,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         }
     }
 
-
     private void applyFontToMenuItem(MenuItem mi) {
         Typeface font = Typeface.createFromAsset(getAssets(), "font/AvenirLTStd_Medium.otf");
         SpannableString mNewTitle = new SpannableString(mi.getTitle());
@@ -536,18 +536,14 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             finish();
             // Intent i = new Intent(this, HomeActivity.class);
             // startActivity(i);
-
         } else {
 
             super.onBackPressed();
         }
-
     }
-
 
     public void initViews() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.app_name));
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -566,8 +562,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void BindView() {
@@ -583,12 +577,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             public void onClick(View v) {
                 //creating an intent
                 Intent intent = new Intent(HomeActivity.this, AddPostActivity.class);
-
-                //putting artist name and id to intent
-                //intent.putExtra("Post_id", "1234");
-                //intent.putExtra(ARTIST_NAME, artist.getArtistName());
-
-                //starting the activity with intent
                 startActivity(intent);
             }
         });
@@ -597,15 +585,11 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
 
         } else {
             Toast.makeText(getApplicationContext(), getString(R.string.network_not_available), Toast.LENGTH_LONG).show();
-
-         //   Glide.with(HomeActivity.this).load(SessionManager.getAvatar()).apply(new RequestOptions().error(R.drawable.user_default)).into(avatar);
+            //   Glide.with(HomeActivity.this).load(SessionManager.getAvatar()).apply(new RequestOptions().error(R.drawable.user_default)).into(avatar);
             username.setText(SessionManager.getName());
             switchCompat.setChecked(false);
             DrawableCompat.setTintList(DrawableCompat.wrap(switchCompat.getThumbDrawable()), new ColorStateList(states, thumbColors));
-
         }
-
-
     }
 
     @Override
@@ -615,14 +599,12 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         if (pojo != null && locationEngine != null) {
             locationEngine.removeLocationEngineListener(this);
         }
-
-
     }
 
     @Override
     public void update(String url) {
         if (!url.equals("")) {
-         //   Glide.with(getApplicationContext()).load(url).apply(new RequestOptions().error(R.drawable.user_default)).into(avatar);
+            //   Glide.with(getApplicationContext()).load(url).apply(new RequestOptions().error(R.drawable.user_default)).into(avatar);
         }
     }
 
@@ -667,9 +649,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                         Toast.makeText(getApplicationContext(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-
                     Toast.makeText(getApplicationContext(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
-
                 }
             }
 
@@ -699,7 +679,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
 
             }
         });
-
     }
 
     private void GetDirver() {
@@ -719,18 +698,12 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                     driver_groups_model.setDriver_id(Integer.parseInt(response.getJSONObject("data").getString("d_id")));
                     driver_groups_model.setGroupName(response.getJSONObject("data").getString("name"));
 
-                    // if (response.getJSONObject("data").getString("is_online").equalsIgnoreCase("1")) {
-                    //} else {
-                    //}
-
-
                 } catch (JSONException e) {
                     Log.e("Get Data", e.getMessage());
 
                 }
             }
         });
-
 
     }
 
@@ -755,7 +728,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                         SessionManager.setUser(gson.toJson(user));
 
                         username.setText(user.getName());
-            //            Glide.with(getApplicationContext()).load(user.getAvatar()).apply(new RequestOptions().error(R.drawable.user_default)).into(avatar);
+                        //            Glide.with(getApplicationContext()).load(user.getAvatar()).apply(new RequestOptions().error(R.drawable.user_default)).into(avatar);
                         if (response.getJSONObject("data").getString("is_online").equalsIgnoreCase("1")) {
                             switchCompat.setChecked(true);
                             is_online.setText(getResources().getString(R.string.online));
@@ -765,7 +738,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                             switchCompat.setChecked(true);
                             DrawableCompat.setTintList(DrawableCompat.wrap(switchCompat.getThumbDrawable()), new ColorStateList(states, thumbColors));
                         }
-
 
                     } else {
 
@@ -815,7 +787,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                 } catch (Exception e) {
 
                 }
-
             }
 
             @Override
@@ -828,6 +799,4 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     private void setListener() {
         locationEngine.addLocationEngineListener(this);
     }
-
-
 }

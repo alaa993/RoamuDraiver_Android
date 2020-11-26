@@ -5,7 +5,8 @@
     android:layout_marginTop="5dp"
     android:layout_marginEnd="5dp"
     android:layout_marginRight="10dp"
-    android:layout_marginLeft="10dp">
+    android:layout_marginLeft="10dp"
+    android:background="@drawable/customborder">
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/image"
@@ -50,5 +51,50 @@
         android:maxLines="5"
         android:textColor="#303F64"/>
 
+<!--    <View-->
+<!--        android:id="@+id/LineSeparator"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:layout_below="@id/textViewText"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:layout_marginRight="10dp"-->
+<!--        android:layout_marginLeft="10dp"-->
+<!--        android:background="@android:color/darker_gray"/>-->
+
+    <TextView
+        android:text="Comments (5)"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:id="@+id/textViewCommentsNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewText"
+        android:maxLines="5"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/customborder"
+        android:textColor="#303F64"/>
+
+    <TextView
+        android:id="@+id/TripDetail"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewText"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/customborder"
+        android:text="@string/about_user"
+        android:textColor="#303F64" />
+
+        <View
+            android:id="@+id/LineSeparator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/textViewCommentsNo"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@android:color/darker_gray"/>
 
 </RelativeLayout>

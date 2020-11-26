@@ -45,8 +45,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.alaan.roamudriver.R;
@@ -69,6 +73,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -77,6 +82,8 @@ import java.util.UUID;
 
 import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import java.util.Calendar;
 
 /**
  * Created by android on 7/3/17.
@@ -524,7 +531,20 @@ public class RegisterActivity extends ActivityManagePermission implements Google
                 super.onSuccess(statusCode, headers, response);
                 try {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
-                        Log.d(TAG, response.toString());
+
+                        Log.i("ibrahim was here", response.toString());
+
+                        if (response.has("data")) {
+                            JSONObject data = response.getJSONObject("data");
+                            int user_id = Integer.parseInt(data.getString("user_id"));
+//                            Log.i("ibrahim travel_id", String.valueOf(travel_id));
+                            Date currentDate = Calendar.getInstance().getTime();
+                            Date currentTime = Calendar.getInstance().getTime();
+                            SavePrivatePost("pickup_address", "drop_address", currentDate.toString(), currentTime.toString(), user_id);
+                            //SavePrivatePost(pickup_address, drop_address, date_time, time_value, travel_id);
+                        } else {
+//                            Log.i("ibrahim_response", "no travel id");
+                        }
 
                         Toast.makeText(RegisterActivity.this, "success", Toast.LENGTH_LONG).show();
                         // startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
@@ -551,6 +571,47 @@ public class RegisterActivity extends ActivityManagePermission implements Google
         });
 
 
+    }
+
+    public void SavePrivatePost(String pickup_address, String Drop_address, String date_time_value, String time_value, int travel_id) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
+
+        databaseRefID.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String UserName = dataSnapshot.child("username").getValue(String.class);
+                String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
+                String text = getString(R.string.Travel_is_going_from) + " " + System.getProperty("line.separator")
+                        + getString(R.string.Travel_from) + " " + pickup_address + System.getProperty("line.separator")
+                        + getString(R.string.Travel_to) + " " + Drop_address + System.getProperty("line.separator")
+                        + getString(R.string.Travel_on) + " " + date_time_value + System.getProperty("line.separator")
+                        + getString(R.string.the_clock) + " " + time_value;
+//                log.i("tag","success by ibrahim");
+//                log.i("tag", UserName);
+                // Firebase code here
+                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("private_posts").child(String.valueOf(travel_id));
+                Map<String, Object> author = new HashMap<>();
+                author.put("uid", user.getUid());
+                author.put("username", UserName);
+                author.put("photoURL", photoURL);
+
+                Map<String, Object> userObject = new HashMap<>();
+                userObject.put("author", author);
+                userObject.put("text", text);
+                userObject.put("type", "1");
+                userObject.put("privacy", "0");
+                userObject.put("travel_id", travel_id);
+                userObject.put("timestamp", ServerValue.TIMESTAMP);
+                databaseRef.setValue(userObject);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+            }
+        });
     }
 
     public void getCurrentlOcation() {

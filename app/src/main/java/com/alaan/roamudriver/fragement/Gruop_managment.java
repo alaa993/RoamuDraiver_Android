@@ -1,5 +1,8 @@
 package com.alaan.roamudriver.fragement;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,12 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alaan.roamudriver.R;
 import com.alaan.roamudriver.Server.Server;
+import com.alaan.roamudriver.acitivities.HomeActivity;
 import com.alaan.roamudriver.adapter.AcceptedRequestAdapter;
 import com.alaan.roamudriver.pojo.PassMembar;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
@@ -39,6 +44,7 @@ public class Gruop_managment extends Fragment implements AdapterView.OnItemSelec
     PassMembar pojo;
     RecyclerView recyclerView;
     TextView txt_name,txt_mobile_number,txt_email,txt_country,txt_status,txt_vehicle;
+    ImageView image;
     String[] status_arr={"PENDING","ACCEPTED","COMPLETED","CANCELLED","REQUESTED"};
     public Gruop_managment() {
         // Required empty public constructor
@@ -61,7 +67,7 @@ public class Gruop_managment extends Fragment implements AdapterView.OnItemSelec
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_gruop_managment, container, false);
-
+        ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.group_members));
         Spinner droplist = (Spinner) rootView.findViewById(R.id.simpleSpinner);
         droplist.setOnItemSelectedListener(this);
         ArrayAdapter data = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,status_arr);
@@ -72,6 +78,7 @@ public class Gruop_managment extends Fragment implements AdapterView.OnItemSelec
         txt_country = (TextView) rootView.findViewById(R.id.txt_country);
         txt_status = (TextView) rootView.findViewById(R.id.txt_status);
         txt_vehicle = (TextView) rootView.findViewById(R.id.txt_vehicle);
+        image = (ImageView) rootView.findViewById(R.id.fgm_img_call);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_status);
 
@@ -85,12 +92,31 @@ public class Gruop_managment extends Fragment implements AdapterView.OnItemSelec
                 txt_email.setText(pojo.getDriver_email());
                 txt_mobile_number.setText(pojo.getDriver_mobile());
                 txt_country.setText(pojo.getDriver_country());
-                txt_status.setText(pojo.getDriver_is_online());
+                if(pojo.getDriver_is_online().contains("1")){
+                    txt_status.setText("Online");
+                    txt_status.setTextColor(getResources().getColor(R.color.green));
+                }
+                else{
+                    txt_status.setText("Offline");
+                    txt_status.setTextColor(getResources().getColor(R.color.red));
+                }
                 txt_vehicle.setText(pojo.getDriver_vehicle_no());
                 log.e("ss",""+pojo.getDriver_mobile());
 
             }
         }
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pojo.getDriver_mobile() != null)
+                {
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    intent.setData(Uri.parse("tel:" + pojo.getDriver_mobile()));
+                    getContext().startActivity(intent);
+                }
+            }
+        });
 
         return rootView;
 
@@ -99,13 +125,14 @@ public class Gruop_managment extends Fragment implements AdapterView.OnItemSelec
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        Toast.makeText(getContext(), status_arr[i], Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(), status_arr[i], Toast.LENGTH_LONG).show();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         getAcceptedRequest(String.valueOf(pojo.getDriver_id()),status_arr[i], SessionManager.getKEY());
 
     }
+
     public void getAcceptedRequest(String id, String status, String key) {
         RequestParams params = new RequestParams();
         params.put("id", id);
@@ -158,4 +185,5 @@ public class Gruop_managment extends Fragment implements AdapterView.OnItemSelec
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
 }

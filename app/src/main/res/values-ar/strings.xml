@@ -4,7 +4,7 @@
 
     <!-- Do not change this in localization -->
     <string name="mapboxkey">"pk.eyJ1IjoiaWNhbnN0dWRpb3oiLCJhIjoiY2oyMXQ3dGRpMDAwdDJ3bXpmZHRkdTBtNyJ9.PxslIcrVRj_gVgiv-Y-هرول"</string>
-
+    <string name="CommentsNoSt">التعليقات</string>
     <string name="allow_permission">"اسمح بالسماح"</string>
 
     <string name="mobile_number">"رقم الهاتف المحمول"</string>
@@ -60,15 +60,15 @@
     <string name="change">"يتغيرون"</string>
     <string name="newpwd_required">"كلمة المرور الجديدة مطلوبة"</string>
     <string name="password_updated">"تم تحديث كلمة السر"</string>
-    <string name="ride_acceptance">"القبول القبول"</string>
-    <string name="ride_reuest_accepted">"قبول طلب القبول"</string>
+    <string name="ride_acceptance">اختيار العميل</string>
+    <string name="ride_reuest_accepted">"قبول الطلب"</string>
     <string name="accept_ride">"قبول ركوب"</string>
     <string name="complete_ride">"انتهاء الرحلة"</string>
     <string name="cancel_ride">"إلغاء الرحلة"</string>
     <string name="no_status">"لا توجد حالة"</string>
     <string name="basefare">"الاجرة الاساسية"</string>
     <string name="approve_payment_offline">"الموافقة على الدفع دون اتصال بالإنترنت"</string>
-    <string name="vehicle">"مركبة"</string>
+    <string name="vehicle">رقم المركبة</string>
     <string name="doc">"وثيقة"</string>
     <string name="go">"اذهب"</string>
     <string name="invalid_location">"موقع غير صالح"</string>
@@ -170,15 +170,15 @@
     <string name="DropAddress">إلى</string>
     <string name="PickupAddress">من</string>
     <string name="ELITEDRIVER">سائق النخبة</string>
-    <string name="ride_complete_msg">Complete</string>
-    <string name="ride_cancel_msg">Cancelled</string>
-    <string name="ride_accept_msg">Accepted</string>
+    <string name="ride_complete_msg">اكتمال</string>
+    <string name="ride_cancel_msg">إلغاء</string>
+    <string name="ride_accept_msg">هل تريد قبول طلب العميل</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="drivers">Group</string>
-    <string name="phone">Phone</string>
+    <string name="drivers">مجموعة</string>
+    <string name="phone">الهاتف</string>
     <string name="PaymentStatsus">Payment Statsus        </string>
     <string name="QIBus_softui_txt_todo">To city</string>
     <string name="QIBus_softui_hint_to_city">To city</string>
@@ -220,7 +220,7 @@
     <string name="hint_username">Username…</string>
     <string name="menu_chat">Chat</string>
     <string name="menu_logout">Log out</string>
-    <string name="send">SEND</string>
+
     <string name="required">Required</string>
 
     <string name="username">Current username: %s \n\n</string>
@@ -241,6 +241,9 @@
     <string name="travels_count">الرحلات المنجزة</string>
     <string name="pickup_point">نقطة التقاط</string>
     <string name="platform">منصة التواصل الاجتماعي</string>
+    <string name="userComments">تعليقات المسافرين</string>
+
+
     <string name="what_is_on_your_mind">ماذا يدور في ذهنك!!</string>
     <string name="add">أضف</string>
     <string name="post">إضافة</string>
@@ -250,7 +253,8 @@
     <string name="ride_has_been_requested">تمت إضافة الرحلة بنجاح</string>
     <!--    by ibrahim-->
 
-    <string name="Travel_is_going_from">اتمنى لكم رحلة ممتعة معي\n من:  </string>
+    <string name="Travel_is_going_from">اتمنى لكم رحلة ممتعة معي: </string>
+    <string name="Travel_from">من: </string>
     <string name="Travel_to">إلى: </string>
     <string name="Travel_on">بتاريخ: </string>
     <string name="CheckBox">إضافة إلى المنصة </string>
@@ -272,5 +276,43 @@
         <item>My Posts</item>
         <item>My Top Posts</item>
     </string-array>
+    <string name="driver_city">مدينة السائق</string>
+    <string name="driver_country">بلد السائق</string>
+    <string name="driver_phone">هاتف السائق</string>
+    <string name="driver_vehicle">مركبة السائق</string>
+    <string name="description">التفاصيل</string>
+    <string name="send">إرسال</string>
+    <string name="Driver_Phone_number">رقم الهاتف</string>
+    <string name="delet_driver">حذف السائق</string>
+    <string name="country">المدينة</string>
+    <string name="Create_group">إضافة مجموعة</string>
+    <string name="DRIVERNAME">"اسم السائق"</string>
+    <string name="show">عرض المعلومات</string>
+    <string name="group_name">اسم المجموعة</string>
+    <string name="change_group_name">تغيير اسم المجموعة</string>
+    <string name="my_groups">مجموعاتي</string>
+    <string name="admin_name">مدير المجموعة</string>
+    <string name="group_members">أعضاء المجموعة</string>
+    <string name="group_management">إدارة المجموعات</string>
+    <string name="city">المدينة</string>
+    <string name="about_user">عن المسافر</string>
+    <string name="profit">نجاح و أرباح</string>
+    <string name="contact_us">اتصل بنا</string>
+    <string name="nominate_a_driver">ترشيح قائد مركبة</string>
+    <string name="nofifications">الإشعارات</string>
+    <string name="profit_str">
+        لن يكون النجاح بعيدا عنك، الذي يعني تحقيق المزيد من الأرباح، وسندون هنا مجموعة نقاط التي تمثل مفتاح النجاح والطريق المؤدي إلى جني الأرباح.\n
+أولا- احرص للحصول على تقييم متقدم من قبل زبائنك، فهو وسيلتك الإعلانية الافضل لجذب الزبائن.\n
+ثانيا- الحرص على حصول تقييم الزبائن للاجرة التي تتقاضاها من الزبائن و أن تكون معقولة، ما يضعك في منافسة حقيقية مع الاخرين. " نحن التطبيق الرائد في استخدام تقييم خاص بالاجرة".\n
+ثالثا- راقب باستمرار عدد الرحلات التي استخدمت فيها التطبيق وعدد الذين تنقلوا معك، هذا وحده يعطي ثقة كبيرة للاخرين. تذكر دائما أن المسافر يدقق في معلومات ملفك قبل السفر معك.\n
+رابعا- أن مراعاة ما يرغب به المسافرون الواجهة الحضارية لجذب الكثيرين، احرص على ذلك.\n
+يتحقق النجاح من خلال المعلومات التي يعرضها التطبيق في حسابك امام الجمهور .
+تذكر باستمرار مقولة
+النجاح بوابة الأرباح
+    </string>
+    <string name="my_travels">الرحلات الخاصة بي</string>
+    <string name="request_type">نوع الطلب</string>
+    <string name="share_application">مشاركة التطبيق</string>
+
 
 </resources>

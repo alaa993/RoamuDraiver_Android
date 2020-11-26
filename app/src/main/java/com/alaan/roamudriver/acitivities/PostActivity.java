@@ -105,6 +105,8 @@ public class PostActivity extends AppCompatActivity {
                 userObject.put("text", inputEditComment.getText().toString());
                 userObject.put("timestamp", ServerValue.TIMESTAMP);
                 userObject.put("type", "1");
+                userObject.put("privacy" , "1");
+                userObject.put("travel_id" , 1);
                 databaseRef.setValue(userObject);
                 inputEditComment.getText().clear();
             }

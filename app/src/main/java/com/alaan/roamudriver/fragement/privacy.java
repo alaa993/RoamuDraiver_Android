@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alaan.roamudriver.R;
+import com.alaan.roamudriver.acitivities.HomeActivity;
 
 
 /**
@@ -59,6 +60,7 @@ public class privacy extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.pricvys));
         return inflater.inflate(R.layout.fragment_privacy, container, false);
     }
 }

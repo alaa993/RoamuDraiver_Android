@@ -32,10 +32,9 @@
         android:id="@+id/AddPostBTN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/add"
         android:layout_below="@+id/input_Post_layout"
-        android:layout_centerInParent="true"
-        />
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/add" />
 
 </RelativeLayout>

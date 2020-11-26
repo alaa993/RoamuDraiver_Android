@@ -14,6 +14,7 @@ public class PendingRequestPojo implements Serializable {
     private String drop_address;
     private String pikup_location;
     private String drop_locatoin;
+    private String city;
     private String distance;
     private String status;
     private String payment_status;
@@ -145,6 +146,13 @@ public class PendingRequestPojo implements Serializable {
 
     public void setDrop_address(String drop_address) {
         this.drop_address = drop_address;
+    }
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getPikup_location() {

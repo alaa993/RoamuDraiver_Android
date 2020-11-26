@@ -6,7 +6,7 @@
     <string name="google_android_map_api_key" translatable="false">AIzaSyCa3yhDGMZM2xHCc5ieYeyz87SuHYDzozU</string>
     <string name="mapboxkey">pk.eyJ1IjoiaWNhbnN0dWRpb3oiLCJhIjoiY2oyMXQ3dGRpMDAwdDJ3bXpmZHRkdTBtNyJ9.PxslIcrVRj_gVgiv-Y-jog</string>
     <string name="allow_permission">Allow Permission</string>
-
+    <string name="CommentsNoSt">Comments</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="email">Email</string>
     <string name="name">Name</string>
@@ -69,7 +69,7 @@
     <string name="no_status">NO STATUS</string>
     <string name="basefare">"Base Fare       "</string>
     <string name="approve_payment_offline">APPROVE OFFLINE PAYMENT</string>
-    <string name="vehicle">vehicle</string>
+    <string name="vehicle">vehicle No</string>
     <string name="doc">doc</string>
     <string name="go">go</string>
     <string name="invalid_location">Invalid location</string>
@@ -135,7 +135,9 @@
     <string name="phone">Phone</string>
     <string name="search">Search For user</string>
     <string name="lang">Language</string>
-    <string name="platform" translatable="false">Social Media Platform</string>
+    <string name="platform">Social Media Platform</string>
+    <string name="userComments">Users Comments</string>
+
     <string name="GOD">Group Management</string>
     <string name="Rides">Your Rides</string>
     <string name="Pending_Requests">Pending Requests</string>
@@ -177,8 +179,8 @@
     <string name="DT">Date &amp; Time        </string>
     <string name="paid">paid</string>
     <string name="PaymentStatsus">Payment Statsus        </string>
-    <string name="DropAddress">To       </string>
-    <string name="PickupAddress">From       </string>
+    <string name="DropAddress">To</string>
+    <string name="PickupAddress">From</string>
     <string name="ELITEDRIVER">ELITE DRIVER</string>
     <string name="QIBus_softui_txt_todo">To city</string>
     <string name="QIBus_softui_hint_to_city">To city</string>
@@ -217,7 +219,7 @@
     <string name="hint_username">Username…</string>
     <string name="menu_chat">Chat</string>
     <string name="menu_logout">Log out</string>
-    <string name="send">SEND</string>
+
     <string name="required">Required</string>
 
     <string name="Post_Empty">please write a comment!</string>
@@ -241,7 +243,8 @@
     <string name="set_date">Set Date</string>
     <string name="ride_has_been_requested">Ride has been requested</string>
 
-    <string name="Travel_is_going_from">Have a nice trip with me\n from: </string>
+    <string name="Travel_is_going_from">Have a nice trip with me</string>
+    <string name="Travel_from">From: </string>
     <string name="Travel_to">To: </string>
     <string name="Travel_on">On: </string>
     <string name="the_clock">The Clock: </string>
@@ -257,6 +260,13 @@
     <string name="notification_7">Choose you to travel with you</string>
     <string name="notification_8">The request has been sent and you will receive confirmation as soon as possible</string>
 
+    <string name="DRIVERNAME">Driver Name</string>
+    <string name="show">Show</string>
+    <string name="group_name">Group Name</string>
+    <string name="change_group_name">Change Group Name</string>
+    <string name="my_groups">My Groups</string>
+    <string name="admin_name">Admin Name</string>
+    <string name="group_members">Group Members</string>
 
 
     <string-array name="headings">
@@ -264,5 +274,26 @@
         <item>My Posts</item>
         <item>My Top Posts</item>
     </string-array>
+    <string name="driver_city">Driver City</string>
+    <string name="driver_country">Driver Country</string>
+    <string name="driver_phone">Driver Phone</string>
+    <string name="driver_vehicle">Driver Vehicle</string>
+    <string name="description">Description</string>
+    <string name="send">Send</string>
+    <string name="group_management">Group Management</string>
+    <string name="city">City</string>
+    <string name="about_user">About User</string>
+    <string name="profit">Success and Profit</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="nominate_a_driver">Nominate a Driver</string>
+    <string name="nofifications">Nofifications</string>
+    <string name="profit_str"> The application depends on its dealings with drivers and users with very high flexibility, and we proceed from our firm conviction, which says that we are all partners in this project, which falls under the concept of participatory mobility, and the role of the application management is limited to technical service and development and the fix of any defect and oversight on Type and accuracy of service.
+
+The car owner and the customer participate in the management of mobility services, and the success of each of them is related to commitment, accuracy and cultural interaction. We do not ask the user a lot, we want the accurate information that makes accessing him while ordering the navigation service easy and accurate.
+
+But the owner of the car will have to check the car documents before agreeing to his request to join our fleet of vehicles, and in the event that the factors for joining him are not fully available he will receive an official apology.</string>
+    <string name="my_travels">My Travels</string>
+    <string name="request_type">Request Type</string>
+    <string name="share_application">Share Application</string>
 
 </resources>

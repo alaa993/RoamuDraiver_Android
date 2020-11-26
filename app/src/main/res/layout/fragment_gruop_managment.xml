@@ -56,13 +56,14 @@
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name       "
+                    android:text="@string/DRIVERNAME"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <TextView
                     android:id="@+id/txt_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
                     android:maxLines="1"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -86,9 +87,19 @@
                     android:id="@+id/txt_mobile_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
                     android:maxLines="1"
                     android:text=""
                     android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <ImageView
+                    android:id="@+id/fgm_img_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_m5"
+
+                    android:src="@mipmap/ic_call_white_24dp"
+                    android:tint="@color/green" />
             </TableRow>
 
             <TableRow
@@ -111,6 +122,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="marquee"
                     android:focusable="true"
+                    android:layout_marginLeft="15dp"
                     android:focusableInTouchMode="true"
 
                     android:marqueeRepeatLimit="marquee_forever"
@@ -140,6 +152,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="marquee"
+                    android:layout_marginLeft="15dp"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
 
@@ -168,10 +181,10 @@
                     android:id="@+id/txt_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
                     android:ellipsize="marquee"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-
                     android:marqueeRepeatLimit="marquee_forever"
                     android:maxLines="2"
                     android:scrollHorizontally="true"
@@ -200,8 +213,9 @@
                     android:id="@+id/txt_vehicle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
                     android:maxLines="1"
-                    android:text="No number"
+                    android:text="00963988088320"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
             </TableRow>
@@ -293,14 +307,14 @@
             <Button
                 android:id="@+id/btn_status_get"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:maxLines="1"
-                android:text="Show"
+                android:text="@string/show"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
             <Spinner
                 android:id="@+id/simpleSpinner"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:background="@color/md_grey_200"
                 android:layout_marginLeft="4dp"
                 android:layout_centerHorizontal="true"

@@ -16,14 +16,14 @@ repositories {
 
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.alaan.roamudriver"
         minSdkVersion 17
         vectorDrawables.useSupportLibrary = true
-        targetSdkVersion 28
-        versionCode 19
-        versionName "2.2.5"
+        targetSdkVersion 29
+        versionCode 23
+        versionName "2.2.9"
         multiDexEnabled true
         testInstrumentationRunner "android.support.home_fragment.runner.AndroidJUnitRunner"
     }

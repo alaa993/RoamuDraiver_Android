@@ -54,6 +54,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Ho
                 pass.setRide_somked(pojo.getRide_somked());
                 pass.setBooked_seat(pojo.getBooked_seat());
                 pass.setUser_mobile(pojo.getUser_mobile());
+                pass.setCity(pojo.getCity());
                 bundle.putSerializable("data",pojo);
                 AcceptRideFragment detailFragment = new AcceptRideFragment();
                 detailFragment.setArguments(bundle);

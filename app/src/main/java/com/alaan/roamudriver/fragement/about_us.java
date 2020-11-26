@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alaan.roamudriver.R;
+import com.alaan.roamudriver.acitivities.HomeActivity;
 
 import net.skoumal.fragmentback.BackFragment;
 
@@ -61,6 +62,7 @@ public class about_us extends Fragment implements BackFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.about_uss));
         return inflater.inflate(R.layout.fragment_about_us, container, false);
     }
 

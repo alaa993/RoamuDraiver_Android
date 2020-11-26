@@ -9,9 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alaan.roamudriver.custom.CheckConnection;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -25,6 +29,8 @@ import com.alaan.roamudriver.session.SessionManager;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import net.skoumal.fragmentback.BackFragment;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,7 +42,7 @@ import cz.msebera.android.httpclient.Header;
  * Created by android on 10/3/17.
  */
 
-public class AcceptedRequestFragment extends Fragment {
+public class AcceptedRequestFragment extends Fragment implements BackFragment, AdapterView.OnItemSelectedListener {
     private View view;
     RecyclerView recyclerView;
     String userid = "";
@@ -46,6 +52,9 @@ public class AcceptedRequestFragment extends Fragment {
     String status_id;
 
     SwipeRefreshLayout swipeRefreshLayout;
+
+    String[] status_val_arr = {"PENDING", "ACCEPTED", "COMPLETED", "CANCELLED"};
+    String[] status_arr;
 
     @Nullable
     @Override
@@ -59,8 +68,15 @@ public class AcceptedRequestFragment extends Fragment {
     }
 
     public void bindView() {
-        ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.accepted_request));
+        status_arr = new String[]{
+                getString(R.string.pending_request), getString(R.string.accepted_request),
+                getString(R.string.completed_request), getString(R.string.cancelled_request)};
+//        ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.accepted_request));
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        Spinner droplist = (Spinner) view.findViewById(R.id.arf_simpleSpinner);
+        droplist.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        ArrayAdapter data = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, status_arr);
+        droplist.setAdapter(data);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         txt_error = (TextView) view.findViewById(R.id.txt_error);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -68,23 +84,22 @@ public class AcceptedRequestFragment extends Fragment {
         userid = SessionManager.getUserId();
         key = SessionManager.getKEY();
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            status = bundle.getString("status");
-            status_id = bundle.getString("status_id");
-
-            ((HomeActivity) getActivity()).fontToTitleBar(setTitle(status));
-        }
-        if (Utils.haveNetworkConnection(getActivity())) {
-            if (status_id == "-1") {
-                getAcceptedRequest(status_id, status, key);
-            }else
-                {
-                getAcceptedRequest(userid, status, key);
-                }
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.network), Toast.LENGTH_LONG).show();
-        }
+//        Bundle bundle = getArguments();
+//        if (bundle != null) {
+//            status = bundle.getString("status");
+//            status_id = bundle.getString("status_id");
+//
+//            ((HomeActivity) getActivity()).fontToTitleBar(setTitle(status));
+//        }
+//        if (Utils.haveNetworkConnection(getActivity())) {
+//            if (status_id == "-1") {
+//                getAcceptedRequest(status_id, status, key);
+//            } else {
+//                getAcceptedRequest(userid, status, key);
+//            }
+//        } else {
+//            Toast.makeText(getActivity(), getString(R.string.network), Toast.LENGTH_LONG).show();
+//        }
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -92,6 +107,21 @@ public class AcceptedRequestFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if (CheckConnection.haveNetworkConnection(getActivity())) {
+            ((HomeActivity) getActivity()).fontToTitleBar(setTitle(status_val_arr[i]));
+            getAcceptedRequest(userid, status_val_arr[i], key);
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.network), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
 
@@ -117,10 +147,14 @@ public class AcceptedRequestFragment extends Fragment {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                         }.getType());
-                        if (list.size() == 0) {
+                        if (response.has("data") && response.getJSONArray("data").length() == 0) {
                             txt_error.setVisibility(View.VISIBLE);
+                            AcceptedRequestAdapter acceptedRequestAdapter = new AcceptedRequestAdapter(list);
+                            recyclerView.setAdapter(acceptedRequestAdapter);
+                            acceptedRequestAdapter.notifyDataSetChanged();
 
                         } else {
+                            txt_error.setVisibility(View.GONE);
                             AcceptedRequestAdapter acceptedRequestAdapter = new AcceptedRequestAdapter(list);
                             recyclerView.setAdapter(acceptedRequestAdapter);
                             acceptedRequestAdapter.notifyDataSetChanged();
@@ -164,10 +198,17 @@ public class AcceptedRequestFragment extends Fragment {
             case "COMPLETED":
                 title = getString(R.string.completed_request);
                 break;
-
         }
         return title;
+    }
 
+    @Override
+    public boolean onBackPressed() {
+        return false;
+    }
 
+    @Override
+    public int getBackPriority() {
+        return 0;
     }
 }

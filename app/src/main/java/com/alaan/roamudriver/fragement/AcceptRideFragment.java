@@ -93,7 +93,7 @@ import static com.loopj.android.http.AsyncHttpClient.log;
 
 public class AcceptRideFragment extends FragmentManagePermission implements OnMapReadyCallback, DirectionCallback {
     AppCompatButton trackRide, complete, cancel, approve, accept;
-    TextView title, drivername, mobilenumber, pickup_location, drop_location, fare, payment_status,bag,txt_dateandtime;
+    TextView title, drivername, txt_city, mobilenumber, pickup_location, drop_location, fare, payment_status, bag, txt_dateandtime;
     String request = "";
     String permissions[] = {PermissionUtils.Manifest_ACCESS_FINE_LOCATION, PermissionUtils.Manifest_ACCESS_COARSE_LOCATION};
     GoogleMap myMap;
@@ -105,7 +105,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     private String drop_address;
     private LatLng origin;
     private LatLng destination;
-    Place s_drop,s_pic;
+    Place s_drop, s_pic;
 
     com.google.android.gms.maps.MapView mapView;
     AlarmManager alarmManager;
@@ -114,6 +114,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     private String pickup = "";
     private String drop = "";
     private String driver = "";
+    private String city_st = "";
     private String basefare = "";
     private SwipeRefreshLayout swipeRefreshLayout;
     private String mobile = "";
@@ -190,6 +191,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     }
                 }).show();
     }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -236,11 +238,12 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         complete = (AppCompatButton) view.findViewById(R.id.btn_complete);
         approve = (AppCompatButton) view.findViewById(R.id.btn_approve);
         cancel = (AppCompatButton) view.findViewById(R.id.btn_cancel);
-        img_call =(ImageView) view.findViewById(R.id.img_call);
+        img_call = (ImageView) view.findViewById(R.id.img_call);
         trackRide = (AppCompatButton) view.findViewById(R.id.btn_trackride);
         title = (TextView) view.findViewById(R.id.title);
         ratingBar = (RatingBar) view.findViewById(R.id.rating_val);
         drivername = (TextView) view.findViewById(R.id.txt_drivername);
+        txt_city = (TextView) view.findViewById(R.id.txt_city);
         mobilenumber = (TextView) view.findViewById(R.id.txt_mobilenumber);
         payment_status = (TextView) view.findViewById(R.id.txt_paymentstatus);
         pickup_location = (TextView) view.findViewById(R.id.txt_pickuplocation);
@@ -256,72 +259,76 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         mapView.getMapAsync(this);
         Bundle bundle = getArguments();
         if (bundle != null) {
-                pojo = (PendingRequestPojo) bundle.getSerializable("data");
-                title.setText(getString(R.string.taxi));
-                ratingBar.setRating(3);
-                pickup = pojo.getPickup_adress();
-                drop = pojo.getDrop_address();
-                driver = pojo.getUser_name();
-                basefare = pojo.getAmount();
-                ride_id = pojo.getRide_id();
-                user_id = pojo.getUser_id();
-                mobile = pojo.getUser_mobile();
-                log.e("booked",pojo.getUser_mobile());
-                bag.setText(pojo.getBooked_seat());
-                paymnt_mode = pojo.getRide_somked();
-                txt_dateandtime.setText(pojo.getTime());
-                payment_status.setText(pojo.getRide_somked());
-                //payment_status.setText("Ahmed");
+            pojo = (PendingRequestPojo) bundle.getSerializable("data");
+            title.setText(getString(R.string.taxi));
+            ratingBar.setRating(3);
+            pickup = pojo.getPickup_adress();
+            drop = pojo.getDrop_address();
+            driver = pojo.getUser_name();
+            city_st = pojo.getCity();
+            basefare = pojo.getAmount();
+            ride_id = pojo.getRide_id();
+            user_id = pojo.getUser_id();
+            mobile = pojo.getUser_mobile();
+            log.e("booked", pojo.getUser_mobile());
+            bag.setText(pojo.getBooked_seat());
+            paymnt_mode = pojo.getRide_somked();
+            txt_dateandtime.setText(pojo.getTime());
+            payment_status.setText(pojo.getRide_somked());
+            //payment_status.setText("Ahmed");
 
-            log.e("all data",SessionManager.getUnit());
-                if (pickup != null) {
-                    pickup_location.setText(pickup);
-                }
-                if (drop != null) {
-                    drop_location.setText(drop);
-                }
-                if (driver != null) {
-                    drivername.setText(driver);
-                }
-                if (fare != null) {
-                    fare.setText(basefare + " " + Stash.getString("UNIT_TAG"));
-                }
-                if (mobile != null) {
-                    mobilenumber.setText(mobile);
-                }
-                if (paymnt_mode == null) {
-                    paymnt_mode = pojo.getBooked_seat();
-                }
-                if (ride_id != null) {
+            log.e("all data", SessionManager.getUnit());
+            if (pickup != null) {
+                pickup_location.setText(pickup);
+            }
+            if (drop != null) {
+                drop_location.setText(drop);
+            }
+            if (driver != null) {
+                drivername.setText(driver);
+            }
+            if (city_st != null) {
+                txt_city.setText(city_st);
+            }
+            if (fare != null) {
+                fare.setText(basefare + " " + Stash.getString("UNIT_TAG"));
+            }
+            if (mobile != null) {
+                mobilenumber.setText(mobile);
+            }
+            if (paymnt_mode == null) {
+                paymnt_mode = pojo.getBooked_seat();
+            }
+            if (ride_id != null) {
 
-                } else {
-                    ride_id = "";
-                }
-                request = pojo.getStatus();
+            } else {
+                ride_id = "";
+            }
+            request = pojo.getStatus();
 
-                if (!request.equals("") && request.equalsIgnoreCase("PENDING")) {
-                    cancel.setVisibility(View.VISIBLE);
-                    accept.setVisibility(View.VISIBLE);
-                }
+            if (!request.equals("") && request.equalsIgnoreCase("PENDING")) {
+                cancel.setVisibility(View.VISIBLE);
+                accept.setVisibility(View.VISIBLE);
+            }
             if (!request.equals("") && request.equalsIgnoreCase("REQUESTED")) {
                 cancel.setVisibility(View.VISIBLE);
                 accept.setVisibility(View.VISIBLE);
             }
-                if (request != null && !request.equals("") && request.equalsIgnoreCase("CANCELLED")) {
-                    trackRide.setVisibility(View.GONE);
-                    cancel.setVisibility(View.GONE);
-                    accept.setVisibility(View.GONE);
-                    approve.setVisibility(View.GONE);
-                    complete.setVisibility(View.GONE);
-                }
-                if (request != null && !request.equals("") && request.equalsIgnoreCase("COMPLETED")) {
-                    trackRide.setVisibility(View.GONE);
-                    cancel.setVisibility(View.GONE);
-                    accept.setVisibility(View.GONE);
-                    approve.setVisibility(View.GONE);
-                    complete.setVisibility(View.GONE);
-                }
+            if (request != null && !request.equals("") && request.equalsIgnoreCase("CANCELLED")) {
+                trackRide.setVisibility(View.GONE);
+                cancel.setVisibility(View.GONE);
+                accept.setVisibility(View.GONE);
+                approve.setVisibility(View.GONE);
+                complete.setVisibility(View.GONE);
             }
+            if (request != null && !request.equals("") && request.equalsIgnoreCase("COMPLETED")) {
+                trackRide.setVisibility(View.GONE);
+                cancel.setVisibility(View.GONE);
+                accept.setVisibility(View.GONE);
+                approve.setVisibility(View.GONE);
+                complete.setVisibility(View.GONE);
+            }
+        }
 
         if (!request.equals("") && request.equalsIgnoreCase("ACCEPTED")) {
             isStarted();
@@ -345,11 +352,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 complete.setVisibility(View.GONE);
                 cancel.setVisibility(View.VISIBLE);
             }
-
-
-
-
-
 
 
         }
@@ -418,7 +420,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         RequestParams params = new RequestParams();
         params.put("ride_id", ride_id);
         params.put("status", status);
-        params.put("driver_id" ,SessionManager.getUserId());
+        params.put("driver_id", SessionManager.getUserId());
         Server.setHeader(SessionManager.getKEY());
         Server.setContentType();
         Server.post(Server.STATUS_CHANGE, params, new JsonHttpResponseHandler() {
@@ -483,18 +485,18 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         RequestParams params = new RequestParams();
         params.put("ride_id", ride_id);
         params.put("status", status);
-        params.put("driver_id" ,SessionManager.getUserId());
-        params.put("pickup_adress",pickup_address);
-        params.put("drop_address",drop_address);
-        params.put("pikup_location",s_pic.getLatLng().latitude+","+s_pic.getLatLng().longitude);
-        params.put("drop_locatoin",s_drop.getLatLng().latitude+","+s_drop.getLatLng().latitude);
-        params.put("distance","20");
-        params.put("amount","50");
+        params.put("driver_id", SessionManager.getUserId());
+        params.put("pickup_adress", pickup_address);
+        params.put("drop_address", drop_address);
+        params.put("pikup_location", s_pic.getLatLng().latitude + "," + s_pic.getLatLng().longitude);
+        params.put("drop_locatoin", s_drop.getLatLng().latitude + "," + s_drop.getLatLng().latitude);
+        params.put("distance", "20");
+        params.put("amount", "50");
 
         Server.setHeader(SessionManager.getKEY());
         Server.setContentType();
         String Url = "";
-        if(status == "ACCEPTED")
+        if (status == "ACCEPTED")
             Url = Server.CONFIRM_REQUST;
         else
             Url = Server.STATUS_CHANGE;
@@ -589,19 +591,48 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null && dataSnapshot.hasChildren()) {
                     Tracking tracking = dataSnapshot.getValue(Tracking.class);
-                    if(tracking.getStatus() !=null){
-                    if (tracking.getStatus().equalsIgnoreCase("accepted")) {
-                        trackRide.setText(getString(R.string.Pick_Customer));
+                    if (tracking.getStatus() != null) {
+                        if (tracking.getStatus().equalsIgnoreCase("accepted")) {
+                            trackRide.setText(getString(R.string.Pick_Customer));
 
-                        trackRide.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+                            trackRide.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
 
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        askCompactPermissions(permissions, new PermissionResult() {
+                                            @Override
+                                            public void permissionGranted() {
+                                                gotoMap();
+                                            }
+
+                                            @Override
+                                            public void permissionDenied() {
+
+                                            }
+
+                                            @Override
+                                            public void permissionForeverDenied() {
+
+                                            }
+                                        });
+                                    } else {
+                                        gotoMap();
+
+                                    }
+                                }
+                            });
+
+                        } else if (tracking.getStatus().equalsIgnoreCase("started")) {
+                            trackRide.setText(getString(R.string.track_ride));
+
+                            trackRide.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
                                     askCompactPermissions(permissions, new PermissionResult() {
                                         @Override
                                         public void permissionGranted() {
-                                            gotoMap();
+                                            launchNavigation();
                                         }
 
                                         @Override
@@ -614,39 +645,11 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
 
                                         }
                                     });
-                                } else {
-                                    gotoMap();
-
                                 }
-                            }
-                        });
-
-                    } else if (tracking.getStatus().equalsIgnoreCase("started")) {
-                        trackRide.setText(getString(R.string.track_ride));
-
-                        trackRide.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                askCompactPermissions(permissions, new PermissionResult() {
-                                    @Override
-                                    public void permissionGranted() {
-                                        launchNavigation();
-                                    }
-
-                                    @Override
-                                    public void permissionDenied() {
-
-                                    }
-
-                                    @Override
-                                    public void permissionForeverDenied() {
-
-                                    }
-                                });
-                            }
-                        });
+                            });
+                        }
                     }
-                }}
+                }
             }
 
             @Override
@@ -715,6 +718,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
 
 
     }
+
     public void onDirectionSuccess(Direction direction, String rawBody) {
         if (getActivity() != null) {
             if (direction.isOK()) {
@@ -736,7 +740,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     }
 
     public void onDirectionFailure(Throwable t) {
-    // show error message when its failure
+        // show error message when its failure
     }
 
 
@@ -744,7 +748,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         myMap = googleMap;
         setData();
         //loop for request dricestion
-        new Handler().postDelayed (this::requestDirection, 2000);
+        new Handler().postDelayed(this::requestDirection, 2000);
 
 
     }
@@ -777,6 +781,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             gpsTracker.showSettingsAlert();
         }
     }
+
     private void setData() {
         Bundle bundle = getArguments();
         pass1 = new PendingRequestPojo();
@@ -807,7 +812,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     @Override
                     public LatLng getLatLng() {
                         String[] parts = pass1.getPikup_location().split(",");
-                        LatLng location = new LatLng(Double.parseDouble( parts[0]),Double.parseDouble( parts[1]));
+                        LatLng location = new LatLng(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]));
                         return location;
                     }
 
@@ -910,7 +915,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     @Override
                     public LatLng getLatLng() {
                         String[] parts = pass1.getDrop_locatoin().split(",");
-                        LatLng location = new LatLng(Double.parseDouble( parts[0]),Double.parseDouble( parts[1]));
+                        LatLng location = new LatLng(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]));
 
                         return location;
                     }
@@ -999,8 +1004,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             }
         }
     }
-
-
 
 
 }

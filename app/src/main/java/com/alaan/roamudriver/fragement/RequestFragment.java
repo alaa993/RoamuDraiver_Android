@@ -330,7 +330,8 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
 
     public void bindView(Bundle savedInstanceState) {
         ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.home));
-        //((HomeActivity) getActivity()).toolbar.setTitle(getString(R.string.request_ride));
+//        ((HomeActivity) getActivity()).toolbar.setTitle(getString(R.string.request_ride));
+//        ((HomeActivity) getActivity()).toolbar.setTitle(getResources().getString(R.string.request_ride));
         mapView = (MapView) view.findViewById(R.id.mapview);
         calculateFare = (TextView) view.findViewById(R.id.txt_calfare);
         confirm = (AppCompatButton) view.findViewById(R.id.btn_confirm);

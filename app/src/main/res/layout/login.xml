@@ -15,7 +15,7 @@
         android:layout_height="@dimen/login_height"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/roamu_driver" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"

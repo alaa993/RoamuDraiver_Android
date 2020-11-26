@@ -1,8 +1,13 @@
 package com.alaan.roamudriver.fragement;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,15 +102,14 @@ public class platform extends Fragment implements BackFragment {
                 //getting the selected artist
                 Post post = posts.get(i);
 
-                //creating an intent
-                Intent intent = new Intent(getActivity(), PostActivity.class);
-
-                //putting artist name and id to intent
-                intent.putExtra("Post_id", post.id);
-                //intent.putExtra(ARTIST_NAME, artist.getArtistName());
-
-                //starting the activity with intent
-                startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putString("Post_id", post.id);
+                bundle.putString("request_type", "public");
+                Log.i("ibrahim from platform1", "-----------------");
+                PostFragment postfragment = new PostFragment();
+                Log.i("ibrahim from platform2", "-----------------");
+                postfragment.setArguments(bundle);
+                changeFragment(postfragment, "Requests");
             }
         });
 
@@ -114,7 +118,26 @@ public class platform extends Fragment implements BackFragment {
 
     public void BindView() {
         listViewPosts = (ListView) view.findViewById(R.id.listViewPosts);
+        listViewPosts.setBackgroundColor(Color.WHITE);
+    }
 
+    public void changeFragment(final Fragment fragment, final String fragmenttag) {
+
+        try {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+//                    drawer_close();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().addToBackStack(null);
+                    fragmentTransaction.replace(R.id.frame, fragment, fragmenttag);
+                    fragmentTransaction.commit();
+                    fragmentTransaction.addToBackStack(null);
+                }
+            }, 50);
+        } catch (Exception e) {
+
+        }
     }
 
     @Override

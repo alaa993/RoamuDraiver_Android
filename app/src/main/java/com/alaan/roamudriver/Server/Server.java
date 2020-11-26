@@ -28,6 +28,7 @@ public class Server {
 
     public static final String FORMAT = "/format/json";
     public static String addGruop = BASE_URL +"api/driver/addgroup"+FORMAT;
+    public static String ChangeGruopName = BASE_URL +"api/driver/editgroup"+FORMAT;
     public static String add_user_Gruop =  BASE_URL +"api/driver/addUserToGroup"+ FORMAT;
     public static String remove_user_Gruop =  BASE_URL +"api/driver/delUserFromGroup"+ FORMAT;
 
@@ -48,6 +49,7 @@ public class Server {
     public static final String GET_PROFILE = BASE_URL + "api/user/profile" + FORMAT;
     public static final String GET_GROUP = BASE_URL + "api/driver/getAdminGroupInfo" +FORMAT;
     public static final String GET_MEBLIST =  BASE_URL + "api/driver/getGroupList" +FORMAT;
+    public static final String GET_MyGroupLIST =  BASE_URL + "api/driver/getMyGroupList" +FORMAT;
 
     public static final String GET_REQUEST = BASE_URL + "api/user/rides" + FORMAT;
     public static final String GET_REQUEST1 = BASE_URL + "api/user/rides2" + FORMAT;

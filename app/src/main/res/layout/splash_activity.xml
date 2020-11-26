@@ -3,18 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="ltr"
-    android:background="#ffffff"
-
-    >
-
-
-
+    android:background="#ffffff">
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="@dimen/height"
         android:layout_height="@dimen/height"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/roamu_driver" />
 
 </RelativeLayout>

@@ -11,12 +11,80 @@
     <!-- TODO: Update blank fragment layout -->
 <!--button_add button_remove -->
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Group_table"
+        android:layout_marginTop="50dp">
+
+    <TableRow
+        android:id="@+id/Group_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:padding="10dp"
+        >
+
+        <TextView
+            android:id="@+id/group_name_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/group_name"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/group_name_et"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@id/Group_table"
+            android:background="@drawable/rounded_view"
+            android:inputType="text"
+            android:padding="@dimen/QIBus_softui_spacing_large"
+            android:singleLine="true"
+            android:textColorHint="@color/md_grey_200"
+            android:textSize="@dimen/QIBus_softui_font_large" />
+
+    </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/button_create_gruop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Group_table"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ronded_button1"
+        android:text="@string/Create_group"
+        android:tint="@color/white" />
+
+    <Button
+        android:id="@+id/button_change_gruop"
+        android:layout_marginTop="4dp"
+        android:layout_below="@id/button_create_gruop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ronded_button1"
+        android:text="@string/change_group_name"
+        android:tint="@color/white" />
+    <Button
+        android:id="@+id/button_my_gruops"
+        android:layout_marginTop="4dp"
+        android:layout_below="@id/button_change_gruop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ronded_button1"
+        android:text="@string/my_groups"
+        android:tint="@color/white" />
+
     <EditText
 
         android:id="@+id/phone_numbers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
+        android:layout_below="@id/button_my_gruops"
 
         android:layout_marginBottom="2dp"
         android:background="@drawable/rounded_view"
@@ -45,23 +113,5 @@
         android:background="@drawable/ronded_button1"
         android:text="@string/delet_driver"
         android:tint="@color/white" />
-    <Button
-        android:id="@+id/button_create_gruop"
-        android:layout_marginTop="4dp"
-        android:layout_below="@id/button_remove"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ronded_button1"
-        android:text="@string/Create_group"
-        android:tint="@color/white" />
-
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/member_list"
-    android:layout_marginTop="1dp"
-    android:background="@drawable/bg"
-    android:layout_below="@id/button_create_gruop"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    />
 
 </RelativeLayout>

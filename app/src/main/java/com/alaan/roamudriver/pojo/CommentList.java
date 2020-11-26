@@ -44,12 +44,15 @@ public class CommentList extends ArrayAdapter<Comment>{
         TextView textViewName = (TextView) listViewItem.findViewById(R.id.textViewName);
         TextView textViewText = (TextView) listViewItem.findViewById(R.id.textViewText);
         TextView textViewDate = (TextView) listViewItem.findViewById(R.id.textViewDate);
+        TextView textViewCommentsNo = (TextView) listViewItem.findViewById(R.id.textViewCommentsNo);
         ImageView CommentAvatar  = (ImageView) listViewItem.findViewById(R.id.image);
+        View LineSeparator  = (View) listViewItem.findViewById(R.id.LineSeparator);
 
         Comment comment = comments.get(position);
         textViewName.setText(comment.author.username);
         textViewText.setText(comment.text);
-
+        textViewCommentsNo.setVisibility(View.GONE);
+        LineSeparator.setVisibility(View.GONE);
         if (comment.timestamp != null)
         {
             Date date = new Date(comment.timestamp);

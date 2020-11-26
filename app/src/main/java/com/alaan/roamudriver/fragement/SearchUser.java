@@ -88,9 +88,11 @@ public class SearchUser extends Fragment implements BackFragment {
     private int PLACE_PICKER_REQUEST = 7896;
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1234;
     private String driver_id, passanger_value, bag_value, smoke_value, date_time_value;
+    private CheckBox Checkbox;
+    boolean Checkbox_bool = false;
     Calendar date;
     String date_time = "";
-    String time_value="";
+    String time_value = "";
     int mYear;
     int mMonth;
     int mDay;
@@ -211,7 +213,7 @@ public class SearchUser extends Fragment implements BackFragment {
                         final EditText mPickupPoint = (EditText) mView.findViewById(R.id.etPickupPoint);
                         Button mSubmit = (Button) mView.findViewById(R.id.btnSubmitDialog);
                         Button mCancel = (Button) mView.findViewById(R.id.btnCancelDialog);
-                        CheckBox Checkbox = (CheckBox)mView.findViewById(R.id.checkBox);
+                        Checkbox = (CheckBox) mView.findViewById(R.id.checkBox);
                         //checkBox
                         mBuilder.setView(mView);
                         final android.app.AlertDialog dialog = mBuilder.create();
@@ -222,9 +224,9 @@ public class SearchUser extends Fragment implements BackFragment {
                                 if (!mPassengers.getText().toString().isEmpty() && !mPrice.getText().toString().isEmpty() && !mPickupPoint.getText().toString().isEmpty()) {
 
                                     dialog.dismiss();
-                                    log.i("tag", "success by ibrahim");
-                                    log.i("tag", mPassengers.getText().toString());
-                                    log.i("tag", mPrice.getText().toString());
+//                                    log.i("tag", "success by ibrahim");
+//                                    log.i("tag", mPassengers.getText().toString());
+//                                    log.i("tag", mPrice.getText().toString());
                                     //    origin.latitude + "," + origin.longitude;
                                     // destination.latitude + "," + destination.longitude;
 
@@ -236,9 +238,18 @@ public class SearchUser extends Fragment implements BackFragment {
 
 //                                AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d,txt_fare.getText().toString(), distance,btn_ava.getNumber(),btn_book.getNumber(),val_timel,val_date);
 //                                AddRide(String key, String pickup_adress, String drop_address, String pickup_location, String drop_locatoin, String amount, String distance, String a_set, String u_set, String s_time, String s_date)
+//                                    if (Checkbox.isChecked()) {
+//                                        Log.i("ibrahim is checked", "true");
+////                                        Checkbox_bool = true;
+//                                        //SavePost(pickup_address,drop_address,date_time,time_value, 2);
+//                                        AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d, mPrice.getText().toString(), "50", mPassengers.getText().toString(), "", date_time_value, time_value, mPickupPoint.getText().toString());
+//                                    }
+//                                    else{
+//                                        AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d, mPrice.getText().toString(), "50", mPassengers.getText().toString(), "", date_time_value, time_value, mPickupPoint.getText().toString());
+//
+//                                    }
                                     AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d, mPrice.getText().toString(), "50", mPassengers.getText().toString(), "", date_time_value, time_value, mPickupPoint.getText().toString());
-                                    if(Checkbox.isChecked())
-                                        SavePost(pickup_address,drop_address,date_time,time_value);
+
 //                                    Toast.makeText(getActivity(), "do tasked", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(SearchUser.this.getContext(),
@@ -366,7 +377,8 @@ public class SearchUser extends Fragment implements BackFragment {
 
         return rootView;
     }
-    public void SavePost(String pickup_address,String Drop_address,String date_time_value,String time_value) {
+
+    public void SavePost(String pickup_address, String Drop_address, String date_time_value, String time_value, int travel_id) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
@@ -376,25 +388,30 @@ public class SearchUser extends Fragment implements BackFragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String UserName = dataSnapshot.child("username").getValue(String.class);
                 String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
-                String text = getString(R.string.Travel_is_going_from)+pickup_address+" "+
-                        getString(R.string.Travel_to)+Drop_address+" "+getString(R.string.Travel_on)+date_time_value+" "+getString(R.string.the_clock)+time_value+" ";
+                String text = getString(R.string.Travel_is_going_from) + " " + System.getProperty("line.separator")
+                        + getString(R.string.Travel_from) + " " + pickup_address + System.getProperty("line.separator")
+                        + getString(R.string.Travel_to) + " " + Drop_address + System.getProperty("line.separator")
+                        + getString(R.string.Travel_on) + " " + date_time_value + System.getProperty("line.separator")
+                        + getString(R.string.the_clock) + " " + time_value;
 //                log.i("tag","success by ibrahim");
 //                log.i("tag", UserName);
                 // Firebase code here
                 DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("posts").push();
-                Map<String,Object> author = new HashMap<>();
-                author.put("uid" , user.getUid());
-                author.put("username" , UserName);
-                author.put("photoURL" , photoURL);
+                Map<String, Object> author = new HashMap<>();
+                author.put("uid", user.getUid());
+                author.put("username", UserName);
+                author.put("photoURL", photoURL);
 
-                Map<String,Object> userObject = new HashMap<>();
+                Map<String, Object> userObject = new HashMap<>();
                 userObject.put("author", author);
                 userObject.put("text", text);
                 userObject.put("type", "1");
-                userObject.put("privacy" , "1");
+                userObject.put("privacy", "1");
+                userObject.put("travel_id", travel_id);
                 userObject.put("timestamp", ServerValue.TIMESTAMP);
                 databaseRef.setValue(userObject);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
@@ -403,7 +420,7 @@ public class SearchUser extends Fragment implements BackFragment {
     }
 
 
-    public void SavePrivatePost(String pickup_address,String Drop_address,String date_time_value,String time_value, String travel_id) {
+    public void SavePrivatePost(String pickup_address, String Drop_address, String date_time_value, String time_value, int travel_id) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
@@ -413,32 +430,36 @@ public class SearchUser extends Fragment implements BackFragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String UserName = dataSnapshot.child("username").getValue(String.class);
                 String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
-                String text = getString(R.string.Travel_is_going_from)+pickup_address+" "+
-                        getString(R.string.Travel_to)+Drop_address+" "+getString(R.string.Travel_on)+date_time_value+" "+getString(R.string.the_clock)+time_value+" ";
+                String text = getString(R.string.Travel_is_going_from) + " " + System.getProperty("line.separator")
+                        + getString(R.string.Travel_from) + " " + pickup_address + System.getProperty("line.separator")
+                        + getString(R.string.Travel_to) + " " + Drop_address + System.getProperty("line.separator")
+                        + getString(R.string.Travel_on) + " " + date_time_value + System.getProperty("line.separator")
+                        + getString(R.string.the_clock) + " " + time_value;
 //                log.i("tag","success by ibrahim");
 //                log.i("tag", UserName);
                 // Firebase code here
-                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("posts").child(travel_id);
-                Map<String,Object> author = new HashMap<>();
-                author.put("uid" , user.getUid());
-                author.put("username" , UserName);
-                author.put("photoURL" , photoURL);
+                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("private_posts").child(String.valueOf(travel_id));
+                Map<String, Object> author = new HashMap<>();
+                author.put("uid", user.getUid());
+                author.put("username", UserName);
+                author.put("photoURL", photoURL);
 
-                Map<String,Object> userObject = new HashMap<>();
+                Map<String, Object> userObject = new HashMap<>();
                 userObject.put("author", author);
                 userObject.put("text", text);
                 userObject.put("type", "1");
-                userObject.put("privacy" , "0");
+                userObject.put("privacy", "0");
+                userObject.put("travel_id", travel_id);
                 userObject.put("timestamp", ServerValue.TIMESTAMP);
                 databaseRef.setValue(userObject);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
             }
         });
     }
-
 
 
     public void changeFragment(final Fragment fragment, final String fragmenttag) {
@@ -493,9 +514,9 @@ public class SearchUser extends Fragment implements BackFragment {
 
                         date_time_value = date_time + " " + hourOfDay + ":" + minute;
 //                        Toast.makeText(getContext(), "show time" + val_date, Toast.LENGTH_SHORT).show();
-                        log.i("tag", "success by ibrahim");
-                        log.i("tag", date_time_value);
-                        time_value= hourOfDay + ":" + minute;
+//                        log.i("tag", "success by ibrahim");
+//                        log.i("tag", date_time_value);
+                        time_value = hourOfDay + ":" + minute;
                         date_time_search.setText(date_time + " " + String.format("%02d:%02d", hourOfDay, minute));
 
                     }
@@ -581,13 +602,27 @@ public class SearchUser extends Fragment implements BackFragment {
                         Toast.makeText(getActivity(), R.string.ride_has_been_requested, Toast.LENGTH_LONG).show();
                         ((HomeActivity) getActivity()).changeFragment(new SearchUser(), "fragment_search_user");
                         //
-                        String travel_id = response.getString("travel_id");
-                        SavePrivatePost(pickup_address,drop_address,date_time,time_value, travel_id);
+//                        Log.i("ibrahim msg", response.toString());
+
+                        if (response.has("data")) {
+                            JSONObject data = response.getJSONObject("data");
+                            int travel_id = Integer.parseInt(data.getString("travel_id"));
+//                            Log.i("ibrahim travel_id", String.valueOf(travel_id));
+                            if (Checkbox.isChecked()){
+//                                Log.i("ibrahim check box", "is checked");
+                                SavePost(pickup_address, drop_address, date_time, time_value, travel_id);
+                            } else {
+//                                Log.i("ibrahim check box", "is not checked");
+                            }
+                            //SavePrivatePost(pickup_address, drop_address, date_time, time_value, travel_id);
+                        } else {
+//                            Log.i("ibrahim_response", "no travel id");
+                        }
                     } else {
                         Toast.makeText(getActivity(), "tryAgain", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    Toast.makeText(getActivity(), "tryAgain", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getActivity(), "tryAgain", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -612,6 +647,7 @@ public class SearchUser extends Fragment implements BackFragment {
             }
         });
     }
+
     @Override
     public boolean onBackPressed() {
         return false;
