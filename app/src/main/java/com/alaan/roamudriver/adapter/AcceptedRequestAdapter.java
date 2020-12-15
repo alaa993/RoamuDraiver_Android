@@ -3,6 +3,7 @@ package com.alaan.roamudriver.adapter;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,13 +37,15 @@ public class AcceptedRequestAdapter extends RecyclerView.Adapter<AcceptedRequest
     @Override
     public void onBindViewHolder(final Holder holder, int position) {
         final PendingRequestPojo pojo = list.get(position);
+        Log.i("ibrahim_pojo", pojo.toString());
+        Log.i("ibrahim_pojo", pojo.getTravel_Status());
 
-        holder.from_add.setText(pojo.getPickup_adress());
+        holder.from_add.setText(pojo.getPickup_address());
         holder.to_add.setText(pojo.getDrop_address());
         holder.drivername.setText(pojo.getUser_name());
         holder.time.setText(Utils.getformattedTime(pojo.getTime()));
         Utils utils = new Utils();
-
+        holder.status.setText(pojo.getStatus());
         holder.date.setText(utils.getCurrentDateInSpecificFormat(pojo.getTime()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +78,7 @@ public class AcceptedRequestAdapter extends RecyclerView.Adapter<AcceptedRequest
     public class Holder extends RecyclerView.ViewHolder {
 
 
-        TextView from, to, drivername, from_add, to_add, date, time;
+        TextView from, to, drivername, from_add, to_add, date, time, status;
         TextView f, t, dn, dt;
 
         public Holder(View itemView) {
@@ -93,6 +96,7 @@ public class AcceptedRequestAdapter extends RecyclerView.Adapter<AcceptedRequest
             to_add = (TextView) itemView.findViewById(R.id.txt_to_add);
             date = (TextView) itemView.findViewById(R.id.date);
             time = (TextView) itemView.findViewById(R.id.time);
+            status = (TextView) itemView.findViewById(R.id.Statuss);
         }
     }
 

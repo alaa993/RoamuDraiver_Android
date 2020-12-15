@@ -126,7 +126,9 @@ public class PostFragment extends Fragment {
                     userObject.put("author", author);
                     userObject.put("text", inputEditComment.getText().toString());
                     userObject.put("timestamp", ServerValue.TIMESTAMP);
-                    userObject.put("type", "1");
+                    //type = 0 => driver
+                    //type = 1 => user
+                    userObject.put("type", "0");
                     databaseRef.setValue(userObject);
                     inputEditComment.getText().clear();
                 } else if (bundle.getString("request_type").contains("public")) {

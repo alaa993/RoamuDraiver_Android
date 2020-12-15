@@ -387,7 +387,7 @@ public class MangeDriverDetail extends   FragmentManagePermission {
        /* trackRide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!pojo.getPikup_location().equals("") && !pojo.getDrop_locatoin().equals("")) {
+                if (!pojo.getpickup_location().equals("") && !pojo.getdrop_location().equals("")) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("data", pojo);
                     MapView mapView = new MapView();

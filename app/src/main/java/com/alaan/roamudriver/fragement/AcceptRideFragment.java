@@ -1,5 +1,6 @@
 package com.alaan.roamudriver.fragement;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -18,9 +19,13 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -44,6 +49,7 @@ import com.alaan.roamudriver.pojo.SearchForUser;
 import com.alaan.roamudriver.pojo.Tracking;
 import com.alaan.roamudriver.session.SessionManager;
 import com.fxn.stash.Stash;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -51,14 +57,21 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.OpeningHours;
 import com.google.android.libraries.places.api.model.PhotoMetadata;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.PlusCode;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -77,14 +90,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 import static com.loopj.android.http.AsyncHttpClient.log;
 
 /**
@@ -106,6 +124,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     private LatLng origin;
     private LatLng destination;
     Place s_drop, s_pic;
+    Place point;
 
     com.google.android.gms.maps.MapView mapView;
     AlarmManager alarmManager;
@@ -128,6 +147,13 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     PendingRequestPojo pojo;
     SearchForUser pojo1;
     GPSTracker gpsTracker;
+
+    private CheckBox Checkbox;
+    private EditText mPassengers;
+    private EditText mPrice;
+    private EditText mPickupPoint;
+    boolean Checkbox_bool = false;
+    private int POINT_PICKER_REQUEST = 12345;
 
     @Nullable
     @Override
@@ -161,8 +187,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialogCreate(getString(R.string.ride_acceptance), getString(R.string.ride_accept_msg), "ACCEPTED");
-
+                AlertDialogAddTravel();
             }
         });
     }
@@ -192,6 +217,59 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 }).show();
     }
 
+    public void AlertDialogAddTravel() {
+        android.app.AlertDialog.Builder mBuilder = new android.app.AlertDialog.Builder(AcceptRideFragment.this.getContext());
+        View mView = getLayoutInflater().inflate(R.layout.dialog_addtravel_layout, null);
+        mPassengers = (EditText) mView.findViewById(R.id.etPassengers);
+        mPrice = (EditText) mView.findViewById(R.id.etPrice);
+        mPickupPoint = (EditText) mView.findViewById(R.id.etPickupPoint);
+        Button mSubmit = (Button) mView.findViewById(R.id.btnSubmitDialog);
+        Button mCancel = (Button) mView.findViewById(R.id.btnCancelDialog);
+        Checkbox = (CheckBox) mView.findViewById(R.id.checkBox);
+        //checkBox
+        mBuilder.setView(mView);
+        final android.app.AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        mPickupPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Places.initialize(getActivity(), getString(R.string.google_android_map_api_key));
+                List<com.google.android.libraries.places.api.model.Place.Field> fields =
+                        Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID,
+                                com.google.android.libraries.places.api.model.Place.Field.NAME,
+                                com.google.android.libraries.places.api.model.Place.Field.ADDRESS,
+                                com.google.android.libraries.places.api.model.Place.Field.LAT_LNG);
+
+                Intent intent = new Autocomplete.IntentBuilder(
+                        AutocompleteActivityMode.FULLSCREEN, fields)
+                        .build(getActivity());
+                startActivityForResult(intent, POINT_PICKER_REQUEST);
+            }
+        });
+        mSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!mPassengers.getText().toString().isEmpty() && !mPrice.getText().toString().isEmpty() && !mPickupPoint.getText().toString().isEmpty()) {
+                    dialog.dismiss();
+//                    AlertDialogCreate(getString(R.string.ride_acceptance), getString(R.string.ride_accept_msg), "WAITED");
+
+                    SendStatusAccept(ride_id, "WAITED");
+                } else {
+                    Toast.makeText(AcceptRideFragment.this.getContext(),
+                            getString(R.string.Post_Empty),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        mCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -202,6 +280,18 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == POINT_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                point = Autocomplete.getPlaceFromIntent(data);
+                mPickupPoint.setText(point.getAddress());
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Toast.makeText(getActivity(), status.getStatusMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
@@ -262,7 +352,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             pojo = (PendingRequestPojo) bundle.getSerializable("data");
             title.setText(getString(R.string.taxi));
             ratingBar.setRating(3);
-            pickup = pojo.getPickup_adress();
+            pickup = pojo.getPickup_address();
             drop = pojo.getDrop_address();
             driver = pojo.getUser_name();
             city_st = pojo.getCity();
@@ -271,10 +361,10 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             user_id = pojo.getUser_id();
             mobile = pojo.getUser_mobile();
             log.e("booked", pojo.getUser_mobile());
-            bag.setText(pojo.getBooked_seat());
-            paymnt_mode = pojo.getRide_somked();
-            txt_dateandtime.setText(pojo.getTime());
-            payment_status.setText(pojo.getRide_somked());
+            bag.setText(pojo.getbooked_set());
+            paymnt_mode = pojo.getRide_smoked();
+            txt_dateandtime.setText(pojo.getTime() + " " + pojo.getDate());
+            payment_status.setText(pojo.getRide_smoked());
             //payment_status.setText("Ahmed");
 
             log.e("all data", SessionManager.getUnit());
@@ -297,7 +387,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 mobilenumber.setText(mobile);
             }
             if (paymnt_mode == null) {
-                paymnt_mode = pojo.getBooked_seat();
+                paymnt_mode = pojo.getbooked_set();
             }
             if (ride_id != null) {
 
@@ -482,23 +572,42 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     }
 
     public void SendStatusAccept(String ride_id, final String status) {
+
         RequestParams params = new RequestParams();
         params.put("ride_id", ride_id);
         params.put("status", status);
         params.put("driver_id", SessionManager.getUserId());
-        params.put("pickup_adress", pickup_address);
+        params.put("pickup_address", pickup_address);
         params.put("drop_address", drop_address);
-        params.put("pikup_location", s_pic.getLatLng().latitude + "," + s_pic.getLatLng().longitude);
-        params.put("drop_locatoin", s_drop.getLatLng().latitude + "," + s_drop.getLatLng().latitude);
-        params.put("distance", "20");
-        params.put("amount", "50");
+        params.put("pickup_location", s_pic.getLatLng().latitude + "," + s_pic.getLatLng().longitude);
+        params.put("drop_location", s_drop.getLatLng().latitude + "," + s_drop.getLatLng().latitude);
+        params.put("distance", "0");
+
 
         Server.setHeader(SessionManager.getKEY());
         Server.setContentType();
         String Url = "";
-        if (status == "ACCEPTED")
+        if (status == "WAITED") {
+            Log.i("ibrahim_waited", "1");
+            Log.i("ibrahim_waited", mPrice.getText().toString());
+            Log.i("ibrahim_waited", mPrice.getText().toString());
+            Log.i("ibrahim_waited", mPrice.getText().toString());
+            Log.i("ibrahim_waited", pojo.getbooked_set());
+            Log.i("ibrahim_waited", pojo.getDate());
+            Log.i("ibrahim_waited", pojo.getTime());
+            //
+            params.put("amount", mPrice.getText().toString());
+            params.put("available_set", mPassengers.getText().toString());
+            params.put("pickup_point", mPickupPoint.getText().toString());
+            //
+            params.put("booked_set", pojo.getbooked_set());
+            params.put("travel_date", pojo.getDate());
+            params.put("travel_time", pojo.getTime());
+            params.put("ride_status", status);
+            params.put("status", "0");
+            params.put("smoked", "0");
             Url = Server.CONFIRM_REQUST;
-        else
+        } else
             Url = Server.STATUS_CHANGE;
 
         Server.post(Url, params, new JsonHttpResponseHandler() {
@@ -531,6 +640,32 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                             ((HomeActivity) getActivity()).setStatus(pojo, "accepted", true);
                             ((HomeActivity) getActivity()).changeFragment(acceptedRequestFragment, getString(R.string.requests));
                             Toast.makeText(getActivity(), getString(R.string.ride_reuest_accepted), Toast.LENGTH_LONG).show();
+
+
+                        } else if (status.equalsIgnoreCase("WAITED")) {
+                            startService();
+//                            getFragmentManager().popBackStack();
+                            if (response.has("data")) {
+                                JSONObject data = response.getJSONObject("data");
+                                int travel_id = Integer.parseInt(data.getString("travel_id"));
+                                Log.i("ibrahim travel_id", String.valueOf(travel_id));
+                                if (Checkbox.isChecked()) {
+                                Log.i("ibrahim check box", "is checked");
+                                    SavePost(pickup_address, drop_address, pojo.getDate(), pojo.getTime(), travel_id);
+                                } else {
+                                Log.i("ibrahim check box", "is not checked");
+                                }
+                                //SavePrivatePost(pickup_address, drop_address, date_time, time_value, travel_id);
+                            } else {
+                            Log.i("ibrahim_response", "no travel id");
+                            }
+//                            bundle = new Bundle();
+//                            bundle.putString("status", "ACCEPTED");
+//                            acceptedRequestFragment.setArguments(bundle);
+//                            ((HomeActivity) getActivity()).setPojo(pojo);
+//                            ((HomeActivity) getActivity()).setStatus(pojo, "accepted", true);
+//                            ((HomeActivity) getActivity()).changeFragment(acceptedRequestFragment, getString(R.string.requests));
+//                            Toast.makeText(getActivity(), getString(R.string.ride_reuest_accepted), Toast.LENGTH_LONG).show();
 
 
                         } else {
@@ -568,6 +703,49 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         calendar.add(Calendar.SECOND, 60); // first time
         long frequency = 60 * 1000; // in ms
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency, pendingIntent);
+    }
+
+    public void SavePost(String pickup_address, String Drop_address, String date_time_value, String time_value, int travel_id) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
+
+        databaseRefID.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String UserName = dataSnapshot.child("username").getValue(String.class);
+                String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
+                String text = getString(R.string.Travel_is_going_from) + " " + System.getProperty("line.separator")
+                        + getString(R.string.Travel_from) + " " + pickup_address + System.getProperty("line.separator")
+                        + getString(R.string.Travel_to) + " " + Drop_address + System.getProperty("line.separator")
+                        + getString(R.string.Travel_on) + " " + date_time_value + System.getProperty("line.separator")
+                        + getString(R.string.the_clock) + " " + time_value;
+//                log.i("tag","success by ibrahim");
+//                log.i("tag", UserName);
+                // Firebase code here
+                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("posts").push();
+                Map<String, Object> author = new HashMap<>();
+                author.put("uid", user.getUid());
+                author.put("username", UserName);
+                author.put("photoURL", photoURL);
+
+                Map<String, Object> userObject = new HashMap<>();
+                userObject.put("author", author);
+                userObject.put("text", text);
+                //type = 0 => driver
+                //type = 1 => user
+                userObject.put("type", "0");
+                userObject.put("privacy", "1");
+                userObject.put("travel_id", travel_id);
+                userObject.put("timestamp", ServerValue.TIMESTAMP);
+                databaseRef.setValue(userObject);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+            }
+        });
     }
 
     public Boolean GPSEnable() {
@@ -666,10 +844,10 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         if (GPSEnable()) {
 
             try {
-                String[] latlong = pojo.getPikup_location().split(",");
+                String[] latlong = pojo.getpickup_location().split(",");
                 double latitude = Double.parseDouble(latlong[0]);
                 double longitude = Double.parseDouble(latlong[1]);
-                String[] latlong1 = pojo.getDrop_locatoin().split(",");
+                String[] latlong1 = pojo.getdrop_location().split(",");
                 double latitude1 = Double.parseDouble(latlong1[0]);
                 double longitude1 = Double.parseDouble(latlong1[1]);
 
@@ -793,7 +971,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     @Nullable
                     @Override
                     public String getAddress() {
-                        return pass1.getPickup_adress();
+                        return pass1.getPickup_address();
                     }
 
                     @Nullable
@@ -811,7 +989,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     @Nullable
                     @Override
                     public LatLng getLatLng() {
-                        String[] parts = pass1.getPikup_location().split(",");
+                        String[] parts = pass1.getpickup_location().split(",");
                         LatLng location = new LatLng(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]));
                         return location;
                     }
@@ -914,7 +1092,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     @Nullable
                     @Override
                     public LatLng getLatLng() {
-                        String[] parts = pass1.getDrop_locatoin().split(",");
+                        String[] parts = pass1.getdrop_location().split(",");
                         LatLng location = new LatLng(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]));
 
                         return location;

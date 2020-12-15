@@ -36,7 +36,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.Holder> 
     @Override
     public void onBindViewHolder(final Holder holder, int position) {
         final PendingRequestPojo pojo = list.get(position);
-        holder.from_add.setText(pojo.getPickup_adress());
+        holder.from_add.setText(pojo.getPickup_address());
         holder.to_add.setText(pojo.getDrop_address());
         holder.status.setText(pojo.getPayment_status());
         holder.time.setText(Utils.getformattedTime(pojo.getTime()));
@@ -48,7 +48,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.Holder> 
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("data", pojo);
-               /* bundle.putString("pickupaddress", list.get(holder.getAdapterPosition()).getPickup_adress());
+               /* bundle.putString("pickupaddress", list.get(holder.getAdapterPosition()).getPickup_address());
                 bundle.putString("dropaddress", list.get(holder.getAdapterPosition()).getDrop_address());
 
                 bundle.putString("amount", list.get(holder.getAdapterPosition()).getAmount());

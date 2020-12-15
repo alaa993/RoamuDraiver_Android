@@ -10,39 +10,42 @@ public class PendingRequestPojo implements Serializable {
     private String ride_id;
     private String user_id;
     private String driver_id;
-    private String pickup_adress;
+    private String travel_id;
+    private String pickup_address;
     private String drop_address;
-    private String pikup_location;
-    private String drop_locatoin;
+    private String pickup_location;
+    private String drop_location;
     private String city;
     private String distance;
     private String status;
+    private String travel_status;
     private String payment_status;
     private String amount;
     private String time;
+    private String date;
     private String user_mobile;
     private String user_avatar;
     private String driver_avatar;
     private String user_name;
     private String driver_mobile;
     private String driver_name;
-    private String booked_seat;
-    private String Ride_somked;
+    private String booked_set;
+    private String Ride_smoked;
 
-    public String getBooked_seat() {
-        return booked_seat;
+    public String getbooked_set() {
+        return booked_set;
     }
 
-    public void setBooked_seat(String booked_seat) {
-        this.booked_seat = booked_seat;
+    public void setbooked_set(String booked_set) {
+        this.booked_set = booked_set;
     }
 
-    public String getRide_somked() {
-        return Ride_somked;
+    public String getRide_smoked() {
+        return Ride_smoked;
     }
 
-    public void setRide_somked(String ride_somked) {
-        Ride_somked = ride_somked;
+    public void setRide_smoked(String ride_smoked) {
+        Ride_smoked = ride_smoked;
     }
 
     public String getPayment_mode() {
@@ -131,13 +134,20 @@ public class PendingRequestPojo implements Serializable {
     public void setDriver_id(String driver_id) {
         this.driver_id = driver_id;
     }
-
-    public String getPickup_adress() {
-        return pickup_adress;
+    public String getTravel_id() {
+        return travel_id;
     }
 
-    public void setPickup_adress(String pickup_adress) {
-        this.pickup_adress = pickup_adress;
+    public void setTravel_id(String travel_id) {
+        this.travel_id = travel_id;
+    }
+
+    public String getPickup_address() {
+        return pickup_address;
+    }
+
+    public void setPickup_address(String pickup_address) {
+        this.pickup_address = pickup_address;
     }
 
     public String getDrop_address() {
@@ -155,20 +165,20 @@ public class PendingRequestPojo implements Serializable {
         this.city = city;
     }
 
-    public String getPikup_location() {
-        return pikup_location;
+    public String getpickup_location() {
+        return pickup_location;
     }
 
-    public void setPikup_location(String pikup_location) {
-        this.pikup_location = pikup_location;
+    public void setpickup_location(String pickup_location) {
+        this.pickup_location = pickup_location;
     }
 
-    public String getDrop_locatoin() {
-        return drop_locatoin;
+    public String getdrop_location() {
+        return drop_location;
     }
 
-    public void setDrop_locatoin(String drop_locatoin) {
-        this.drop_locatoin = drop_locatoin;
+    public void setdrop_location(String drop_location) {
+        this.drop_location = drop_location;
     }
 
     public String getDistance() {
@@ -185,6 +195,14 @@ public class PendingRequestPojo implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getTravel_Status() {
+        return travel_status;
+    }
+
+    public void setTravel_Status(String travel_status) {
+        this.travel_status = travel_status;
     }
 
     public String getPayment_status() {
@@ -209,5 +227,13 @@ public class PendingRequestPojo implements Serializable {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

@@ -19,7 +19,7 @@
     <string name="update">Update</string>
     <string name="online">you are online</string>
     <string name="offline">you are offline</string>
-    <string name="coh_driver">Cash on your hand.</string>
+    <string name="coh_driver">Cash Payment</string>
     <string name="change_password">CHANGE PASSWORD</string>
     <string name="unpaid">UNPAID</string>
     <string name="network_not_available">Network is not available</string>
@@ -68,7 +68,7 @@
     <string name="cancel_ride">CANCEL RIDE</string>
     <string name="no_status">NO STATUS</string>
     <string name="basefare">"Base Fare       "</string>
-    <string name="approve_payment_offline">APPROVE OFFLINE PAYMENT</string>
+    <string name="approve_payment_offline">Payment was made in cash</string>
     <string name="vehicle">vehicle No</string>
     <string name="doc">doc</string>
     <string name="go">go</string>
@@ -86,6 +86,7 @@
 
     <string name="Pick_Customer">Pick Customer</string>
     <string name="Start_Ride">Start Ride</string>
+    <string name="Start_Travel">Start Travel</string>
     <string name="Ride_Started">Ride Started</string>
     <string name="log_out">Log out</string>
     <string name="forgot_password">Forgot Password?</string>
@@ -295,5 +296,6 @@ But the owner of the car will have to check the car documents before agreeing to
     <string name="my_travels">My Travels</string>
     <string name="request_type">Request Type</string>
     <string name="share_application">Share Application</string>
+    <string name="All_travel">-ِAll-</string>
 
 </resources>

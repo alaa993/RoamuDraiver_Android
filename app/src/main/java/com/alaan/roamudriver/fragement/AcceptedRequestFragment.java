@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ public class AcceptedRequestFragment extends Fragment implements BackFragment, A
 
     SwipeRefreshLayout swipeRefreshLayout;
 
-    String[] status_val_arr = {"PENDING", "ACCEPTED", "COMPLETED", "CANCELLED"};
+    String[] status_val_arr = {"All","PENDING", "ACCEPTED", "COMPLETED", "CANCELLED"};
     String[] status_arr;
 
     @Nullable
@@ -69,6 +70,7 @@ public class AcceptedRequestFragment extends Fragment implements BackFragment, A
 
     public void bindView() {
         status_arr = new String[]{
+                getString(R.string.All_travel),
                 getString(R.string.pending_request), getString(R.string.accepted_request),
                 getString(R.string.completed_request), getString(R.string.cancelled_request)};
 //        ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.accepted_request));
@@ -147,6 +149,7 @@ public class AcceptedRequestFragment extends Fragment implements BackFragment, A
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                         }.getType());
+                        Log.e("success", response.toString());
                         if (response.has("data") && response.getJSONArray("data").length() == 0) {
                             txt_error.setVisibility(View.VISIBLE);
                             AcceptedRequestAdapter acceptedRequestAdapter = new AcceptedRequestAdapter(list);
@@ -191,12 +194,14 @@ public class AcceptedRequestFragment extends Fragment implements BackFragment, A
             case "Search":
                 title = getString(R.string.search);
                 break;
-
             case "CANCELLED":
                 title = getString(R.string.cancelled_request);
                 break;
             case "COMPLETED":
                 title = getString(R.string.completed_request);
+                break;
+            case "All":
+                title = getString(R.string.All_travel);
                 break;
         }
         return title;

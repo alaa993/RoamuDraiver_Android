@@ -73,7 +73,9 @@ public class AddPostActivity extends AppCompatActivity {
                 Map<String,Object> userObject = new HashMap<>();
                 userObject.put("author", author);
                 userObject.put("text", inputEditPost.getText().toString());
-                userObject.put("type", "1");
+                //type = 0 => driver
+                //type = 1 => user
+                userObject.put("type", "0");
                 userObject.put("privacy" , "1");
                 userObject.put("travel_id" , 0);
                 userObject.put("timestamp", ServerValue.TIMESTAMP);

@@ -70,23 +70,23 @@ import static android.app.Activity.RESULT_OK;
 import static com.loopj.android.http.AsyncHttpClient.log;
 import static net.skoumal.fragmentback.BackFragment.NORMAL_BACK_PRIORITY;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SearchUser#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SearchUser extends Fragment implements BackFragment {
     private static final String TAG = "user";
     View rootView;
     Place pickup;
     Place drop;
+    Place point;
+
     Pass pass;
     Button search_for_users_btn, add_travel;
-    TextView txt_vehicleinfo, rate, txt_info, txt_cost, txt_color, txt_address, request_ride, txt_date, txt_smoke, txt_fee, passanger_search, bag_search, smoke_search, date_time_search;
-
+    TextView txt_vehicleinfo, rate, txt_info, txt_cost, txt_color, txt_address, request_ride, txt_date, txt_smoke, txt_fee,
+            passanger_search, bag_search, smoke_search, date_time_search;
     TextView pickup_location, drop_location;
+    EditText mPickupPoint;
     private int PLACE_PICKER_REQUEST = 7896;
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1234;
+    private int POINT_PICKER_REQUEST = 12345;
+
     private String driver_id, passanger_value, bag_value, smoke_value, date_time_value;
     private CheckBox Checkbox;
     boolean Checkbox_bool = false;
@@ -96,21 +96,17 @@ public class SearchUser extends Fragment implements BackFragment {
     int mYear;
     int mMonth;
     int mDay;
-
     int mHour;
     int mMinute;
-
     private String pickup_address;
     private String drop_address;
     String o = "";
     String d = "";
 
+
     private RelativeLayout footer;
 
-
-    public SearchUser() {
-        // Required empty public constructor
-    }
+    public SearchUser() { }
 
     public static SearchUser newInstance(String param1, String param2) {
         SearchUser fragment = new SearchUser();
@@ -123,7 +119,6 @@ public class SearchUser extends Fragment implements BackFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -147,11 +142,12 @@ public class SearchUser extends Fragment implements BackFragment {
             public void onClick(View view) {
 
                 Places.initialize(getActivity(), getString(R.string.google_android_map_api_key));
+                List<com.google.android.libraries.places.api.model.Place.Field> fields =
+                        Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID,
+                                com.google.android.libraries.places.api.model.Place.Field.NAME,
+                                com.google.android.libraries.places.api.model.Place.Field.ADDRESS,
+                                com.google.android.libraries.places.api.model.Place.Field.LAT_LNG);
 
-
-                List<com.google.android.libraries.places.api.model.Place.Field> fields = Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID, com.google.android.libraries.places.api.model.Place.Field.NAME, com.google.android.libraries.places.api.model.Place.Field.ADDRESS, com.google.android.libraries.places.api.model.Place.Field.LAT_LNG);
-
-// Start the autocomplete intent.
                 Intent intent = new Autocomplete.IntentBuilder(
                         AutocompleteActivityMode.FULLSCREEN, fields)
                         .build(getActivity());
@@ -162,9 +158,12 @@ public class SearchUser extends Fragment implements BackFragment {
             @Override
             public void onClick(View view) {
                 Places.initialize(getActivity(), getString(R.string.google_android_map_api_key));
-                List<com.google.android.libraries.places.api.model.Place.Field> fields = Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID, com.google.android.libraries.places.api.model.Place.Field.NAME, com.google.android.libraries.places.api.model.Place.Field.ADDRESS, com.google.android.libraries.places.api.model.Place.Field.LAT_LNG);
+                List<com.google.android.libraries.places.api.model.Place.Field> fields =
+                        Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID,
+                                com.google.android.libraries.places.api.model.Place.Field.NAME,
+                                com.google.android.libraries.places.api.model.Place.Field.ADDRESS,
+                                com.google.android.libraries.places.api.model.Place.Field.LAT_LNG);
 
-// Start the autocomplete intent.
                 Intent intent = new Autocomplete.IntentBuilder(
                         AutocompleteActivityMode.FULLSCREEN, fields)
                         .build(getActivity());
@@ -210,7 +209,7 @@ public class SearchUser extends Fragment implements BackFragment {
                         View mView = getLayoutInflater().inflate(R.layout.dialog_addtravel_layout, null);
                         final EditText mPassengers = (EditText) mView.findViewById(R.id.etPassengers);
                         final EditText mPrice = (EditText) mView.findViewById(R.id.etPrice);
-                        final EditText mPickupPoint = (EditText) mView.findViewById(R.id.etPickupPoint);
+                        mPickupPoint = (EditText) mView.findViewById(R.id.etPickupPoint);
                         Button mSubmit = (Button) mView.findViewById(R.id.btnSubmitDialog);
                         Button mCancel = (Button) mView.findViewById(R.id.btnCancelDialog);
                         Checkbox = (CheckBox) mView.findViewById(R.id.checkBox);
@@ -218,39 +217,35 @@ public class SearchUser extends Fragment implements BackFragment {
                         mBuilder.setView(mView);
                         final android.app.AlertDialog dialog = mBuilder.create();
                         dialog.show();
+                        mPickupPoint.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Places.initialize(getActivity(), getString(R.string.google_android_map_api_key));
+                                List<com.google.android.libraries.places.api.model.Place.Field> fields =
+                                        Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID,
+                                                com.google.android.libraries.places.api.model.Place.Field.NAME,
+                                                com.google.android.libraries.places.api.model.Place.Field.ADDRESS,
+                                                com.google.android.libraries.places.api.model.Place.Field.LAT_LNG);
+                                Intent intent = new Autocomplete.IntentBuilder(
+                                        AutocompleteActivityMode.FULLSCREEN, fields)
+                                        .build(getActivity());
+                                startActivityForResult(intent, POINT_PICKER_REQUEST);
+                            }
+                        });
                         mSubmit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                if (!mPassengers.getText().toString().isEmpty() && !mPrice.getText().toString().isEmpty() && !mPickupPoint.getText().toString().isEmpty()) {
-
+                                if (!mPassengers.getText().toString().isEmpty()
+                                        && !mPrice.getText().toString().isEmpty()
+                                        && !mPickupPoint.getText().toString().isEmpty()) {
                                     dialog.dismiss();
-//                                    log.i("tag", "success by ibrahim");
-//                                    log.i("tag", mPassengers.getText().toString());
-//                                    log.i("tag", mPrice.getText().toString());
-                                    //    origin.latitude + "," + origin.longitude;
-                                    // destination.latitude + "," + destination.longitude;
-
                                     pickup_address = (String) pickup_location.getText();
                                     drop_address = (String) drop_location.getText();
-
                                     o = String.valueOf(pickup.getLatLng().latitude) + "," + String.valueOf(pickup.getLatLng().longitude);
                                     d = String.valueOf(drop.getLatLng().latitude) + "," + String.valueOf(drop.getLatLng().longitude);
-
-//                                AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d,txt_fare.getText().toString(), distance,btn_ava.getNumber(),btn_book.getNumber(),val_timel,val_date);
-//                                AddRide(String key, String pickup_adress, String drop_address, String pickup_location, String drop_locatoin, String amount, String distance, String a_set, String u_set, String s_time, String s_date)
-//                                    if (Checkbox.isChecked()) {
-//                                        Log.i("ibrahim is checked", "true");
-////                                        Checkbox_bool = true;
-//                                        //SavePost(pickup_address,drop_address,date_time,time_value, 2);
-//                                        AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d, mPrice.getText().toString(), "50", mPassengers.getText().toString(), "", date_time_value, time_value, mPickupPoint.getText().toString());
-//                                    }
-//                                    else{
-//                                        AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d, mPrice.getText().toString(), "50", mPassengers.getText().toString(), "", date_time_value, time_value, mPickupPoint.getText().toString());
-//
-//                                    }
-                                    AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d, mPrice.getText().toString(), "50", mPassengers.getText().toString(), "", date_time_value, time_value, mPickupPoint.getText().toString());
-
-//                                    Toast.makeText(getActivity(), "do tasked", Toast.LENGTH_SHORT).show();
+                                    AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d,
+                                            mPrice.getText().toString(), "0", mPassengers.getText().toString(),
+                                            "", date_time_value, time_value, mPickupPoint.getText().toString());
                                 } else {
                                     Toast.makeText(SearchUser.this.getContext(),
                                             getString(R.string.Post_Empty),
@@ -266,20 +261,6 @@ public class SearchUser extends Fragment implements BackFragment {
                         });
                     }
                 }
-//                o = String.valueOf(pickup.getLatLng().latitude) + "," + String.valueOf(pickup.getLatLng().longitude);
-//                d = String.valueOf(drop.getLatLng().latitude) + "," + String.valueOf(drop.getLatLng().longitude);
-//                pickup_address = (String) pickup_location.getText();
-//                drop_address = (String) drop_location.getText();
-//                Log.i("message", "ibrahim---------------------------------------");
-//                Log.i("pickup_address", pickup_address);
-//                Log.i("pickup_location", o);
-//                Log.i("drop_address", drop_address);
-//                Log.i("drop_location", d);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("data", pass);
-//                RequestFragment fragobj = new RequestFragment();
-//                fragobj.setArguments(bundle);
-//                ((HomeActivity) getActivity()).changeFragment(fragobj, "Request Ride");
             }
         });
         smoke_search.setOnClickListener(new View.OnClickListener() {
@@ -405,7 +386,9 @@ public class SearchUser extends Fragment implements BackFragment {
                 Map<String, Object> userObject = new HashMap<>();
                 userObject.put("author", author);
                 userObject.put("text", text);
-                userObject.put("type", "1");
+                //type = 0 => driver
+                //type = 1 => user
+                userObject.put("type", "0");
                 userObject.put("privacy", "1");
                 userObject.put("travel_id", travel_id);
                 userObject.put("timestamp", ServerValue.TIMESTAMP);
@@ -418,7 +401,6 @@ public class SearchUser extends Fragment implements BackFragment {
             }
         });
     }
-
 
     public void SavePrivatePost(String pickup_address, String Drop_address, String date_time_value, String time_value, int travel_id) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -461,7 +443,6 @@ public class SearchUser extends Fragment implements BackFragment {
         });
     }
 
-
     public void changeFragment(final Fragment fragment, final String fragmenttag) {
         try {
             FragmentManager fragmentManager = getFragmentManager();
@@ -473,23 +454,16 @@ public class SearchUser extends Fragment implements BackFragment {
     }
 
     private void datePicker() {
-
-        // Get Current Date
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
-
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                 new DatePickerDialog.OnDateSetListener() {
-
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-//                        date_time = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-                        date_time = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-                        //*************Call Time Picker Here ********************
-
+                        date_time = String.format("%04d-%02d-%02d", year, 1 + monthOfYear, dayOfMonth);
+                        //date_time = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                         tiemPicker();
                     }
                 }, mYear, mMonth, mDay);
@@ -497,33 +471,22 @@ public class SearchUser extends Fragment implements BackFragment {
     }
 
     private void tiemPicker() {
-        // Get Current Time
         final Calendar c = Calendar.getInstance();
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
-
-        // Launch Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
                 new TimePickerDialog.OnTimeSetListener() {
-
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
                         mHour = hourOfDay;
                         mMinute = minute;
-
                         date_time_value = date_time + " " + hourOfDay + ":" + minute;
-//                        Toast.makeText(getContext(), "show time" + val_date, Toast.LENGTH_SHORT).show();
-//                        log.i("tag", "success by ibrahim");
-//                        log.i("tag", date_time_value);
                         time_value = hourOfDay + ":" + minute;
                         date_time_search.setText(date_time + " " + String.format("%02d:%02d", hourOfDay, minute));
-
                     }
                 }, mHour, mMinute, true);
         timePickerDialog.show();
     }
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1000) {
@@ -531,22 +494,18 @@ public class SearchUser extends Fragment implements BackFragment {
                 String result = data.getStringExtra("result");
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
             }
-
         }
         if (requestCode == 1000) {
             if (resultCode == RESULT_OK) {
                 String result = data.getStringExtra("result");
             }
             if (resultCode == RESULT_CANCELED) {
-                //Write your code if there's no result
             }
         } else if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 pickup = Autocomplete.getPlaceFromIntent(data);
                 pickup_location.setText(pickup.getAddress());
-
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Log.e(TAG, status.toString());
@@ -559,31 +518,35 @@ public class SearchUser extends Fragment implements BackFragment {
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Toast.makeText(getActivity(), status.getStatusMessage(), Toast.LENGTH_LONG).show();
-
             }
         }
-
+        else if (requestCode == POINT_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                point = Autocomplete.getPlaceFromIntent(data);
+                mPickupPoint.setText(point.getAddress());
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Toast.makeText(getActivity(), status.getStatusMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
-    public void AddRide(String key, String pickup_adress, String drop_address, String pickup_location, String drop_locatoin, String amount, String distance, String a_set, String u_set, String s_date, String s_time, String PickupPoint) {
+    public void AddRide(String key, String pickup_address, String drop_address, String pickup_location, String drop_location, String amount,
+                        String distance, String a_set, String u_set, String s_date, String s_time, String PickupPoint) {
         final RequestParams params = new RequestParams();
-//        params.put("driver_id", driver_id);
         params.put("driver_id", SessionManager.getUserId());
-        params.put("pickup_address", pickup_adress);
+        params.put("pickup_address", pickup_address);
         params.put("drop_address", drop_address);
         params.put("pickup_location", pickup_location);
-        params.put("drop_location", drop_locatoin);
+        params.put("drop_location", drop_location);
         params.put("pickup_point", PickupPoint);
         params.put("distance", distance);
         params.put("amount", amount);
-        params.put("avalable_set", a_set);
+        params.put("available_set", a_set);
         params.put("booked_set", u_set);
-        //commited by ibrahim
-        //params.put("travel_time",s_time);
-//        params.put("travel_date", "2023-10-18 15:18:00");
         params.put("travel_date", s_date);
         params.put("travel_time", s_time);
-        params.put("somked", "1");
+        params.put("smoked", "1");
         params.put("status", "0");
 
         Server.setHeader(key);
@@ -608,7 +571,7 @@ public class SearchUser extends Fragment implements BackFragment {
                             JSONObject data = response.getJSONObject("data");
                             int travel_id = Integer.parseInt(data.getString("travel_id"));
 //                            Log.i("ibrahim travel_id", String.valueOf(travel_id));
-                            if (Checkbox.isChecked()){
+                            if (Checkbox.isChecked()) {
 //                                Log.i("ibrahim check box", "is checked");
                                 SavePost(pickup_address, drop_address, date_time, time_value, travel_id);
                             } else {

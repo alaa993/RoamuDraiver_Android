@@ -104,9 +104,11 @@ public class PostActivity extends AppCompatActivity {
                 userObject.put("author", author);
                 userObject.put("text", inputEditComment.getText().toString());
                 userObject.put("timestamp", ServerValue.TIMESTAMP);
-                userObject.put("type", "1");
+                //type = 0 => driver
+                //type = 1 => user
+                userObject.put("type", "0");
                 userObject.put("privacy" , "1");
-                userObject.put("travel_id" , 1);
+                userObject.put("travel_id" , 0);
                 databaseRef.setValue(userObject);
                 inputEditComment.getText().clear();
             }

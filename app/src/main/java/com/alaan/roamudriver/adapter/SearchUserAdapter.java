@@ -35,7 +35,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Ho
         final PendingRequestPojo pojo = list.get(i);
 
         holder.txt_to_add.setText(pojo.getDrop_address());
-        holder.txt_from_add.setText(pojo.getPickup_adress());
+        holder.txt_from_add.setText(pojo.getPickup_address());
         holder.time.setText(pojo.getTime());
         holder.name.setText(pojo.getUser_name());
         holder.date.setText(pojo.getAmount());
@@ -47,12 +47,12 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Ho
                 pass = new PendingRequestPojo();
                 bundle.putSerializable("data", pass);
                 Toast.makeText(v.getContext(), ""+i, Toast.LENGTH_SHORT).show();
-                pass.setPickup_adress(pojo.getPickup_adress());
+                pass.setPickup_address(pojo.getPickup_address());
                 pass.setDrop_address(pojo.getDrop_address());
-                pass.setPikup_location(pojo.getPikup_location());
-                pass.setDrop_locatoin(pojo.getDrop_locatoin());
-                pass.setRide_somked(pojo.getRide_somked());
-                pass.setBooked_seat(pojo.getBooked_seat());
+                pass.setpickup_location(pojo.getpickup_location());
+                pass.setdrop_location(pojo.getdrop_location());
+                pass.setRide_smoked(pojo.getRide_smoked());
+                pass.setbooked_set(pojo.getbooked_set());
                 pass.setUser_mobile(pojo.getUser_mobile());
                 pass.setCity(pojo.getCity());
                 bundle.putSerializable("data",pojo);

@@ -212,7 +212,7 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
                                 d = String.valueOf(drop.getLatLng().latitude) + "," + String.valueOf(drop.getLatLng().longitude);
 
 //                                AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d,txt_fare.getText().toString(), distance,btn_ava.getNumber(),btn_book.getNumber(),val_timel,val_date);
-//                                AddRide(String key, String pickup_adress, String drop_address, String pickup_location, String drop_locatoin, String amount, String distance, String a_set, String u_set, String s_time, String s_date)
+//                                AddRide(String key, String pickup_address, String drop_address, String pickup_location, String drop_location, String amount, String distance, String a_set, String u_set, String s_time, String s_date)
                                 AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d, mPrice.getText().toString(), distance, mPassengers.getText().toString(), btn_book.getNumber(), val_date, val_date);
                                 Toast.makeText(getActivity(), "do tasked", Toast.LENGTH_SHORT).show();
 
@@ -502,23 +502,23 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
         }
     }
 
-    public void AddRide(String key, String pickup_adress, String drop_address, String pickup_location, String drop_locatoin, String amount, String distance, String a_set, String u_set, String s_time, String s_date) {
+    public void AddRide(String key, String pickup_address, String drop_address, String pickup_location, String drop_location, String amount, String distance, String a_set, String u_set, String s_time, String s_date) {
         final RequestParams params = new RequestParams();
         params.put("driver_id", driver_id);
         params.put("driver_id", user_id);
-        params.put("pickup_address", pickup_adress);
+        params.put("pickup_address", pickup_address);
         params.put("drop_address", drop_address);
         params.put("pickup_location", pickup_location);
-        params.put("drop_location", drop_locatoin);
+        params.put("drop_location", drop_location);
         params.put("distance", distance);
         params.put("amount", amount);
-        params.put("avalable_set", a_set);
+        params.put("available_set", a_set);
         params.put("booked_set", u_set);
         //commited by ibrahim
         //params.put("travel_time",s_time);
 //        params.put("travel_date", "2023-10-18 15:18:00");
         params.put("travel_date", s_time);
-        params.put("somked", "1");
+        params.put("smoked", "1");
         params.put("status", "0");
 
         Server.setHeader(key);

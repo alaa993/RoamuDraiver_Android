@@ -41,7 +41,7 @@ public class PaymentDetail extends Fragment {
         if (bundle != null) {
             pojo = (PendingRequestPojo) bundle.getSerializable("data");
             if (pojo != null) {
-                pickupaddress.setText(pojo.getPickup_adress());
+                pickupaddress.setText(pojo.getPickup_address());
                 dropaddress.setText(pojo.getDrop_address());
                 distance.setText(pojo.getDistance());
                 status.setText(pojo.getStatus());

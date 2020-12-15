@@ -72,6 +72,10 @@ public class Search_list_acticity extends AppCompatActivity {
                     Gson gson = new GsonBuilder().create();
                     List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                     }.getType());
+
+                    Log.i("ibrahim_list","list");
+                    Log.i("ibrahim_list",list.toString());
+
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplication(), LinearLayoutManager.VERTICAL, false);
                     recyclerView.setLayoutManager(linearLayoutManager);
                     SearchUserAdapter searchUserAdapter = new SearchUserAdapter(list);

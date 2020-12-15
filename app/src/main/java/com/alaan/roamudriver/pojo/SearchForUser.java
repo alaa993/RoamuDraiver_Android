@@ -10,10 +10,10 @@ public class SearchForUser implements Serializable {
     private String  ride_id;
     private String  user_id;
     private String  driver_id;
-    private String  pickup_adress;
+    private String  pickup_address;
     private String  drop_address;
-    private String  pikup_location;
-    private String  drop_locatoin;
+    private String  pickup_location;
+    private String  drop_location;
     private String  distance;
     private String  status;
     private String  payment_status;
@@ -45,12 +45,12 @@ public class SearchForUser implements Serializable {
         this.driver_id = driver_id;
     }
 
-    public String getPickup_adress() {
-        return pickup_adress;
+    public String getPickup_address() {
+        return pickup_address;
     }
 
-    public void setPickup_adress(String pickup_adress) {
-        this.pickup_adress = pickup_adress;
+    public void setPickup_address(String pickup_address) {
+        this.pickup_address = pickup_address;
     }
 
     public String getDrop_address() {
@@ -61,20 +61,20 @@ public class SearchForUser implements Serializable {
         this.drop_address = drop_address;
     }
 
-    public String getPikup_location() {
-        return pikup_location;
+    public String getpickup_location() {
+        return pickup_location;
     }
 
-    public void setPikup_location(String pikup_location) {
-        this.pikup_location = pikup_location;
+    public void setpickup_location(String pickup_location) {
+        this.pickup_location = pickup_location;
     }
 
-    public String getDrop_locatoin() {
-        return drop_locatoin;
+    public String getdrop_location() {
+        return drop_location;
     }
 
-    public void setDrop_locatoin(String drop_locatoin) {
-        this.drop_locatoin = drop_locatoin;
+    public void setdrop_location(String drop_location) {
+        this.drop_location = drop_location;
     }
 
     public String getDistance() {

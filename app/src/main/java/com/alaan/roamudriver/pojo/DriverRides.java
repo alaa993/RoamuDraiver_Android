@@ -11,11 +11,11 @@ public class DriverRides implements Serializable {
     public String drop_location ;
     public String distance ;
     public String amount ;
-    public String avalable_set ;
+    public String available_set ;
     public String booked_set ;
     public String travel_time ;
     public String travel_date ;
-    public String somked ;
+    public String smoked ;
 
     public String getTravel_id() {
         return travel_id;
@@ -81,12 +81,12 @@ public class DriverRides implements Serializable {
         this.amount = amount;
     }
 
-    public String getAvalable_set() {
-        return avalable_set;
+    public String getavailable_set() {
+        return available_set;
     }
 
-    public void setAvalable_set(String avalable_set) {
-        this.avalable_set = avalable_set;
+    public void setavailable_set(String available_set) {
+        this.available_set = available_set;
     }
 
     public String getBooked_set() {
@@ -113,11 +113,11 @@ public class DriverRides implements Serializable {
         this.travel_date = travel_date;
     }
 
-    public String getSomked() {
-        return somked;
+    public String getsmoked() {
+        return smoked;
     }
 
-    public void setSomked(String somked) {
-        this.somked = somked;
+    public void setsmoked(String smoked) {
+        this.smoked = smoked;
     }
 }

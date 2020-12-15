@@ -86,13 +86,17 @@ public class PostList extends ArrayAdapter<Post> {
         }
         textViewName.setText(post.author.username);
         textViewText.setText(post.text);
-        if (post.type.contains("0") && post.travel_id > 0)
+
+        //type = 0 => driver
+        //type = 1 => user
+        if (post.type.contains("1") && post.travel_id > 0)
         {
             TripDetail.setVisibility(View.VISIBLE);
         }
         else{
             TripDetail.setVisibility(View.GONE);
         }
+
         databaseComments = FirebaseDatabase.getInstance().getReference("posts").child(post.id).child("Comments");
         databaseComments.addValueEventListener(new ValueEventListener() {
             @Override
@@ -134,7 +138,7 @@ public class PostList extends ArrayAdapter<Post> {
 
         TripDetail.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                GetRides("10");
+                GetRides(String.valueOf(post.travel_id));
             }
         });
         return listViewItem;

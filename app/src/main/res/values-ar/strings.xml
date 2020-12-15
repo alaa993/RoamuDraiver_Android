@@ -19,7 +19,7 @@
     <string name="update">"تحديث"</string>
     <string name="online">"أنت متصل"</string>
     <string name="offline">"انت غير متصل"</string>
-    <string name="coh_driver">"النقدية على يدك."</string>
+    <string name="coh_driver">الدفع نقداً</string>
     <string name="change_password">"تغيير كلمة السر"</string>
     <string name="unpaid">"غير مأجور"</string>
     <string name="network_not_available">"الشبكة غير متوفرة"</string>
@@ -60,14 +60,14 @@
     <string name="change">"يتغيرون"</string>
     <string name="newpwd_required">"كلمة المرور الجديدة مطلوبة"</string>
     <string name="password_updated">"تم تحديث كلمة السر"</string>
-    <string name="ride_acceptance">اختيار العميل</string>
+    <string name="ride_acceptance">اختيار المسافر</string>
     <string name="ride_reuest_accepted">"قبول الطلب"</string>
-    <string name="accept_ride">"قبول ركوب"</string>
+    <string name="accept_ride">"قبول الطلب"</string>
     <string name="complete_ride">"انتهاء الرحلة"</string>
     <string name="cancel_ride">"إلغاء الرحلة"</string>
     <string name="no_status">"لا توجد حالة"</string>
     <string name="basefare">"الاجرة الاساسية"</string>
-    <string name="approve_payment_offline">"الموافقة على الدفع دون اتصال بالإنترنت"</string>
+    <string name="approve_payment_offline">تم الدفع نقداً</string>
     <string name="vehicle">رقم المركبة</string>
     <string name="doc">"وثيقة"</string>
     <string name="go">"اذهب"</string>
@@ -79,11 +79,12 @@
     <string name="password_required">"كلمة المرور مطلوبة"</string>
     <string name="format_msg">"يتم قبول jpg أو png أو gif فقط"</string>
     <string name="doo">"فعل"</string>
-    <string name="payment_receive_from_customer">"الدفعة المستلمة من العميل"</string>
-    <string name="customer_number">"رقم العميل"</string>
+    <string name="payment_receive_from_customer">"الدفعة المستلمة من المسافر"</string>
+    <string name="customer_number">"رقم المسافر"</string>
 
-    <string name="Pick_Customer">"اختيار العميل"</string>
+    <string name="Pick_Customer">"اختيار المسافر"</string>
     <string name="Start_Ride">"بدء الرحلة"</string>
+    <string name="Start_Travel">ابدأ الرحلة</string>
     <string name="Ride_Started">" بدء الرحلة"</string>
     <string name="log_out">الخروج</string>
     <string name="forgot_password">هل نسيت كلمة المرور؟</string>
@@ -105,13 +106,13 @@
     <string name="from">من</string>
     <string name="to">إلى</string>
     <string name="date">تاريخ</string>
-    <string name="customer_name">اسم العميل</string>
+    <string name="customer_name">اسم المسافر</string>
     <string name="new_password">كلمة المرور الجديدة</string>
     <string name="password_reset">إعادة تعيين كلمة المرور</string>
     <string name="registered_email">أدخل عنوان بريدك الإلكتروني المسجل ، سنرسل لك رسالة بريد إلكتروني لإعادة تعيين كلمة المرور الخاصة بك</string>
     <string name="registered_email_input"> البريد الإلكتروني المسجل </string>
     <string name="reset_password">إعادة تعيين كلمة المرو</string>
-    <string name="ride_payment_detail">ركوب تفاصيل الدفع</string>
+    <string name="ride_payment_detail">تفاصيل الدفع</string>
     <string name="amount">المبلغ</string>
     <string name="distance">المسافة</string>
     <string name="status">الحالة</string>
@@ -156,10 +157,10 @@
     <string name="ku">كردي</string>
     <string name="Affordable_everyday_rides">رحلات يومية بأسعار معقولة</string>
     <string name="date_And_time">التاريخ و الوقت</string>
-    <string name="available_seats">المقاعد المتاحة</string>
-    <string name="Bookedseats">المقاعد المحجوزة</string>
-    <string name="SetTime">ضبط الوقت </string>
-    <string name="SetDate">حدد التاريخ </string>
+    <string name="available_seats">عدد المسافرين المتاح</string>
+    <string name="Bookedseats">عدد المسافرين الحاجزين</string>
+    <string name="SetTime">ضبط الوقت</string>
+    <string name="SetDate">حدد التاريخ</string>
     <string name="fareperseat">fare per seat</string>
 
     <string name="fare_calculating">حساب التذكرة</string>
@@ -172,7 +173,7 @@
     <string name="ELITEDRIVER">سائق النخبة</string>
     <string name="ride_complete_msg">اكتمال</string>
     <string name="ride_cancel_msg">إلغاء</string>
-    <string name="ride_accept_msg">هل تريد قبول طلب العميل</string>
+    <string name="ride_accept_msg">هل تريد قبول طلب المسافر</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -199,7 +200,7 @@
     <string name="passenger">passenger</string>
     <string name="travel_time">وقت رحلة</string>
     <string name="smoked">تدخن</string>
-    <string name="passenger_one">١ مقعد</string>
+    <string name="passenger_one">١ مسافر</string>
     <string name="add_travel">حفظ</string>
     <string name="find_travel">البحث عن راكب</string>
     <string name="smoking">smoking</string>
@@ -236,7 +237,7 @@
     <string name="enter_coubbon_number">أدخل رقم الكوبون</string>
     <string name="date_and_time">التاريخ و الوقت</string>
     <string name="reseve">حجز</string>
-    <string name="empty_seats">عدد المقاعد المتبقية</string>
+    <string name="empty_seats">عدد المسافرين المتبقيين</string>
     <string name="driver_rate">تقييم السائق</string>
     <string name="travels_count">الرحلات المنجزة</string>
     <string name="pickup_point">نقطة التقاط</string>
@@ -298,7 +299,7 @@
     <string name="about_user">عن المسافر</string>
     <string name="profit">نجاح و أرباح</string>
     <string name="contact_us">اتصل بنا</string>
-    <string name="nominate_a_driver">ترشيح قائد مركبة</string>
+    <string name="nominate_a_driver">ترشيح سائق</string>
     <string name="nofifications">الإشعارات</string>
     <string name="profit_str">
         لن يكون النجاح بعيدا عنك، الذي يعني تحقيق المزيد من الأرباح، وسندون هنا مجموعة نقاط التي تمثل مفتاح النجاح والطريق المؤدي إلى جني الأرباح.\n
@@ -313,6 +314,7 @@
     <string name="my_travels">الرحلات الخاصة بي</string>
     <string name="request_type">نوع الطلب</string>
     <string name="share_application">مشاركة التطبيق</string>
+    <string name="All_travel">كل الرحلات</string>
 
 
 </resources>

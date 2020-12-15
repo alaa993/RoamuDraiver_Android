@@ -105,11 +105,11 @@ public class MapView extends FragmentManagePermission implements OnMapReadyCallb
         Bundle bundle = getArguments();
         if (bundle != null) {
             pojo = (PendingRequestPojo) bundle.getSerializable("data");
-            String[] latlong = pojo.getPikup_location().split(",");
+            String[] latlong = pojo.getpickup_location().split(",");
             origin = new LatLng(Double.parseDouble(latlong[0]), Double.parseDouble(latlong[1]));
-            String[] latlong1 = pojo.getDrop_locatoin().split(",");
+            String[] latlong1 = pojo.getdrop_location().split(",");
             destination = new LatLng(Double.parseDouble(latlong1[0]), Double.parseDouble(latlong1[1]));
-            pickup = pojo.getPickup_adress();
+            pickup = pojo.getPickup_address();
             drop = pojo.getDrop_address();
 
         }
@@ -517,10 +517,10 @@ public class MapView extends FragmentManagePermission implements OnMapReadyCallb
                             if (GPSEnable()) {
 
                                 try {
-                                    String[] latlong = pojo.getPikup_location().split(",");
+                                    String[] latlong = pojo.getpickup_location().split(",");
                                     double latitude = Double.parseDouble(latlong[0]);
                                     double longitude = Double.parseDouble(latlong[1]);
-                                    String[] latlong1 = pojo.getDrop_locatoin().split(",");
+                                    String[] latlong1 = pojo.getdrop_location().split(",");
                                     double latitude1 = Double.parseDouble(latlong1[0]);
                                     double longitude1 = Double.parseDouble(latlong1[1]);
 
