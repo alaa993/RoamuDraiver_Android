@@ -287,7 +287,7 @@
     <string name="profit">Success and Profit</string>
     <string name="contact_us">Contact Us</string>
     <string name="nominate_a_driver">Nominate a Driver</string>
-    <string name="nofifications">Nofifications</string>
+    <string name="notifications">Notifications</string>
     <string name="profit_str"> The application depends on its dealings with drivers and users with very high flexibility, and we proceed from our firm conviction, which says that we are all partners in this project, which falls under the concept of participatory mobility, and the role of the application management is limited to technical service and development and the fix of any defect and oversight on Type and accuracy of service.
 
 The car owner and the customer participate in the management of mobility services, and the success of each of them is related to commitment, accuracy and cultural interaction. We do not ask the user a lot, we want the accurate information that makes accessing him while ordering the navigation service easy and accurate.
@@ -297,5 +297,6 @@ But the owner of the car will have to check the car documents before agreeing to
     <string name="request_type">Request Type</string>
     <string name="share_application">Share Application</string>
     <string name="All_travel">-ِAll-</string>
+    <string name="my_accepted_travels">My Accepted Travels</string>
 
 </resources>

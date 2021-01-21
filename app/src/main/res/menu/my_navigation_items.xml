@@ -7,6 +7,11 @@
         android:title="@string/home"></item>
 
     <item
+        android:id="@+id/my_accepted_requests"
+        android:icon="@mipmap/ic_hourglass_empty_black_24dp"
+        android:title="@string/my_accepted_travels" />
+
+    <item
         android:id="@+id/my_requests"
         android:icon="@mipmap/ic_hourglass_empty_black_24dp"
         android:title="@string/my_travels" />
@@ -79,7 +84,7 @@
     <item
         android:id="@+id/notifications"
         android:icon="@drawable/ic_language_black_24dp"
-        android:title="@string/nofifications"></item>
+        android:title="@string/notifications"></item>
     <item
         android:id="@+id/shareApp"
         android:icon="@drawable/ic_language_black_24dp"

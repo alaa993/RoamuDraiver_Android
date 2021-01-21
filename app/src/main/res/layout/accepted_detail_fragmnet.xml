@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/swipe_refresh"
-    android:layoutDirection="ltr"
     android:background="@color/white"
+    android:layoutDirection="ltr"
     android:padding="5dp">
 
     <ScrollView
@@ -42,9 +43,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:layout_marginBottom="@dimen/margin_m10"
                         android:layout_marginTop="15dp"
-                        android:text="TexiGO"
+                        android:layout_marginBottom="@dimen/margin_m10"
+                        android:text="roamu"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -314,8 +315,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/linear_child1"
-                    android:layout_marginBottom="@dimen/detail_bottom_margin"
+                    android:layout_margin="@dimen/margin_10"
                     android:layout_marginTop="@dimen/detail_bottom_margin"
+                    android:layout_marginBottom="@dimen/detail_bottom_margin"
                     android:background="@drawable/ripple_effect"
                     android:text="@string/approve_payment_offline"
                     android:visibility="gone" />
@@ -326,6 +328,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/linear_child1"
+                    android:layout_margin="@dimen/margin_10"
                     android:layout_marginBottom="@dimen/detail_bottom_margin"
                     android:background="@drawable/ripple_effect"
                     android:text="@string/track_ride"

@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragement.MyAcceptedDetailFragment">
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/MyADF_mapview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/login_width">
+    </com.google.android.gms.maps.MapView>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/MyADFswipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/MyADF_mapview"
+        android:layout_marginTop="10dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbarThumbVertical="@android:color/transparent">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/MyADF_linear_child1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical"
+                    tools:ignore="NotSibling">
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TableRow
+                            android:id="@+id/MyADF_name_row"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/MyADF_customer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/customer_name"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                            <TextView
+                                android:id="@+id/MyADF_txt_drivername"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/MyADF_mobilenumber_row"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:clickable="true"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/MyADF_mobilenumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/customer_number"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                            <TextView
+                                android:id="@+id/MyADF_txt_mobilenumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="marquee"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+
+                                android:marqueeRepeatLimit="marquee_forever"
+                                android:maxLines="2"
+                                android:scrollHorizontally="true"
+                                android:text=""
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                            <ImageView
+                                android:id="@+id/MyADF_img_call"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/ic_call_white_24dp"
+                                android:tint="@color/green" />
+
+
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/MyADF_pickuplocation_row"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/MyADF_pickuplocation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/PickupAddress"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                            <TextView
+                                android:id="@+id/MyADF_txt_pickuplocation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="marquee"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+
+                                android:marqueeRepeatLimit="marquee_forever"
+                                android:maxLines="2"
+                                android:scrollHorizontally="true"
+                                android:text=""
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/MyADF_droplocation_row"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/MyADF_droplocation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/DropAddress"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                            <TextView
+                                android:id="@+id/MyADF_txt_droplocation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="marquee"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+
+                                android:marqueeRepeatLimit="marquee_forever"
+                                android:maxLines="2"
+                                android:scrollHorizontally="true"
+                                android:text=""
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/MyADF_textView9"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/pickup_point"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                            <TextView
+                                android:id="@+id/MyADF_txt_PickupPoint"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="marquee"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:marqueeRepeatLimit="marquee_forever"
+                                android:maxLines="2"
+                                android:scrollHorizontally="true"
+                                android:text=""
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/MyADF_Dateandtimefled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/date"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                            <TextView
+                                android:id="@+id/MyADF_dateTimeVal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="marquee"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:marqueeRepeatLimit="marquee_forever"
+                                android:maxLines="2"
+                                android:scrollHorizontally="true"
+                                android:text=""
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/MyADF_timefled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/TIME"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                            <TextView
+                                android:id="@+id/MyADF_TimeVal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="marquee"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:marqueeRepeatLimit="marquee_forever"
+                                android:maxLines="2"
+                                android:scrollHorizontally="true"
+                                android:text=""
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/paymentstatus_row"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/paymentstatus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Payment Status       "
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                            <TextView
+                                android:id="@+id/MyADF_payment_status_TV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="@string/no_status"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        </TableRow>
+
+                    </TableLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#DDE4E8" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/MyADF_btn_approve"
+                        style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/MyADF_linear_child1"
+                        android:layout_margin="@dimen/detail_bottom_margin"
+                        android:layout_marginTop="@dimen/detail_bottom_margin"
+                        android:layout_marginBottom="@dimen/detail_bottom_margin"
+                        android:background="@drawable/ripple_effect"
+                        android:text="@string/approve_payment_offline"
+                        android:visibility="gone" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/MyADF_btn_trackride"
+                        style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/detail_bottom_margin"
+                        android:layout_below="@+id/MyADF_linear_child1"
+                        android:layout_marginBottom="@dimen/detail_bottom_margin"
+                        android:background="@drawable/ripple_effect"
+                        android:text="@string/track_ride"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/MyADF_btn_accept"
+                            style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/MyADF_linear_child1"
+                            android:layout_margin="@dimen/margin_10"
+                            android:layout_marginTop="@dimen/detail_bottom_margin"
+                            android:layout_weight="1"
+                            android:background="@drawable/ripple_effect"
+                            android:text="@string/Pick_Customer"
+                            android:visibility="gone" />
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/MyADF_btn_complete"
+                            style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/MyADF_linear_child1"
+                            android:layout_margin="@dimen/margin_10"
+                            android:layout_marginTop="@dimen/detail_bottom_margin"
+                            android:layout_weight="1"
+                            android:background="@drawable/ripple_effect"
+                            android:text="@string/complete_ride"
+                            android:visibility="gone" />
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/MyADF_btn_cancel"
+                            style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/MyADF_linear_child1"
+                            android:layout_margin="@dimen/margin_10"
+                            android:layout_marginTop="@dimen/detail_bottom_margin"
+                            android:layout_weight="1"
+                            android:background="@drawable/ripple_effect"
+                            android:text="@string/cancel_ride"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

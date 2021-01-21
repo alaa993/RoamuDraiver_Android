@@ -13,20 +13,21 @@ import com.alaan.roamudriver.R;
 import com.alaan.roamudriver.acitivities.HomeActivity;
 import com.alaan.roamudriver.custom.Utils;
 import com.alaan.roamudriver.fragement.AcceptedDetailFragment;
+import com.alaan.roamudriver.fragement.MyAcceptedDetailFragment;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
 
 import java.util.List;
 
-public class AcceptedRequestAdapter extends RecyclerView.Adapter<AcceptedRequestAdapter.Holder> {
+public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedRequestAdapter.Holder> {
     private List<PendingRequestPojo> list;
 
-    public AcceptedRequestAdapter(List<PendingRequestPojo> list) {
+    public MyAcceptedRequestAdapter(List<PendingRequestPojo> list) {
         this.list = list;
     }
 
     @Override
-    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new Holder(LayoutInflater.from(parent.getContext()).inflate(R.layout.acceptedrequest_item, parent, false));
+    public MyAcceptedRequestAdapter.Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new MyAcceptedRequestAdapter.Holder(LayoutInflater.from(parent.getContext()).inflate(R.layout.acceptedrequest_item, parent, false));
     }
 
     @Override
@@ -48,9 +49,9 @@ public class AcceptedRequestAdapter extends RecyclerView.Adapter<AcceptedRequest
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("data", pojo);
-                AcceptedDetailFragment detailFragment = new AcceptedDetailFragment();
-                detailFragment.setArguments(bundle);
-                ((HomeActivity) holder.itemView.getContext()).changeFragment(detailFragment, "Passenger Information");
+                MyAcceptedDetailFragment myDetailFragment = new MyAcceptedDetailFragment();
+                myDetailFragment.setArguments(bundle);
+                ((HomeActivity) holder.itemView.getContext()).changeFragment(myDetailFragment, "Passenger Information");
             }
         });
         BookFont(holder, holder.f);
@@ -95,12 +96,12 @@ public class AcceptedRequestAdapter extends RecyclerView.Adapter<AcceptedRequest
         }
     }
 
-    public void BookFont(Holder holder, TextView view1) {
+    public void BookFont(MyAcceptedRequestAdapter.Holder holder, TextView view1) {
         Typeface font1 = Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "font/AvenirLTStd_Book.otf");
         view1.setTypeface(font1);
     }
 
-    public void MediumFont(Holder holder, TextView view) {
+    public void MediumFont(MyAcceptedRequestAdapter.Holder holder, TextView view) {
         Typeface font = Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "font/AvenirLTStd_Medium.otf");
         view.setTypeface(font);
     }

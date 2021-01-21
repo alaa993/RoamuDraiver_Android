@@ -45,6 +45,8 @@ import android.widget.Toast;
 import com.alaan.roamudriver.BuildConfig;
 import com.alaan.roamudriver.fragement.Contact_usFragment;
 import com.alaan.roamudriver.fragement.Manage_travels;
+import com.alaan.roamudriver.fragement.MyAcceptedDetailFragment;
+import com.alaan.roamudriver.fragement.MyAcceptedRequestFragment;
 import com.alaan.roamudriver.fragement.NominateDriverFragment;
 import com.alaan.roamudriver.fragement.NotificationsFragment;
 import com.alaan.roamudriver.fragement.ProfitFragment;
@@ -136,6 +138,9 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     LocationEngine locationEngine;
 
     String[] permissions = {PermissionUtils.Manifest_ACCESS_FINE_LOCATION, PermissionUtils.Manifest_ACCESS_COARSE_LOCATION};
+
+    boolean post_notification = true;
+    DatabaseReference databasePosts;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -292,11 +297,16 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         AcceptedRequestFragment acceptedRequestFragment;
+        MyAcceptedRequestFragment myAcceptedRequestFragment;
         Bundle bundle;
         switch (item.getItemId()) {
             //groups_driver
             case R.id.home:
-                addPost.setVisibility(View.GONE);
+                post_notification = false;
+                getNotificationsCount();
+                addPost.setBackgroundResource(R.drawable.ic_notification);
+                addPost.setText("");
+                addPost.setVisibility(View.VISIBLE);
                 changeFragment(new SearchUser(), getString(R.string.home));
                 break;
 
@@ -311,6 +321,9 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                 break;
 
             case R.id.platform:
+                post_notification = true;
+                addPost.setBackgroundResource(R.drawable.ronded_button2);
+                addPost.setText(R.string.post);
                 addPost.setVisibility(View.VISIBLE);
                 changeFragment(new platform(), getString(R.string.platform));
                 break;
@@ -362,6 +375,15 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
 //                bundle.putString("status", "PENDING");
 //                acceptedRequestFragment.setArguments(bundle);
                 changeFragment(acceptedRequestFragment, getString(R.string.requests));
+                break;
+
+            case R.id.my_accepted_requests:
+                addPost.setVisibility(View.GONE);
+                myAcceptedRequestFragment = new MyAcceptedRequestFragment();
+                bundle = new Bundle();
+                bundle.putString("status", "ACCEPTED");
+                myAcceptedRequestFragment.setArguments(bundle);
+                changeFragment(myAcceptedRequestFragment, getString(R.string.requests));
                 break;
 
             case R.id.vehicle_information:
@@ -529,13 +551,16 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
 
     @Override
     public void onBackPressed() {
-        addPost.setVisibility(View.GONE);
+        post_notification = false;
+        getNotificationsCount();
+        addPost.setBackgroundResource(R.drawable.ic_notification);
+        addPost.setText("");
+        addPost.setVisibility(View.VISIBLE);
+
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawer_close();
         } else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
-            // Intent i = new Intent(this, HomeActivity.class);
-            // startActivity(i);
         } else {
 
             super.onBackPressed();
@@ -575,9 +600,15 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         addPost = (Button) findViewById(R.id.toolbarPostBtn);
         addPost.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //creating an intent
-                Intent intent = new Intent(HomeActivity.this, AddPostActivity.class);
-                startActivity(intent);
+                if (post_notification == true)
+                {
+                    Intent intent = new Intent(HomeActivity.this, AddPostActivity.class);
+                    startActivity(intent);
+                }
+                else{
+                    addPost.setVisibility(View.GONE);
+                    changeFragment(new NotificationsFragment(), getString(R.string.notifications));
+                }
             }
         });
         if (Utils.haveNetworkConnection(getApplicationContext())) {
@@ -798,5 +829,24 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
 
     private void setListener() {
         locationEngine.addLocationEngineListener(this);
+    }
+
+    private void getNotificationsCount(){
+        try {
+            databasePosts = FirebaseDatabase.getInstance().getReference("Notifications").child(SessionManager.getUser().getUser_id());
+            databasePosts.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    addPost.setText(dataSnapshot.getChildrenCount() + "");
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }catch (Exception e){
+            Log.i("ibrahim_e",e.getMessage());
+        }
     }
 }

@@ -40,16 +40,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import cz.msebera.android.httpclient.Header;
-
 
 public class PostList extends ArrayAdapter<Post> {
     private Activity context;
@@ -71,16 +67,16 @@ public class PostList extends ArrayAdapter<Post> {
         TextView textViewText = (TextView) listViewItem.findViewById(R.id.textViewText);
         TextView textViewDate = (TextView) listViewItem.findViewById(R.id.textViewDate);
         TextView textViewCommentsNo = (TextView) listViewItem.findViewById(R.id.textViewCommentsNo);
-        ImageView PostAvatar  = (ImageView) listViewItem.findViewById(R.id.image);
+        ImageView PostAvatar = (ImageView) listViewItem.findViewById(R.id.image);
         TextView TripDetail = (TextView) listViewItem.findViewById(R.id.TripDetail);
         Post post = posts.get(position);
         String type = post.type;
 
 
-        if(type.equals("0")){
+        if (type.equals("0")) {
             listViewItem.setBackgroundColor(Color.parseColor("#e4e4e4"));
-            textViewText.setTypeface(Typeface.create("Quranic fonts.ttf",Typeface.BOLD_ITALIC));
-        }else if(type.equals("1")){
+            textViewText.setTypeface(Typeface.create("Quranic fonts.ttf", Typeface.BOLD_ITALIC));
+        } else if (type.equals("1")) {
             listViewItem.setBackgroundColor(Color.WHITE);
             //listViewItem.setBackgroundResource(R.drawable.listview_item_border);
         }
@@ -89,11 +85,9 @@ public class PostList extends ArrayAdapter<Post> {
 
         //type = 0 => driver
         //type = 1 => user
-        if (post.type.contains("1") && post.travel_id > 0)
-        {
+        if (post.type.contains("1") && post.travel_id > 0) {
             TripDetail.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             TripDetail.setVisibility(View.GONE);
         }
 
@@ -101,7 +95,7 @@ public class PostList extends ArrayAdapter<Post> {
         databaseComments.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                textViewCommentsNo.setText(context.getResources().getString(R.string.CommentsNoSt)+ " (" + dataSnapshot.getChildrenCount() + ")");
+                textViewCommentsNo.setText(context.getResources().getString(R.string.CommentsNoSt) + " (" + dataSnapshot.getChildrenCount() + ")");
                 Log.i("ibrahim was here", String.valueOf(context.getResources().getString(R.string.CommentsNoSt)));
             }
 
@@ -110,11 +104,10 @@ public class PostList extends ArrayAdapter<Post> {
 
             }
         });
-        if (post.timestamp != null)
-        {
+        if (post.timestamp != null) {
             Date date = new Date(post.timestamp);
             SimpleDateFormat DateFor = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String stringDate= DateFor.format(date);
+            String stringDate = DateFor.format(date);
             textViewDate.setText(stringDate.toString());
         }
 
@@ -130,6 +123,7 @@ public class PostList extends ArrayAdapter<Post> {
                     Glide.with(PostList.this.getContext()).load(photoURL).apply(new RequestOptions().error(R.drawable.images)).into(PostAvatar);
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
@@ -159,7 +153,7 @@ public class PostList extends ArrayAdapter<Post> {
                     }.getType());
 
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("data",list.get(0));
+                    bundle.putSerializable("data", list.get(0));
                     AcceptRideFragment detailFragment = new AcceptRideFragment();
                     detailFragment.setArguments(bundle);
 

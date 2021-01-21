@@ -31,11 +31,12 @@
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
-        android:layout_height="118dp"
-        app:srcCompat="@drawable/imageb1"
+        android:layout_height="120dp"
         tools:layout_centerHorizontal="true"
         tools:layout_centerVertical="false"
-        tools:layout_marginTop="20dp"
-        tools:src="@tools:sample/avatars" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@drawable/roamu_driver_transparent"
+        />
 
 </RelativeLayout>

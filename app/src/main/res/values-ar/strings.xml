@@ -300,7 +300,7 @@
     <string name="profit">نجاح و أرباح</string>
     <string name="contact_us">اتصل بنا</string>
     <string name="nominate_a_driver">ترشيح سائق</string>
-    <string name="nofifications">الإشعارات</string>
+    <string name="notifications">الإشعارات</string>
     <string name="profit_str">
         لن يكون النجاح بعيدا عنك، الذي يعني تحقيق المزيد من الأرباح، وسندون هنا مجموعة نقاط التي تمثل مفتاح النجاح والطريق المؤدي إلى جني الأرباح.\n
 أولا- احرص للحصول على تقييم متقدم من قبل زبائنك، فهو وسيلتك الإعلانية الافضل لجذب الزبائن.\n
@@ -315,6 +315,7 @@
     <string name="request_type">نوع الطلب</string>
     <string name="share_application">مشاركة التطبيق</string>
     <string name="All_travel">كل الرحلات</string>
+    <string name="my_accepted_travels">رحلاتي المقبولة</string>
 
 
 </resources>

@@ -1,5 +1,6 @@
 package com.alaan.roamudriver.adapter;
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,8 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alaan.roamudriver.R;
+import com.alaan.roamudriver.Server.Server;
+import com.alaan.roamudriver.acitivities.HomeActivity;
+import com.alaan.roamudriver.fragement.AcceptRideFragment;
+import com.alaan.roamudriver.fragement.AcceptedDetailFragment;
 import com.alaan.roamudriver.pojo.Notification;
 import com.alaan.roamudriver.pojo.Pass;
+import com.alaan.roamudriver.pojo.PendingRequestPojo;
+import com.alaan.roamudriver.session.SessionManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,8 +28,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 public class NotificationAdapter extends ArrayAdapter<Notification> {
 
@@ -48,7 +65,7 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
         ImageView PostAvatar = (ImageView) listViewItem.findViewById(R.id.Notificatoin_image);
         Notification notification = notifications.get(position);
 
-        Log.i("ibrahim_1",notification.toString());
+        Log.i("ibrahim_1", notification.toString());
         textViewText.setText(notification.text);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
@@ -71,7 +88,39 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
             }
         });
 
-
+        listViewItem.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                GetRides(String.valueOf(notification.ride_id));
+            }
+        });
         return listViewItem;
+    }
+
+    private void GetRides(String ride_id) {
+        RequestParams params = new RequestParams();
+        params.put("ride_id", ride_id);
+        Server.setHeader(SessionManager.getKEY());
+        Server.get(Server.GET_SPECIFIC_RIDE, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.e("success", response.toString());
+                try {
+                    Gson gson = new GsonBuilder().create();
+                    List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
+                    }.getType());
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("data", list.get(0));
+                    AcceptedDetailFragment detailFragment = new AcceptedDetailFragment();
+                    detailFragment.setArguments(bundle);
+
+                    ((HomeActivity) getContext()).changeFragment(detailFragment, "Passenger Information");
+
+                } catch (JSONException e) {
+                    Log.e("Get Data", e.getMessage());
+                }
+            }
+        });
     }
 }

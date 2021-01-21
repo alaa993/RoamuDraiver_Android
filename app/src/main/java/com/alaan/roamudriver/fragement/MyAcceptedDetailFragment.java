@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -25,14 +26,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alaan.roamudriver.pojo.SearchForUser;
-import com.alaan.roamudriver.pojo.firebaseRide;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
 import com.alaan.roamudriver.R;
 import com.alaan.roamudriver.Server.Server;
 import com.alaan.roamudriver.acitivities.HomeActivity;
@@ -40,7 +33,14 @@ import com.alaan.roamudriver.custom.GPSTracker;
 import com.alaan.roamudriver.custom.LocationService;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
 import com.alaan.roamudriver.pojo.Tracking;
+import com.alaan.roamudriver.pojo.firebaseRide;
 import com.alaan.roamudriver.session.SessionManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
@@ -68,10 +68,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AcceptedDetailFragment extends FragmentManagePermission implements BackFragment {
+public class MyAcceptedDetailFragment extends FragmentManagePermission implements BackFragment {
+
     AppCompatButton trackRide, complete, cancel, approve, accept;
-    TextView title, drivername, mobilenumber, pickup_location, drop_location, fare, payment_status_TV;
-    //    String request = "";
+    TextView title, drivername, mobilenumber, pickup_location, drop_location, payment_status_TV, PickupPoint, MyADF_date, MyADF_TimeVal;
+
+
     String permissions[] = {PermissionUtils.Manifest_ACCESS_FINE_LOCATION, PermissionUtils.Manifest_ACCESS_COARSE_LOCATION};
 
     AlarmManager alarmManager;
@@ -80,13 +82,12 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
     private String pickup = "";
     private String drop = "";
     private String driver = "";
-    private String basefare = "";
-    private SwipeRefreshLayout swipeRefreshLayout;
     private String mobile = "";
     private String ride_id = "";
-    LinearLayout linearChat;
-    TableRow mobilenumber_row;
     private String user_id;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
+    TableRow mobilenumber_row;
     GPSTracker gpsTracker;
 
     DatabaseReference databaseRides;
@@ -97,9 +98,18 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
     private String payment_status;
     private String payment_mode;
 
-    @Nullable
+    public MyAcceptedDetailFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         bundle = getArguments();
         if (bundle != null) {
             rideJson = (PendingRequestPojo) bundle.getSerializable("data");
@@ -111,11 +121,10 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             Log.i("ibrahim", rideJson.getRide_id());
             databaseRides = FirebaseDatabase.getInstance().getReference("rides").child(rideJson.getRide_id());
         }
-        view = inflater.inflate(R.layout.accepted_detail_fragmnet, container, false);
+        view = inflater.inflate(R.layout.fragment_my_accepted_detail, container, false);
         ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.passanger_info));
         BindView();
         return view;
-
     }
     @Override
     public void onStart() {
@@ -132,7 +141,6 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
                     payment_status = fbRide.payment_status;
                     payment_mode = fbRide.payment_mode;
                     setupData();
-                    changeFragment();
                 }
             }
 
@@ -141,6 +149,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             }
         });
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -173,31 +182,38 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
 
     public void BindView() {
         gpsTracker = new GPSTracker(getActivity());
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-        linearChat = (LinearLayout) view.findViewById(R.id.linear_chat);
-        accept = (AppCompatButton) view.findViewById(R.id.btn_accept);
-        complete = (AppCompatButton) view.findViewById(R.id.btn_complete);
-        approve = (AppCompatButton) view.findViewById(R.id.btn_approve);
-        cancel = (AppCompatButton) view.findViewById(R.id.btn_cancel);
-        trackRide = (AppCompatButton) view.findViewById(R.id.btn_trackride);
-        title = (TextView) view.findViewById(R.id.title);
-        drivername = (TextView) view.findViewById(R.id.txt_drivername);
-        mobilenumber = (TextView) view.findViewById(R.id.txt_mobilenumber);
-        payment_status_TV = (TextView) view.findViewById(R.id.txt_paymentstatus);
-        pickup_location = (TextView) view.findViewById(R.id.txt_pickuplocation);
-        drop_location = (TextView) view.findViewById(R.id.txt_droplocation);
-        fare = (TextView) view.findViewById(R.id.txt_basefare);
-        mobilenumber_row = view.findViewById(R.id.mobilenumber_row);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.MyADFswipe_refresh);
+        accept = (AppCompatButton) view.findViewById(R.id.MyADF_btn_accept);
+        complete = (AppCompatButton) view.findViewById(R.id.MyADF_btn_complete);
+        approve = (AppCompatButton) view.findViewById(R.id.MyADF_btn_approve);
+        cancel = (AppCompatButton) view.findViewById(R.id.MyADF_btn_cancel);
+        trackRide = (AppCompatButton) view.findViewById(R.id.MyADF_btn_trackride);
+
+        drivername = (TextView) view.findViewById(R.id.MyADF_txt_drivername);
+        mobilenumber = (TextView) view.findViewById(R.id.MyADF_txt_mobilenumber);
+        pickup_location = (TextView) view.findViewById(R.id.MyADF_txt_pickuplocation);
+        drop_location = (TextView) view.findViewById(R.id.MyADF_txt_droplocation);
+        payment_status_TV = (TextView) view.findViewById(R.id.MyADF_payment_status_TV);
+
+        PickupPoint = (TextView) view.findViewById(R.id.MyADF_txt_PickupPoint);
+        MyADF_date = (TextView) view.findViewById(R.id.MyADF_dateTimeVal);
+        MyADF_TimeVal = (TextView) view.findViewById(R.id.MyADF_TimeVal);
+
+        mobilenumber_row = view.findViewById(R.id.MyADF_mobilenumber_row);
+
         pickup_location.setSelected(true);
         drop_location.setSelected(true);
         if (bundle != null) {
+            ride_id = rideJson.getRide_id();
+            user_id = rideJson.getUser_id();
+
             pickup = rideJson.getPickup_address();
             drop = rideJson.getDrop_address();
             driver = rideJson.getUser_name();
-            basefare = rideJson.getAmount();
-            ride_id = rideJson.getRide_id();
-            user_id = rideJson.getUser_id();
             mobile = rideJson.getUser_mobile();
+            PickupPoint.setText(rideJson.getPickup_point());
+            MyADF_date.setText(rideJson.getDate());
+            MyADF_TimeVal.setText(rideJson.getTime());
 
             if (pickup != null) {
                 pickup_location.setText(pickup);
@@ -207,9 +223,6 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             }
             if (driver != null) {
                 drivername.setText(driver);
-            }
-            if (fare != null) {
-                fare.setText(basefare + " " + SessionManager.getUnit());
             }
             if (mobile != null) {
                 mobilenumber.setText(mobile);
@@ -348,21 +361,6 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
                 });
             }
         });
-    }
-
-    public void changeFragment(){
-        if (ride_status.equalsIgnoreCase("ACCEPTED") && travel_status.equalsIgnoreCase("STARTED"))
-        {
-            Bundle bundle = new Bundle();
-            rideJson.setTravel_status(travel_status);
-            rideJson.setStatus(ride_status);
-            rideJson.setPayment_status(payment_status);
-            rideJson.setPayment_mode(payment_mode);
-            bundle.putSerializable("data", rideJson);
-            MyAcceptedDetailFragment detailFragment = new MyAcceptedDetailFragment();
-            detailFragment.setArguments(bundle);
-            ((HomeActivity) getContext()).changeFragment(detailFragment, "Passenger Information");
-        }
     }
 
     private void approvePaymet() {

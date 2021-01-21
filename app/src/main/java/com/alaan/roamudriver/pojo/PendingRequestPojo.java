@@ -15,6 +15,7 @@ public class PendingRequestPojo implements Serializable {
     private String drop_address;
     private String pickup_location;
     private String drop_location;
+    private String pickup_point;
     private String city;
     private String distance;
     private String status;
@@ -150,6 +151,14 @@ public class PendingRequestPojo implements Serializable {
         this.pickup_address = pickup_address;
     }
 
+    public String getPickup_point() {
+        return pickup_point;
+    }
+
+    public void setPickup_point(String pickup_point) {
+        this.pickup_point = pickup_point;
+    }
+
     public String getDrop_address() {
         return drop_address;
     }
@@ -197,11 +206,11 @@ public class PendingRequestPojo implements Serializable {
         this.status = status;
     }
 
-    public String getTravel_Status() {
+    public String getTravel_status() {
         return travel_status;
     }
 
-    public void setTravel_Status(String travel_status) {
+    public void setTravel_status(String travel_status) {
         this.travel_status = travel_status;
     }
 
