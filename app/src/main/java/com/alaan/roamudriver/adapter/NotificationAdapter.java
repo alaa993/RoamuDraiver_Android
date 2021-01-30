@@ -27,6 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -37,7 +38,9 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -90,13 +93,24 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
         listViewItem.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                GetRides(String.valueOf(notification.ride_id));
+                GetRides(String.valueOf(notification.ride_id), notification.id);
             }
         });
         return listViewItem;
     }
 
-    private void GetRides(String ride_id) {
+    public void updateNotificationFirebase(String ride_id, String user_id, String notification_id) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(user_id).child(notification_id);
+        Map<String, Object> rideObject = new HashMap<>();
+        rideObject.put("ride_id", ride_id);
+        rideObject.put("text", "Ride Updated");
+        rideObject.put("readStatus", "1");
+        rideObject.put("timestamp", ServerValue.TIMESTAMP);
+        rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        databaseRef.setValue(rideObject);
+    }
+
+    private void GetRides(String ride_id, String notification_id) {
         RequestParams params = new RequestParams();
         params.put("ride_id", ride_id);
         Server.setHeader(SessionManager.getKEY());
@@ -109,12 +123,11 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
                     Gson gson = new GsonBuilder().create();
                     List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                     }.getType());
-
+                    updateNotificationFirebase(ride_id, list.get(0).getDriver_id(), notification_id); // my id is driver id
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("data", list.get(0));
                     AcceptedDetailFragment detailFragment = new AcceptedDetailFragment();
                     detailFragment.setArguments(bundle);
-
                     ((HomeActivity) getContext()).changeFragment(detailFragment, "Passenger Information");
 
                 } catch (JSONException e) {

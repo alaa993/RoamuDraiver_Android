@@ -564,28 +564,19 @@ public class SearchUser extends Fragment implements BackFragment {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         Toast.makeText(getActivity(), R.string.ride_has_been_requested, Toast.LENGTH_LONG).show();
                         ((HomeActivity) getActivity()).changeFragment(new SearchUser(), "fragment_search_user");
-                        //
-//                        Log.i("ibrahim msg", response.toString());
-
                         if (response.has("data")) {
                             JSONObject data = response.getJSONObject("data");
                             int travel_id = Integer.parseInt(data.getString("travel_id"));
-//                            Log.i("ibrahim travel_id", String.valueOf(travel_id));
                             if (Checkbox.isChecked()) {
-//                                Log.i("ibrahim check box", "is checked");
                                 SavePost(pickup_address, drop_address, date_time, time_value, travel_id);
                             } else {
-//                                Log.i("ibrahim check box", "is not checked");
                             }
-                            //SavePrivatePost(pickup_address, drop_address, date_time, time_value, travel_id);
                         } else {
-//                            Log.i("ibrahim_response", "no travel id");
                         }
                     } else {
                         Toast.makeText(getActivity(), "tryAgain", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-//                    Toast.makeText(getActivity(), "tryAgain", Toast.LENGTH_LONG).show();
                 }
             }
 

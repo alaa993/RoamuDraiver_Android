@@ -196,7 +196,7 @@
     <string name="smoked">Smoked</string>
     <string name="passenger_one">1 Passnager</string>
     <string name="add_travel">Save</string>
-    <string name="find_travel">Find Passnager</string>
+    <string name="find_travel">Find Passenger</string>
     <string name="smoking">smoking</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -298,5 +298,6 @@ But the owner of the car will have to check the car documents before agreeing to
     <string name="share_application">Share Application</string>
     <string name="All_travel">-ِAll-</string>
     <string name="my_accepted_travels">My Accepted Travels</string>
+    <string name="ConfirmRideVC_AlertDetail">Please select Number of Seats more than passengers Number</string>
 
 </resources>

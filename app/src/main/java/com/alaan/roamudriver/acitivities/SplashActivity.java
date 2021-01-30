@@ -24,48 +24,35 @@ public class SplashActivity extends ActivityManagePermission {
     private final static int SPLASH_TIME_OUT = 2000;
     String permissionAsk[] = {PermissionUtils.Manifest_CAMERA, PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE, PermissionUtils.Manifest_READ_EXTERNAL_STORAGE, PermissionUtils.Manifest_ACCESS_FINE_LOCATION, PermissionUtils.Manifest_ACCESS_COARSE_LOCATION};
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //get languge form sharedPrefrence
         Stash.init(this);
-        if(Stash.getString("TAG_LANG" ) != null)
-        {
-            setLocale(Stash.getString("TAG_LANG" ), this);
-
-        }
-        else
-        {
+        if (Stash.getString("TAG_LANG") != null) {
+            setLocale(Stash.getString("TAG_LANG"), this);
+        } else {
             setLocale("en", this);
-
         }
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-//Remove notification bar
+        //Remove notification bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-//set content view AFTER ABOVE sequence (to avoid crash)
+        //set content view AFTER ABOVE sequence (to avoid crash)
         setContentView(R.layout.splash_activity);
         new Handler().postDelayed(new Runnable() {
-
             /*
              * Showing splash screen with a timer. This will be useful when you
              * want to show case your app logo / company
              */
-
             @Override
             public void run() {
                 Askpermission();
                 // This method will be executed once the timer is over
                 // Start your app main activity
-
-
                 // close this activity
-
             }
         }, SPLASH_TIME_OUT);
-
     }
 
     public void Askpermission() {
@@ -74,13 +61,10 @@ public class SplashActivity extends ActivityManagePermission {
             public void permissionGranted() {
                 redirect();
             }
-
             @Override
             public void permissionDenied() {
                 redirect();
-
             }
-
             @Override
             public void permissionForeverDenied() {
                 redirect();
@@ -89,8 +73,7 @@ public class SplashActivity extends ActivityManagePermission {
     }
 
     private void redirect() {
-       // SessionManager.getInstance().setPref(getApplicationContext());
-
+        // SessionManager.getInstance().setPref(getApplicationContext());
         if (SessionManager.isLoggedIn()) {
             startActivity(new Intent(SplashActivity.this, HomeActivity.class));
         } else {
@@ -98,7 +81,5 @@ public class SplashActivity extends ActivityManagePermission {
             startActivity(i);
         }
         finish();
-
     }
-
 }

@@ -44,17 +44,17 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Ho
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                pass = new PendingRequestPojo();
-                bundle.putSerializable("data", pass);
-                Toast.makeText(v.getContext(), ""+i, Toast.LENGTH_SHORT).show();
-                pass.setPickup_address(pojo.getPickup_address());
-                pass.setDrop_address(pojo.getDrop_address());
-                pass.setpickup_location(pojo.getpickup_location());
-                pass.setdrop_location(pojo.getdrop_location());
-                pass.setRide_smoked(pojo.getRide_smoked());
-                pass.setbooked_set(pojo.getbooked_set());
-                pass.setUser_mobile(pojo.getUser_mobile());
-                pass.setCity(pojo.getCity());
+//                pass = new PendingRequestPojo();
+//                bundle.putSerializable("data", pass);
+//                Toast.makeText(v.getContext(), ""+i, Toast.LENGTH_SHORT).show();
+//                pass.setPickup_address(pojo.getPickup_address());
+//                pass.setDrop_address(pojo.getDrop_address());
+//                pass.setpickup_location(pojo.getpickup_location());
+//                pass.setdrop_location(pojo.getdrop_location());
+//                pass.setRide_smoked(pojo.getRide_smoked());
+//                pass.setbooked_set(pojo.getbooked_set());
+//                pass.setUser_mobile(pojo.getUser_mobile());
+//                pass.setCity(pojo.getCity());
                 bundle.putSerializable("data",pojo);
                 AcceptRideFragment detailFragment = new AcceptRideFragment();
                 detailFragment.setArguments(bundle);

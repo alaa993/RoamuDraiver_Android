@@ -116,7 +116,7 @@
     <string name="amount">المبلغ</string>
     <string name="distance">المسافة</string>
     <string name="status">الحالة</string>
-    <string name="date_amp_time">لتاريخ والوقت</string>
+    <string name="date_amp_time">التاريخ والوقت</string>
     <string name="driver_name">اسم برنامج التشغيل</string>
     <string name="paypal_id">معرف PAYPAL</string>
     <string name="dl">يرجى تحميل رخصة القيادة الخاصة بك</string>
@@ -311,11 +311,12 @@
 تذكر باستمرار مقولة
 النجاح بوابة الأرباح
     </string>
-    <string name="my_travels">الرحلات الخاصة بي</string>
+    <string name="my_travels">رحلاتي</string>
     <string name="request_type">نوع الطلب</string>
     <string name="share_application">مشاركة التطبيق</string>
     <string name="All_travel">كل الرحلات</string>
     <string name="my_accepted_travels">رحلاتي المقبولة</string>
+    <string name="ConfirmRideVC_AlertDetail">رجاءا اختر عدد المقاعد اكثر من عدد الركاب</string>
 
 
 </resources>

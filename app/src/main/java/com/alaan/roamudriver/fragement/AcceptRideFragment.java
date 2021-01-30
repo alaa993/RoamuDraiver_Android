@@ -125,7 +125,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     private LatLng destination;
     Place s_drop, s_pic;
     Place point;
-
     com.google.android.gms.maps.MapView mapView;
     AlarmManager alarmManager;
     PendingIntent pendingIntent;
@@ -138,7 +137,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     private SwipeRefreshLayout swipeRefreshLayout;
     private String mobile = "";
     private String ride_id = "";
-
     private String paymnt_status = "";
     private String paymnt_mode = "";
     LinearLayout linearChat;
@@ -147,7 +145,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     PendingRequestPojo pojo;
     SearchForUser pojo1;
     GPSTracker gpsTracker;
-
     private CheckBox Checkbox;
     private EditText mPassengers;
     private EditText mPrice;
@@ -251,10 +248,16 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             @Override
             public void onClick(View view) {
                 if (!mPassengers.getText().toString().isEmpty() && !mPrice.getText().toString().isEmpty() && !mPickupPoint.getText().toString().isEmpty()) {
-                    dialog.dismiss();
-//                    AlertDialogCreate(getString(R.string.ride_acceptance), getString(R.string.ride_accept_msg), "WAITED");
-
-                    SendStatusAccept(ride_id, "WAITED");
+                    if(Integer.valueOf(mPassengers.getText().toString()) < Integer.valueOf(pojo.getbooked_set()))
+                    {
+                        Toast.makeText(AcceptRideFragment.this.getContext(),
+                                getString(R.string.ConfirmRideVC_AlertDetail),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        dialog.dismiss();
+                        SendStatusAccept(ride_id, "WAITED");
+                    }
                 } else {
                     Toast.makeText(AcceptRideFragment.this.getContext(),
                             getString(R.string.Post_Empty),
@@ -365,7 +368,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             paymnt_mode = pojo.getRide_smoked();
             txt_dateandtime.setText(pojo.getTime() + " " + pojo.getDate());
             payment_status.setText(pojo.getRide_smoked());
-            //payment_status.setText("Ahmed");
 
             log.e("all data", SessionManager.getUnit());
             if (pickup != null) {
@@ -632,7 +634,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                             Toast.makeText(getActivity(), getString(R.string.ride_reuest_completed), Toast.LENGTH_LONG).show();
                         } else if (status.equalsIgnoreCase("ACCEPTED")) {
                             startService();
-
                             bundle = new Bundle();
                             bundle.putString("status", "ACCEPTED");
                             acceptedRequestFragment.setArguments(bundle);
@@ -641,23 +642,23 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                             ((HomeActivity) getActivity()).changeFragment(acceptedRequestFragment, getString(R.string.requests));
                             Toast.makeText(getActivity(), getString(R.string.ride_reuest_accepted), Toast.LENGTH_LONG).show();
 
-
                         } else if (status.equalsIgnoreCase("WAITED")) {
                             startService();
-//                            getFragmentManager().popBackStack();
                             if (response.has("data")) {
                                 JSONObject data = response.getJSONObject("data");
                                 int travel_id = Integer.parseInt(data.getString("travel_id"));
                                 Log.i("ibrahim travel_id", String.valueOf(travel_id));
                                 if (Checkbox.isChecked()) {
-                                Log.i("ibrahim check box", "is checked");
+                                    Log.i("ibrahim check box", "is checked");
                                     SavePost(pickup_address, drop_address, pojo.getDate(), pojo.getTime(), travel_id);
+                                    updateRideFirebase("", status, pojo.getPayment_status(), pojo.getPayment_mode());
+                                    updateNotificationFirebase();
                                 } else {
-                                Log.i("ibrahim check box", "is not checked");
+                                    Log.i("ibrahim check box", "is not checked");
                                 }
-                                //SavePrivatePost(pickup_address, drop_address, date_time, time_value, travel_id);
+
                             } else {
-                            Log.i("ibrahim_response", "no travel id");
+                                Log.i("ibrahim_response", "no travel id");
                             }
 //                            bundle = new Bundle();
 //                            bundle.putString("status", "ACCEPTED");
@@ -666,8 +667,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
 //                            ((HomeActivity) getActivity()).setStatus(pojo, "accepted", true);
 //                            ((HomeActivity) getActivity()).changeFragment(acceptedRequestFragment, getString(R.string.requests));
 //                            Toast.makeText(getActivity(), getString(R.string.ride_reuest_accepted), Toast.LENGTH_LONG).show();
-
-
                         } else {
                             bundle = new Bundle();
                             bundle.putString("status", "CANCELLED");
@@ -739,6 +738,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 userObject.put("travel_id", travel_id);
                 userObject.put("timestamp", ServerValue.TIMESTAMP);
                 databaseRef.setValue(userObject);
+                getFragmentManager().popBackStack();
             }
 
             @Override
@@ -746,6 +746,29 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 // Getting Post failed, log a message
             }
         });
+    }
+
+    public void updateRideFirebase(String travel_status, String ride_status, String payment_status, String payment_mode) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("rides").child(pojo.getRide_id());
+        Map<String, Object> rideObject = new HashMap<>();
+
+        rideObject.put("ride_status", ride_status);
+        rideObject.put("travel_status", travel_status);
+        rideObject.put("payment_status", payment_status);
+        rideObject.put("payment_mode", payment_mode);
+        rideObject.put("timestamp", ServerValue.TIMESTAMP);
+        databaseRef.setValue(rideObject);
+    }
+
+    public void updateNotificationFirebase() {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(pojo.getUser_id()).push();
+        Map<String, Object> rideObject = new HashMap<>();
+        rideObject.put("ride_id", pojo.getRide_id());
+        rideObject.put("text", "Ride Updated");
+        rideObject.put("readStatus", "0");
+        rideObject.put("timestamp", ServerValue.TIMESTAMP);
+        rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        databaseRef.setValue(rideObject);
     }
 
     public Boolean GPSEnable() {
@@ -762,7 +785,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     }
 
     void isStarted() {
-
+        Log.i("ibrahim", "isStarted");
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Tracking/" + pojo.getRide_id());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -920,7 +943,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     public void onDirectionFailure(Throwable t) {
         // show error message when its failure
     }
-
 
     public void onMapReady(GoogleMap googleMap) {
         myMap = googleMap;
@@ -1182,6 +1204,4 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             }
         }
     }
-
-
 }

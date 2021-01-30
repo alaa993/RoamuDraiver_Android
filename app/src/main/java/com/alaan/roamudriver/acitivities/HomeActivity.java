@@ -57,6 +57,7 @@ import com.alaan.roamudriver.fragement.lang;
 import com.alaan.roamudriver.fragement.platform;
 import com.alaan.roamudriver.fragement.privacy;
 import com.alaan.roamudriver.pojo.Driver_groups_model;
+import com.alaan.roamudriver.pojo.Notification;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -121,32 +122,25 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             Color.GREEN,
     };
     String go = "";
-
     Location location; // location
     double latitude; // latitude
     double longitude; // longitude
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; // 10 meters
-
     // The minimum time between updates in milliseconds
     private static final long MIN_TIME_BW_UPDATES = 1000; // 1 minute
-
     // Declaring a Location Manager
     protected LocationManager locationManager;
-
-
     PendingRequestPojo pojo;
     LocationEngine locationEngine;
-
     String[] permissions = {PermissionUtils.Manifest_ACCESS_FINE_LOCATION, PermissionUtils.Manifest_ACCESS_COARSE_LOCATION};
-
     boolean post_notification = true;
     DatabaseReference databasePosts;
+    int NotificationsCount = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
-
         if (SessionManager.isLoggedIn()) {
             getPhotoUri();
             BindView();
@@ -178,8 +172,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
-
-
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -222,7 +214,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             askCompactPermissions(permissions, new PermissionResult() {
                 @Override
                 public void permissionGranted() {
-                    // getLocation();
+//                     getLocation();
                     setListener();
                 }
 
@@ -238,6 +230,12 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         } else {
             setListener();
             // getLocation();
+        }
+        //by ibrahim
+        if (location != null && pojo != null) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+            setStatus(pojo, "", false);
         }
     }
 
@@ -276,14 +274,12 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
     }
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -293,7 +289,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     public void drawer_close() {
         mDrawerLayout.closeDrawers();
     }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         AcceptedRequestFragment acceptedRequestFragment;
@@ -426,7 +421,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         }
         return true;
     }
-
     @SuppressLint("MissingPermission")
     @Override
     protected void onStart() {
@@ -448,29 +442,23 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         } catch (Exception e) {
         }
     }
-
     @SuppressLint("MissingPermission")
     @Override
     public void onConnected() {
         locationEngine.requestLocationUpdates();
     }
-
     @Override
     public void onLocationChanged(Location location) {
-
         if (location != null && pojo != null) {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
             setStatus(pojo, "", false);
         }
     }
-
-
     @Override
     protected void onPause() {
         super.onPause();
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -548,7 +536,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             toolbar.setTitle((Html.fromHtml(String.valueOf(s))));
         }
     }
-
     @Override
     public void onBackPressed() {
         post_notification = false;
@@ -622,7 +609,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             DrawableCompat.setTintList(DrawableCompat.wrap(switchCompat.getThumbDrawable()), new ColorStateList(states, thumbColors));
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -631,14 +617,12 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             locationEngine.removeLocationEngineListener(this);
         }
     }
-
     @Override
     public void update(String url) {
         if (!url.equals("")) {
             //   Glide.with(getApplicationContext()).load(url).apply(new RequestOptions().error(R.drawable.user_default)).into(avatar);
         }
     }
-
     @Override
     public void name(String name) {
         if (!name.equals("")) {
@@ -785,12 +769,10 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     }
 
     public void setStatus(PendingRequestPojo pojo, String status, boolean what) {
-
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Tracking/" + pojo.getRide_id());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 try {
                     if (dataSnapshot != null && dataSnapshot.hasChildren()) {
                         Tracking tracking = dataSnapshot.getValue(Tracking.class);
@@ -816,13 +798,10 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                         reference.setValue(tracking1);
                     }
                 } catch (Exception e) {
-
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
@@ -834,15 +813,23 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     private void getNotificationsCount(){
         try {
             databasePosts = FirebaseDatabase.getInstance().getReference("Notifications").child(SessionManager.getUser().getUser_id());
+            NotificationsCount = 0;
             databasePosts.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    addPost.setText(dataSnapshot.getChildrenCount() + "");
-                }
+                    for (DataSnapshot notificationSnapshot : dataSnapshot.getChildren()) {
+                        //getting artist
+                        Notification notification = notificationSnapshot.getValue(Notification.class);
+                        notification.id = notificationSnapshot.getKey();
 
+                        if (notification.readStatus.contains("0")) {
+                            NotificationsCount ++;
+                        }
+                    }
+                    addPost.setText(String.valueOf(NotificationsCount));
+                }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
                 }
             });
         }catch (Exception e){

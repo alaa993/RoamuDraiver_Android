@@ -97,7 +97,7 @@ import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
  */
 
 public class HomeFragment extends FragmentManagePermission implements OnMapReadyCallback, DirectionCallback, Animation.AnimationListener, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,BackFragment ,
+        GoogleApiClient.OnConnectionFailedListener, BackFragment,
         LocationListener {
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     public String NETWORK;
@@ -132,7 +132,7 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
     private String drivername = "";
     private Marker my_marker;
     private boolean isShown = true;
-    private RelativeLayout header, footer,footer2;
+    private RelativeLayout header, footer, footer2;
     TextView pickup_location, drop_location;
     RelativeLayout relative_drop;
     Button show_eringn;
@@ -148,7 +148,6 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
 
     }
@@ -592,6 +591,7 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
         });
 
     }
+
     private void setCurrentLocation() {
         if (!GPSEnable()) {
             tunonGps();
@@ -697,7 +697,7 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
                             ((HomeActivity) getActivity()).setPojo(pojo);
                             ((HomeActivity) getActivity()).setStatus(pojo, "", false);
 
-                               }
+                        }
 
 
                         String today_earning = response.getJSONObject("data").getString("today_earning");
@@ -741,7 +741,6 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
             }
         });
     }
-
 
 
     @SuppressWarnings({"MissingPermission"})
