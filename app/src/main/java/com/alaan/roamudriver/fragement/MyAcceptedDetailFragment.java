@@ -135,15 +135,13 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
         databaseRides.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot rideSnapshot : dataSnapshot.getChildren()) {
-                    firebaseRide fbRide = dataSnapshot.getValue(firebaseRide.class);
-                    Log.i("ibrahim ride", "----------");
-                    travel_status = fbRide.travel_status;
-                    ride_status = fbRide.ride_status;
-                    payment_status = fbRide.payment_status;
-                    payment_mode = fbRide.payment_mode;
-                    setupData();
-                }
+                firebaseRide fbRide = dataSnapshot.getValue(firebaseRide.class);
+                Log.i("ibrahim ride", "----------");
+                travel_status = fbRide.travel_status;
+                ride_status = fbRide.ride_status;
+                payment_status = fbRide.payment_status;
+                payment_mode = fbRide.payment_mode;
+                setupData();
             }
 
             @Override

@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 import com.alaan.roamudriver.pojo.SearchForUser;
 import com.alaan.roamudriver.pojo.firebaseRide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -123,23 +125,37 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
     public void onStart() {
         super.onStart();
         //attaching value event listener
-        databaseRides.addValueEventListener(new ValueEventListener() {
+        databaseRides.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot rideSnapshot : dataSnapshot.getChildren()) {
-                    firebaseRide fbRide = dataSnapshot.getValue(firebaseRide.class);
-                    Log.i("ibrahim ride", "----------");
-                    travel_status = fbRide.travel_status;
-                    ride_status = fbRide.ride_status;
-                    payment_status = fbRide.payment_status;
-                    payment_mode = fbRide.payment_mode;
-                    setupData();
-                    changeFragment();
-                }
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                firebaseRide fbRide = dataSnapshot.getValue(firebaseRide.class);
+                Log.i("ibrahim ride", "----------");
+                travel_status = fbRide.travel_status;
+                ride_status = fbRide.ride_status;
+                payment_status = fbRide.payment_status;
+                payment_mode = fbRide.payment_mode;
+                setupData();
+                changeFragment();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
