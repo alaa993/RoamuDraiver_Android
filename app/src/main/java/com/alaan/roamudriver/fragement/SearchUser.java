@@ -67,6 +67,7 @@ import cz.msebera.android.httpclient.Header;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static com.alaan.roamudriver.fragement.lang.setLocale;
 import static com.loopj.android.http.AsyncHttpClient.log;
 import static net.skoumal.fragmentback.BackFragment.NORMAL_BACK_PRIORITY;
 
@@ -364,7 +365,7 @@ public class SearchUser extends Fragment implements BackFragment {
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
 
-        databaseRefID.addValueEventListener(new ValueEventListener() {
+        databaseRefID.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String UserName = dataSnapshot.child("username").getValue(String.class);
@@ -407,7 +408,7 @@ public class SearchUser extends Fragment implements BackFragment {
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
 
-        databaseRefID.addValueEventListener(new ValueEventListener() {
+        databaseRefID.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String UserName = dataSnapshot.child("username").getValue(String.class);
@@ -454,6 +455,7 @@ public class SearchUser extends Fragment implements BackFragment {
     }
 
     private void datePicker() {
+        setLocale("en", getActivity());
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);

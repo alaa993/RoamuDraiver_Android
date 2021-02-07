@@ -76,6 +76,7 @@ import cz.msebera.android.httpclient.Header;
 
 ;import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static com.alaan.roamudriver.fragement.lang.setLocale;
 import static com.loopj.android.http.AsyncHttpClient.log;
 
 /**
@@ -243,7 +244,7 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
     }
 
     private void datePicker() {
-
+        setLocale("en", getActivity());
         // Get Current Date
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);

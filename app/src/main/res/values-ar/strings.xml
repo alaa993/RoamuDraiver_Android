@@ -266,7 +266,7 @@
     <string name="notification_2">سعيد بقبول طلبكم للسفر معه</string>
     <string name="notification_3">يعتذر عن قبول طلبكم</string>
     <string name="notification_4">نشكر ثقتكم بنا تم الوصول بنجاح</string>
-    <string name="notification_5">طلب الدفع دون اتصال</string>
+    <string name="notification_5">قبل الدفع دون اتصال</string>
     <string name="notification_6">المستخدم دفع ثمن رحلتك للتو</string>
     <string name="notification_7">اختاركم للسفر معكم</string>
     <string name="notification_8">تم ارسال الطلب وسيصلكم التأكيد في أقرب وقت</string>
@@ -317,6 +317,8 @@
     <string name="All_travel">كل الرحلات</string>
     <string name="my_accepted_travels">رحلاتي المقبولة</string>
     <string name="ConfirmRideVC_AlertDetail">رجاءا اختر عدد المقاعد اكثر من عدد الركاب</string>
+    <string name="Notification_Request">أرسل اليك طلب</string>
+    <string name="RideUpdated">تم تحديث معلومات الرحلة:</string>
 
 
 </resources>

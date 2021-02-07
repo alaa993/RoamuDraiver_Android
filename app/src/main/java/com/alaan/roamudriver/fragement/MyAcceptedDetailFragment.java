@@ -35,6 +35,7 @@ import com.alaan.roamudriver.pojo.PendingRequestPojo;
 import com.alaan.roamudriver.pojo.Tracking;
 import com.alaan.roamudriver.pojo.firebaseRide;
 import com.alaan.roamudriver.session.SessionManager;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -98,6 +99,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
     private String ride_status;
     private String payment_status;
     private String payment_mode;
+    ValueEventListener listener;
 
     public MyAcceptedDetailFragment() {
         // Required empty public constructor
@@ -132,7 +134,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
     public void onStart() {
         super.onStart();
         //attaching value event listener
-        databaseRides.addValueEventListener(new ValueEventListener() {
+        listener = databaseRides.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 firebaseRide fbRide = dataSnapshot.getValue(firebaseRide.class);
@@ -380,7 +382,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 updateRideFirebase(travel_status, ride_status, "PAID", payment_mode);
-                updateNotificationFirebase();
+                updateNotificationFirebase(getString(R.string.notification_5));
                 approve.setVisibility(View.GONE);
                 payment_status_TV.setText("PAID");
             }
@@ -415,7 +417,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
                     Bundle bundle;
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         updateRideFirebase(travel_status, status, payment_status, payment_mode);
-                        updateNotificationFirebase();
+                        updateNotificationFirebase(status);
                     } else {
                         String data = response.getJSONObject("data").toString();
                         Toast.makeText(getActivity(), data, Toast.LENGTH_LONG).show();
@@ -446,11 +448,11 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
         databaseRef.setValue(rideObject);
     }
 
-    public void updateNotificationFirebase() {
+    public void updateNotificationFirebase(String notificationText) {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(rideJson.getUser_id()).push();
         Map<String, Object> rideObject = new HashMap<>();
         rideObject.put("ride_id", rideJson.getRide_id());
-        rideObject.put("text", "Ride Updated");
+        rideObject.put("text", getString(R.string.RideUpdated) + " " + notificationText);
         rideObject.put("readStatus", "0");
         rideObject.put("timestamp", ServerValue.TIMESTAMP);
         rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -481,7 +483,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
                     Bundle bundle;
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         updateRideFirebase(travel_statusParam, status, payment_status, payment_mode);
-                        updateNotificationFirebase();
+                        updateNotificationFirebase(status);
                     } else {
                         String data = response.getJSONObject("data").toString();
                         Toast.makeText(getActivity(), data, Toast.LENGTH_LONG).show();
@@ -676,5 +678,11 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
     @Override
     public int getBackPriority() {
         return NORMAL_BACK_PRIORITY;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        databaseRides.removeEventListener(listener);
     }
 }

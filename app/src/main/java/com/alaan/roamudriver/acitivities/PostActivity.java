@@ -52,6 +52,7 @@ public class PostActivity extends AppCompatActivity {
     List<Comment> comments;
     DatabaseReference databasePost;
     DatabaseReference databaseComments;
+    ValueEventListener listener;
 
 
     @Override
@@ -86,7 +87,7 @@ public class PostActivity extends AppCompatActivity {
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
 
-        databaseRefID.addValueEventListener(new ValueEventListener() {
+        databaseRefID.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String UserName = dataSnapshot.child("username").getValue(String.class);
@@ -124,7 +125,7 @@ public class PostActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 //        attaching value event listener
-        databasePost.addValueEventListener(new ValueEventListener() {
+        databasePost.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 //                // Get Post object and use the values to update the UI
@@ -146,7 +147,7 @@ public class PostActivity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 //                String uid = user.getUid();
                 DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(post.author.uid);
-                databaseRefID.addValueEventListener(new ValueEventListener() {
+                databaseRefID.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
@@ -168,7 +169,7 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-        databaseComments.addValueEventListener(new ValueEventListener() {
+        listener = databaseComments.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -194,5 +195,11 @@ public class PostActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        databaseComments.removeEventListener(listener);
     }
 }

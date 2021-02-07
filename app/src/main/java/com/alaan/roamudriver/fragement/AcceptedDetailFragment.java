@@ -10,8 +10,12 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,6 +32,7 @@ import android.widget.Toast;
 
 import com.alaan.roamudriver.pojo.SearchForUser;
 import com.alaan.roamudriver.pojo.firebaseRide;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -99,6 +104,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
     private String ride_status;
     private String payment_status;
     private String payment_mode;
+    ValueEventListener listener;
 
     @Nullable
     @Override
@@ -125,14 +131,9 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
     public void onStart() {
         super.onStart();
         //attaching value event listener
-        databaseRides.addChildEventListener(new ChildEventListener() {
+        listener = databaseRides.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 firebaseRide fbRide = dataSnapshot.getValue(firebaseRide.class);
                 Log.i("ibrahim ride", "----------");
                 travel_status = fbRide.travel_status;
@@ -144,20 +145,15 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             }
 
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onCancelled(DatabaseError databaseError) {
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        databaseRides.removeEventListener(listener);
     }
 
     @Override
@@ -379,7 +375,14 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             bundle.putSerializable("data", rideJson);
             MyAcceptedDetailFragment detailFragment = new MyAcceptedDetailFragment();
             detailFragment.setArguments(bundle);
-            ((HomeActivity) getContext()).changeFragment(detailFragment, "Passenger Information");
+
+//            ((HomeActivity) getContext()).changeFragment(detailFragment, "Passenger Information");
+
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frame, detailFragment, "Passenger Information");
+            fragmentTransaction.commit();
+//            fragmentTransaction.addToBackStack(null);
         }
     }
 
@@ -400,7 +403,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 updateRideFirebase(travel_status, ride_status, "PAID", payment_mode);
-                updateNotificationFirebase();
+                updateNotificationFirebase(getString(R.string.notification_5));
                 approve.setVisibility(View.GONE);
                 payment_status_TV.setText("PAID");
             }
@@ -435,7 +438,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
                     Bundle bundle;
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         updateRideFirebase(travel_status, status, payment_status, payment_mode);
-                        updateNotificationFirebase();
+                        updateNotificationFirebase(status);
                     } else {
                         String data = response.getJSONObject("data").toString();
                         Toast.makeText(getActivity(), data, Toast.LENGTH_LONG).show();
@@ -466,11 +469,11 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
         databaseRef.setValue(rideObject);
     }
 
-    public void updateNotificationFirebase() {
+    public void updateNotificationFirebase(String notificationText) {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(rideJson.getUser_id()).push();
         Map<String, Object> rideObject = new HashMap<>();
         rideObject.put("ride_id", rideJson.getRide_id());
-        rideObject.put("text", "Ride Updated");
+        rideObject.put("text", getString(R.string.RideUpdated) + " " + notificationText);
         rideObject.put("readStatus", "0");
         rideObject.put("timestamp", ServerValue.TIMESTAMP);
         rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -501,7 +504,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
                     Bundle bundle;
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         updateRideFirebase(travel_statusParam, status, payment_status, payment_mode);
-                        updateNotificationFirebase();
+                        updateNotificationFirebase(status);
                     } else {
                         String data = response.getJSONObject("data").toString();
                         Toast.makeText(getActivity(), data, Toast.LENGTH_LONG).show();
@@ -544,7 +547,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
     }
 
     void isStarted() {
-        Log.i("ibrahim","isStarted");
+        Log.i("ibrahim", "isStarted");
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Tracking/" + rideJson.getRide_id());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

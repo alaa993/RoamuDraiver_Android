@@ -135,7 +135,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     String[] permissions = {PermissionUtils.Manifest_ACCESS_FINE_LOCATION, PermissionUtils.Manifest_ACCESS_COARSE_LOCATION};
     boolean post_notification = true;
     DatabaseReference databasePosts;
-    int NotificationsCount = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -244,7 +243,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
 
-        databaseRefID.addValueEventListener(new ValueEventListener() {
+        databaseRefID.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String UserName = dataSnapshot.child("username").getValue(String.class);
@@ -274,12 +273,14 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
     }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -289,6 +290,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     public void drawer_close() {
         mDrawerLayout.closeDrawers();
     }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         AcceptedRequestFragment acceptedRequestFragment;
@@ -401,11 +403,11 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.setType("text/plain");
                     shareIntent.putExtra(Intent.EXTRA_SUBJECT, "My application name");
-                    String shareMessage= "\nLet me recommend you this application\n\n";
-                    shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID +"\n\n";
+                    String shareMessage = "\nLet me recommend you this application\n\n";
+                    shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "\n\n";
                     shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                     startActivity(Intent.createChooser(shareIntent, "choose one"));
-                } catch(Exception e) {
+                } catch (Exception e) {
                     //e.toString();
                 }
                 break;
@@ -421,6 +423,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         }
         return true;
     }
+
     @SuppressLint("MissingPermission")
     @Override
     protected void onStart() {
@@ -437,16 +440,17 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().addToBackStack(null);
             fragmentTransaction.replace(R.id.frame, fragment, fragmenttag);
             fragmentTransaction.commit();
-            //FragmentTransaction trans = fragMan.beginTransaction();
-            //fragmentTransaction.remove(fragment).commit();
+            fragmentTransaction.addToBackStack(null);
         } catch (Exception e) {
         }
     }
+
     @SuppressLint("MissingPermission")
     @Override
     public void onConnected() {
         locationEngine.requestLocationUpdates();
     }
+
     @Override
     public void onLocationChanged(Location location) {
         if (location != null && pojo != null) {
@@ -455,10 +459,12 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             setStatus(pojo, "", false);
         }
     }
+
     @Override
     protected void onPause() {
         super.onPause();
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -536,6 +542,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             toolbar.setTitle((Html.fromHtml(String.valueOf(s))));
         }
     }
+
     @Override
     public void onBackPressed() {
         post_notification = false;
@@ -587,12 +594,10 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         addPost = (Button) findViewById(R.id.toolbarPostBtn);
         addPost.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (post_notification == true)
-                {
+                if (post_notification == true) {
                     Intent intent = new Intent(HomeActivity.this, AddPostActivity.class);
                     startActivity(intent);
-                }
-                else{
+                } else {
                     addPost.setVisibility(View.GONE);
                     changeFragment(new NotificationsFragment(), getString(R.string.notifications));
                 }
@@ -609,6 +614,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             DrawableCompat.setTintList(DrawableCompat.wrap(switchCompat.getThumbDrawable()), new ColorStateList(states, thumbColors));
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -617,12 +623,14 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             locationEngine.removeLocationEngineListener(this);
         }
     }
+
     @Override
     public void update(String url) {
         if (!url.equals("")) {
             //   Glide.with(getApplicationContext()).load(url).apply(new RequestOptions().error(R.drawable.user_default)).into(avatar);
         }
     }
+
     @Override
     public void name(String name) {
         if (!name.equals("")) {
@@ -800,6 +808,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                 } catch (Exception e) {
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -810,30 +819,31 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         locationEngine.addLocationEngineListener(this);
     }
 
-    private void getNotificationsCount(){
+    private void getNotificationsCount() {
         try {
             databasePosts = FirebaseDatabase.getInstance().getReference("Notifications").child(SessionManager.getUser().getUser_id());
-            NotificationsCount = 0;
             databasePosts.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    int NotificationsCount = 0;
                     for (DataSnapshot notificationSnapshot : dataSnapshot.getChildren()) {
                         //getting artist
                         Notification notification = notificationSnapshot.getValue(Notification.class);
                         notification.id = notificationSnapshot.getKey();
 
                         if (notification.readStatus.contains("0")) {
-                            NotificationsCount ++;
+                            NotificationsCount++;
                         }
                     }
                     addPost.setText(String.valueOf(NotificationsCount));
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                 }
             });
-        }catch (Exception e){
-            Log.i("ibrahim_e",e.getMessage());
+        } catch (Exception e) {
+            Log.i("ibrahim_e", e.getMessage());
         }
     }
 }

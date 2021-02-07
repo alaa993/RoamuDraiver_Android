@@ -92,7 +92,7 @@ public class PostList extends ArrayAdapter<Post> {
         }
 
         databaseComments = FirebaseDatabase.getInstance().getReference("posts").child(post.id).child("Comments");
-        databaseComments.addValueEventListener(new ValueEventListener() {
+        databaseComments.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 textViewCommentsNo.setText(context.getResources().getString(R.string.CommentsNoSt) + " (" + dataSnapshot.getChildrenCount() + ")");
@@ -114,7 +114,7 @@ public class PostList extends ArrayAdapter<Post> {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(post.author.uid);
-        databaseRefID.addValueEventListener(new ValueEventListener() {
+        databaseRefID.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String photoURL = dataSnapshot.child("photoURL").getValue(String.class);

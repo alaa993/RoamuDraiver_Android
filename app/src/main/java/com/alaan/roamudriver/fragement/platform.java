@@ -32,64 +32,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link platform#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class platform extends Fragment implements BackFragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     View view;
     ListView listViewPosts;
-
-
-    //a list to store all the artist from firebase database
     List<Post> posts;
     DatabaseReference databasePosts;
+    ValueEventListener listener;
 
     public platform() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment platform.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static platform newInstance(String param1, String param2) {
-        platform fragment = new platform();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-
-        //list to store artists
         posts = new ArrayList<>();
         databasePosts = FirebaseDatabase.getInstance().getReference("posts");
         view = inflater.inflate(R.layout.fragment_platform, container, false);
@@ -99,35 +59,27 @@ public class platform extends Fragment implements BackFragment {
         listViewPosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //getting the selected artist
                 Post post = posts.get(i);
-
                 Bundle bundle = new Bundle();
                 bundle.putString("Post_id", post.id);
                 bundle.putString("request_type", "public");
-                Log.i("ibrahim from platform1", "-----------------");
                 PostFragment postfragment = new PostFragment();
-                Log.i("ibrahim from platform2", "-----------------");
                 postfragment.setArguments(bundle);
                 changeFragment(postfragment, "Requests");
             }
         });
-
         return view;
     }
-
     public void BindView() {
         listViewPosts = (ListView) view.findViewById(R.id.listViewPosts);
         listViewPosts.setBackgroundColor(Color.WHITE);
     }
 
     public void changeFragment(final Fragment fragment, final String fragmenttag) {
-
         try {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-//                    drawer_close();
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().addToBackStack(null);
                     fragmentTransaction.replace(R.id.frame, fragment, fragmenttag);
@@ -136,46 +88,29 @@ public class platform extends Fragment implements BackFragment {
                 }
             }, 50);
         } catch (Exception e) {
-
         }
     }
-
     @Override
     public void onStart() {
         super.onStart();
-        //attaching value event listener
-        databasePosts.addValueEventListener(new ValueEventListener() {
+        listener = databasePosts.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                //clearing the previous artist list
                 posts.clear();
-
-                //iterating through all the nodes
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    //getting artist
                     Post Post = postSnapshot.getValue(Post.class);
-
                     Post.id = postSnapshot.getKey();
-                    //adding artist to the list
                     if (Post.privacy.contains("1")) {
                         posts.add(Post);
                     }
-
-
-
                 }
                 Collections.reverse(posts);
-                //creating adapter
                 if(!posts.isEmpty()) {
                     PostList postAdapter = new PostList(platform.this.getActivity(), posts);
-                    //attaching adapter to the listview
                     postAdapter.notifyDataSetChanged();
-
                     listViewPosts.setAdapter(postAdapter);
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -187,11 +122,13 @@ public class platform extends Fragment implements BackFragment {
         getActivity().getSupportFragmentManager().popBackStack();
         return false;
     }
-
     @Override
     public int getBackPriority() {
         return 0;
     }
-
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        databasePosts.removeEventListener(listener);
+    }
 }

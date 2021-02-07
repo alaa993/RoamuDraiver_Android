@@ -64,7 +64,7 @@ public class CommentList extends ArrayAdapter<Comment>{
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(comment.author.uid);
-        databaseRefID.addValueEventListener(new ValueEventListener() {
+        databaseRefID.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String photoURL = dataSnapshot.child("photoURL").getValue(String.class);

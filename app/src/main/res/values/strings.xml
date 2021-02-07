@@ -256,7 +256,7 @@
     <string name="notification_2">Glad to accept your request to travel with him</string>
     <string name="notification_3">Apologizes for accepting your request</string>
     <string name="notification_4">Thank you for your trust in us. Successful Arrivals</string>
-    <string name="notification_5">requested offline payment</string>
+    <string name="notification_5">Accepted your offline payment</string>
     <string name="notification_6">User just paid for your ride</string>
     <string name="notification_7">Choose you to travel with you</string>
     <string name="notification_8">The request has been sent and you will receive confirmation as soon as possible</string>
@@ -299,5 +299,7 @@ But the owner of the car will have to check the car documents before agreeing to
     <string name="All_travel">-ِAll-</string>
     <string name="my_accepted_travels">My Accepted Travels</string>
     <string name="ConfirmRideVC_AlertDetail">Please select Number of Seats more than passengers Number</string>
+    <string name="Notification_Request">Sends You a Request</string>
+    <string name="RideUpdated">Ride Updated:</string>
 
 </resources>

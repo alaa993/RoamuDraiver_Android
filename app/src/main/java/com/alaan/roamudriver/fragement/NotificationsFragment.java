@@ -26,11 +26,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NotificationsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NotificationsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -43,23 +38,9 @@ public class NotificationsFragment extends Fragment {
     //a list to store all the artist from firebase database
     List<Notification> notifications;
     DatabaseReference databasePosts;
+    ValueEventListener listener;
 
     public NotificationsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NotificationsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NotificationsFragment newInstance(String param1, String param2) {
-        NotificationsFragment fragment = new NotificationsFragment();
-        return fragment;
     }
 
     @Override
@@ -70,7 +51,6 @@ public class NotificationsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_notifications, container, false);
         notifications = new ArrayList<>();
         Log.i("ibrahim_uid", String.valueOf(SessionManager.getUser()));
@@ -97,7 +77,7 @@ public class NotificationsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         //attaching value event listener
-        databasePosts.addValueEventListener(new ValueEventListener() {
+        listener = databasePosts.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -127,5 +107,10 @@ public class NotificationsFragment extends Fragment {
 
             }
         });
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        databasePosts.removeEventListener(listener);
     }
 }

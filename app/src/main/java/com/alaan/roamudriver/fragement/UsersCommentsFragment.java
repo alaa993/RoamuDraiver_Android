@@ -51,6 +51,7 @@ public class UsersCommentsFragment extends Fragment {
     List<Comment> comments;
     DatabaseReference databasePost;
     DatabaseReference databaseComments;
+    ValueEventListener listener;
 
     public UsersCommentsFragment() {
         // Required empty public constructor
@@ -60,13 +61,12 @@ public class UsersCommentsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        Log.i("ibrahim",SessionManager.getUserId());
+        Log.i("ibrahim", SessionManager.getUserId());
         view = inflater.inflate(R.layout.fragment_users_comments, container, false);
         ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.userComments));
         comments = new ArrayList<>();
@@ -74,48 +74,18 @@ public class UsersCommentsFragment extends Fragment {
         databaseComments = FirebaseDatabase.getInstance().getReference("private_posts").child(SessionManager.getUserId()).child("Comments");
         listViewPosts = (ListView) view.findViewById(R.id.Post_listViewComments1);
         log.i("tag", "success by ibrahim");
-        databaseComments.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                //clearing the previous artist list
-                comments.clear();
-
-                //iterating through all the nodes
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    //getting artist
-                    Comment Comment = postSnapshot.getValue(Comment.class);
-                    //adding artist to the list
-                    comments.add(Comment);
-                }
-
-                //creating adapter
-                CommentList commentAdapter = new CommentList(UsersCommentsFragment.this.getActivity(), comments);
-                //attaching adapter to the listview
-                listViewPosts.setAdapter(commentAdapter);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        //log.i("tag",databaseComments.child("Comment1").child("username"));
 
         return view;
     }
-
     @Override
     public void onStart() {
         super.onStart();
 //        attaching value event listener
-        databaseComments.addValueEventListener(new ValueEventListener() {
+        listener = databaseComments.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 //clearing the previous artist list
                 comments.clear();
-
                 //iterating through all the nodes
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     //getting artist
@@ -123,7 +93,6 @@ public class UsersCommentsFragment extends Fragment {
                     //adding artist to the list
                     comments.add(Comment);
                 }
-
                 //creating adapter
                 CommentList commentAdapter = new CommentList(UsersCommentsFragment.this.getActivity(), comments);
                 //attaching adapter to the listview
@@ -142,7 +111,7 @@ public class UsersCommentsFragment extends Fragment {
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
 
-        databaseRefID.addValueEventListener(new ValueEventListener() {
+        databaseRefID.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String UserName = dataSnapshot.child("username").getValue(String.class);
@@ -163,8 +132,8 @@ public class UsersCommentsFragment extends Fragment {
                 //type = 0 => driver
                 //type = 1 => user
                 userObject.put("type", "0");
-                userObject.put("privacy" , "1");
-                userObject.put("travel_id" , 0);
+                userObject.put("privacy", "1");
+                userObject.put("travel_id", 0);
                 databaseRef.setValue(userObject);
                 inputEditComment.getText().clear();
             }
@@ -174,5 +143,10 @@ public class UsersCommentsFragment extends Fragment {
                 // Getting Post failed, log a message
             }
         });
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        databaseComments.removeEventListener(listener);
     }
 }

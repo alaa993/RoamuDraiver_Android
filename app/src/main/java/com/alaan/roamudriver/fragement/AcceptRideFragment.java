@@ -709,7 +709,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
 
-        databaseRefID.addValueEventListener(new ValueEventListener() {
+        databaseRefID.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String UserName = dataSnapshot.child("username").getValue(String.class);
@@ -764,7 +764,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(pojo.getUser_id()).push();
         Map<String, Object> rideObject = new HashMap<>();
         rideObject.put("ride_id", pojo.getRide_id());
-        rideObject.put("text", "Ride Updated");
+        rideObject.put("text", getString(R.string.Notification_Request));
         rideObject.put("readStatus", "0");
         rideObject.put("timestamp", ServerValue.TIMESTAMP);
         rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());

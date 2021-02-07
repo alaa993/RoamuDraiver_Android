@@ -43,6 +43,7 @@ public class PostFragment extends Fragment {
     ListView listViewPosts;
     EditText inputEditComment;
     TextView AddCommentBTN;
+    ValueEventListener listener;
 
 
     //a list to store all the artist from firebase database
@@ -107,7 +108,7 @@ public class PostFragment extends Fragment {
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
 
-        databaseRefID.addValueEventListener(new ValueEventListener() {
+        databaseRefID.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String UserName = dataSnapshot.child("username").getValue(String.class);
@@ -159,7 +160,7 @@ public class PostFragment extends Fragment {
     public void onStart() {
         super.onStart();
 //        attaching value event listener
-        databasePost.addValueEventListener(new ValueEventListener() {
+        databasePost.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 //                // Get Post object and use the values to update the UI
@@ -181,7 +182,7 @@ public class PostFragment extends Fragment {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 //                String uid = user.getUid();
                 DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(post.author.uid);
-                databaseRefID.addValueEventListener(new ValueEventListener() {
+                databaseRefID.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
@@ -204,7 +205,7 @@ public class PostFragment extends Fragment {
             }
         });
 
-        databaseComments.addValueEventListener(new ValueEventListener() {
+        listener = databaseComments.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -230,5 +231,10 @@ public class PostFragment extends Fragment {
 
             }
         });
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        databaseComments.removeEventListener(listener);
     }
 }
