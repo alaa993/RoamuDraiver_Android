@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/swipe_refresh"
-    android:layoutDirection="rtl"
+    android:layoutDirection="ltr"
     android:background="@color/white"
     android:padding="5dp">
 
@@ -116,7 +116,6 @@
 
                 <TableLayout
                     android:layout_width="match_parent"
-
                     android:layout_height="wrap_content">
 
                     <TableRow
@@ -159,14 +158,11 @@
 
                         <TextView
                             android:id="@+id/txt_drivername"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginLeft="5dp"
                             android:maxLines="1"
-                            android:padding="1dp"
-                            android:text="بغداد، العراق"/>
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
                     </TableRow>
 
                     <TableRow
@@ -185,14 +181,11 @@
 
                         <TextView
                             android:id="@+id/txt_city"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginLeft="5dp"
                             android:maxLines="1"
-                            android:padding="1dp"
-                            android:text="بغداد، العراق"/>
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
                     </TableRow>
 
                     <TableRow
@@ -200,14 +193,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="0dp"
-                        android:padding="10dp">
+                        android:padding="10dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/basefare"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/basefare"
-                            android:textAppearance="?android:attr/textAppearanceSmall" />
+                            android:maxLines="1"
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                         <TextView
                             android:id="@+id/txt_basefare"
@@ -218,7 +213,7 @@
                             android:layout_marginLeft="5dp"
                             android:maxLines="1"
                             android:padding="1dp"
-                            android:text="بغداد، العراق"/>                    </TableRow>
+                            android:text="500"/>                    </TableRow>
 
                     <TableRow
                         android:id="@+id/pickuplocation_row"
@@ -236,14 +231,11 @@
 
                         <TextView
                             android:id="@+id/txt_pickuplocation"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginLeft="5dp"
                             android:maxLines="1"
-                            android:padding="1dp"
-                            android:text="بغداد، العراق"/>
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
                     </TableRow>
 
                     <TableRow
@@ -262,14 +254,11 @@
 
                         <TextView
                             android:id="@+id/txt_droplocation"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginLeft="5dp"
                             android:maxLines="1"
-                            android:padding="1dp"
-                            android:text="بغداد، العراق"/>
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                     </TableRow>
                     <TableRow
@@ -351,10 +340,8 @@
                             android:id="@+id/txt_mobilenumber"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginLeft="5dp"
                             android:layout_weight="1"
-                            android:text="00963988088320"
+                            android:text=""
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <ImageView
@@ -409,14 +396,11 @@
 
                         <TextView
                             android:id="@+id/txt_dateandtime"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginLeft="5dp"
                             android:maxLines="1"
-                            android:padding="1dp"
-                            android:text="بغداد، العراق"/>
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                     </TableRow>
 

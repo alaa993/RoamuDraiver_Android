@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,10 +16,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <Button
+                android:id="@+id/acc_d_f_home_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_home_button" />
+
             <LinearLayout
                 android:id="@+id/linear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/acc_d_f_home_button"
                 android:orientation="vertical">
 
                 <ImageView
@@ -109,7 +117,6 @@
 
                 <TableLayout
                     android:layout_width="match_parent"
-
                     android:layout_height="wrap_content">
 
                     <TableRow
@@ -124,7 +131,7 @@
                             android:id="@+id/capacity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Capacity       "
+                            android:text="Capacity"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
@@ -148,7 +155,8 @@
                             android:id="@+id/basefare"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Base Fare     "
+                            android:layout_marginRight="10dp"
+                            android:text="@string/basefare"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
@@ -171,7 +179,8 @@
                             android:id="@+id/pickuplocation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Pickup Location       "
+                            android:layout_marginRight="10dp"
+                            android:text="@string/PickupAddress"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
@@ -201,7 +210,8 @@
                             android:id="@+id/droplocation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Drop Location       "
+                            android:layout_marginRight="10dp"
+                            android:text="@string/DropAddress"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
@@ -231,7 +241,8 @@
                             android:id="@+id/name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Name       "
+                            android:layout_marginRight="10dp"
+                            android:text="@string/name"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
@@ -255,7 +266,8 @@
                             android:id="@+id/mobilenumber"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Customer Number   "
+                            android:layout_marginRight="10dp"
+                            android:text="@string/customer_number"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
@@ -288,7 +300,8 @@
                             android:id="@+id/paymentstatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Payment Status       "
+                            android:layout_marginRight="10dp"
+                            android:text="@string/payment_status"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView

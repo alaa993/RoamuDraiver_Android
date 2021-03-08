@@ -24,8 +24,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="/private/var/folders/0h/lbrvg6tn4f52k1rxn542w2r00000gp/T/baseline_notifications_24.xml" />
-                                                <entry key="opacityPercent" value="80" />
+                                                <entry key="imagePath" value="/private/var/folders/0h/lbrvg6tn4f52k1rxn542w2r00000gp/T/baseline_home_24.xml" />
+                                                <entry key="opacityPercent" value="60" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -36,7 +36,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/notifications/baseline_notifications_24.xml" />
+                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/home/baseline_home_24.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -68,8 +68,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_notification" />
-                                      <entry key="theme" value="HOLO_DARK" />
+                                      <entry key="outputName" value="ic_home_button" />
                                       <entry key="themeColor" value="ffffff" />
                                     </map>
                                   </option>

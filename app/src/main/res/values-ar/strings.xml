@@ -319,6 +319,8 @@
     <string name="ConfirmRideVC_AlertDetail">رجاءا اختر عدد المقاعد اكثر من عدد الركاب</string>
     <string name="Notification_Request">أرسل اليك طلب</string>
     <string name="RideUpdated">تم تحديث معلومات الرحلة:</string>
+    <string name="map">الخرائط</string>
+    <string name="travel_info">معلومات الرحلة</string>
 
 
 </resources>

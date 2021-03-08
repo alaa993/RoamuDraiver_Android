@@ -43,6 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alaan.roamudriver.BuildConfig;
+import com.alaan.roamudriver.custom.GPSTracker;
 import com.alaan.roamudriver.fragement.Contact_usFragment;
 import com.alaan.roamudriver.fragement.Manage_travels;
 import com.alaan.roamudriver.fragement.MyAcceptedDetailFragment;
@@ -67,6 +68,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.alaan.roamudriver.R;
@@ -95,6 +97,9 @@ import com.thebrownarrow.permissionhelper.PermissionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -213,7 +218,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             askCompactPermissions(permissions, new PermissionResult() {
                 @Override
                 public void permissionGranted() {
-//                     getLocation();
+//                    getLocation();
                     setListener();
                 }
 
@@ -231,11 +236,8 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             // getLocation();
         }
         //by ibrahim
-        if (location != null && pojo != null) {
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-            setStatus(pojo, "", false);
-        }
+        GPSTracker tracker = new GPSTracker(this);
+        setLocaiton(tracker.getLocation());
     }
 
     public void getPhotoUri() {
@@ -305,6 +307,11 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                 addPost.setText("");
                 addPost.setVisibility(View.VISIBLE);
                 changeFragment(new SearchUser(), getString(R.string.home));
+                break;
+
+            case R.id.home_map:
+                addPost.setVisibility(View.GONE);
+                changeFragment(new HomeFragment(), getString(R.string.home));
                 break;
 
             case R.id.about_us:
@@ -444,27 +451,24 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         } catch (Exception e) {
         }
     }
-
     @SuppressLint("MissingPermission")
     @Override
     public void onConnected() {
         locationEngine.requestLocationUpdates();
     }
-
     @Override
     public void onLocationChanged(Location location) {
         if (location != null && pojo != null) {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
             setStatus(pojo, "", false);
+            setLocaiton(location);
         }
     }
-
     @Override
     protected void onPause() {
         super.onPause();
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -542,7 +546,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             toolbar.setTitle((Html.fromHtml(String.valueOf(s))));
         }
     }
-
     @Override
     public void onBackPressed() {
         post_notification = false;
@@ -614,7 +617,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             DrawableCompat.setTintList(DrawableCompat.wrap(switchCompat.getThumbDrawable()), new ColorStateList(states, thumbColors));
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -623,14 +625,12 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             locationEngine.removeLocationEngineListener(this);
         }
     }
-
     @Override
     public void update(String url) {
         if (!url.equals("")) {
             //   Glide.with(getApplicationContext()).load(url).apply(new RequestOptions().error(R.drawable.user_default)).into(avatar);
         }
     }
-
     @Override
     public void name(String name) {
         if (!name.equals("")) {
@@ -813,6 +813,15 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+    }
+
+    public void setLocaiton(Location location) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("Location").child(SessionManager.getUserId());
+        Map<String, Object> rideObject = new HashMap<>();
+        rideObject.put("latitude", location.getLatitude());
+        rideObject.put("longitude", location.getLongitude());
+        rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        databaseRef.setValue(rideObject);
     }
 
     private void setListener() {

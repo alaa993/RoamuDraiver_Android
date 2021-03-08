@@ -1,5 +1,7 @@
 package com.alaan.roamudriver.pojo;
 
+import com.google.android.libraries.places.api.model.Place;
+
 import java.io.Serializable;
 
 /**
@@ -32,6 +34,9 @@ public class PendingRequestPojo implements Serializable {
     private String driver_name;
     private String booked_set;
     private String Ride_smoked;
+
+//    private Place fromPlace;
+//    private Place toPlace;
 
     public String getbooked_set() {
         return booked_set;
@@ -245,4 +250,20 @@ public class PendingRequestPojo implements Serializable {
     public void setDate(String date) {
         this.date = date;
     }
+
+//    public Place getFromPlace() {
+//        return fromPlace;
+//    }
+//
+//    public void setFromPlace(Place fromPlace) {
+//        this.fromPlace = fromPlace;
+//    }
+//
+//    public Place getToPlace() {
+//        return toPlace;
+//    }
+//
+//    public void setToPlace(Place toPlace) {
+//        this.toPlace = toPlace;
+//    }
 }

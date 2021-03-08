@@ -168,7 +168,7 @@ public class MangeDriverDetail extends   FragmentManagePermission {
                 drivername.setText(driver);
             }
             if (fare != null) {
-                fare.setText(basefare + " " + SessionManager.getUnit());
+                fare.setText(basefare);
                                 }
             if (mobile != null) {
                 mobilenumber.setText(pojo.getTravel_date() +"Time : " + pojo.getTravel_time());

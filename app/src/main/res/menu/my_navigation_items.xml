@@ -7,6 +7,11 @@
         android:title="@string/home"></item>
 
     <item
+        android:id="@+id/home_map"
+        android:icon="@mipmap/ic_home_black_24dp"
+        android:title="@string/map"></item>
+
+    <item
         android:id="@+id/my_accepted_requests"
         android:icon="@mipmap/ic_hourglass_empty_black_24dp"
         android:title="@string/my_accepted_travels" />

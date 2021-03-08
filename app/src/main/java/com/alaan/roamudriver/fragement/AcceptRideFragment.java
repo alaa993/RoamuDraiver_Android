@@ -13,7 +13,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -65,6 +69,7 @@ import com.google.android.libraries.places.api.model.PlusCode;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -104,10 +109,6 @@ import retrofit2.Response;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static com.loopj.android.http.AsyncHttpClient.log;
-
-/**
- * Created by android on 14/3/17.
- */
 
 public class AcceptRideFragment extends FragmentManagePermission implements OnMapReadyCallback, DirectionCallback {
     AppCompatButton trackRide, complete, cancel, approve, accept;
@@ -155,11 +156,9 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.accepted_ride_fragmnet, container, false);
         //((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.passanger_info));
         return view;
-
     }
 
     @Override
@@ -167,7 +166,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         super.onActivityCreated(savedInstanceState);
         BindView(savedInstanceState);
         Stash.init(getContext());
-
 
         complete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,7 +201,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                         SendStatusAccept(ride_id, status);
-
                     }
                 })
                 .setNegativeButton(getString(R.string.ccancel), new DialogInterface.OnClickListener() {
@@ -230,14 +227,12 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         mPickupPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Places.initialize(getActivity(), getString(R.string.google_android_map_api_key));
                 List<com.google.android.libraries.places.api.model.Place.Field> fields =
                         Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID,
                                 com.google.android.libraries.places.api.model.Place.Field.NAME,
                                 com.google.android.libraries.places.api.model.Place.Field.ADDRESS,
                                 com.google.android.libraries.places.api.model.Place.Field.LAT_LNG);
-
                 Intent intent = new Autocomplete.IntentBuilder(
                         AutocompleteActivityMode.FULLSCREEN, fields)
                         .build(getActivity());
@@ -248,13 +243,11 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             @Override
             public void onClick(View view) {
                 if (!mPassengers.getText().toString().isEmpty() && !mPrice.getText().toString().isEmpty() && !mPickupPoint.getText().toString().isEmpty()) {
-                    if(Integer.valueOf(mPassengers.getText().toString()) < Integer.valueOf(pojo.getbooked_set()))
-                    {
+                    if (Integer.valueOf(mPassengers.getText().toString()) < Integer.valueOf(pojo.getbooked_set())) {
                         Toast.makeText(AcceptRideFragment.this.getContext(),
                                 getString(R.string.ConfirmRideVC_AlertDetail),
                                 Toast.LENGTH_SHORT).show();
-                    }
-                    else{
+                    } else {
                         dialog.dismiss();
                         SendStatusAccept(ride_id, "WAITED");
                     }
@@ -296,29 +289,24 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             }
         }
     }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
-
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
     }
-
     @Override
     public void onResume() {
         super.onResume();
         mapView.onResume();
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
     }
 
     public void BindView(Bundle savedInstanceState) {
@@ -348,7 +336,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         pickup_location.setSelected(true);
         drop_location.setSelected(true);
         mapView.onCreate(savedInstanceState);
-
         mapView.getMapAsync(this);
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -369,7 +356,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             txt_dateandtime.setText(pojo.getTime() + " " + pojo.getDate());
             payment_status.setText(pojo.getRide_smoked());
 
-            log.e("all data", SessionManager.getUnit());
             if (pickup != null) {
                 pickup_location.setText(pickup);
             }
@@ -383,7 +369,8 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 txt_city.setText(city_st);
             }
             if (fare != null) {
-                fare.setText(basefare + " " + Stash.getString("UNIT_TAG"));
+                // commented by ibrahim 8-2-2021 because the user can't decide the base fare before the driver
+                fare.setText(basefare);
             }
             if (mobile != null) {
                 mobilenumber.setText(mobile);
@@ -392,12 +379,10 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 paymnt_mode = pojo.getbooked_set();
             }
             if (ride_id != null) {
-
             } else {
                 ride_id = "";
             }
             request = pojo.getStatus();
-
             if (!request.equals("") && request.equalsIgnoreCase("PENDING")) {
                 cancel.setVisibility(View.VISIBLE);
                 accept.setVisibility(View.VISIBLE);
@@ -437,15 +422,11 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 approve.setVisibility(View.GONE);
                 complete.setVisibility(View.VISIBLE);
             }
-
             trackRide.setVisibility(View.VISIBLE);
-
             if (pojo.getPayment_status().equals("") && pojo.getPayment_mode().equals("")) {
                 complete.setVisibility(View.GONE);
                 cancel.setVisibility(View.VISIBLE);
             }
-
-
         }
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -465,15 +446,11 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                             startActivity(callIntent);
                         }
                     }
-
                     @Override
                     public void permissionDenied() {
-
                     }
-
                     @Override
                     public void permissionForeverDenied() {
-
                     }
                 });
             }
@@ -492,14 +469,12 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 super.onStart();
                 swipeRefreshLayout.setRefreshing(true);
             }
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 approve.setVisibility(View.GONE);
                 payment_status.setText("PAID");
             }
-
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -521,7 +496,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 super.onStart();
                 swipeRefreshLayout.setRefreshing(true);
             }
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
@@ -537,7 +511,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                             Toast.makeText(getActivity(), getString(R.string.ride_reuest_completed), Toast.LENGTH_LONG).show();
                         } else if (status.equalsIgnoreCase("ACCEPTED")) {
                             startService();
-
                             bundle = new Bundle();
                             bundle.putString("status", "ACCEPTED");
                             acceptedRequestFragment.setArguments(bundle);
@@ -545,8 +518,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                             ((HomeActivity) getActivity()).setStatus(pojo, "accepted", true);
                             ((HomeActivity) getActivity()).changeFragment(acceptedRequestFragment, getString(R.string.requests));
                             Toast.makeText(getActivity(), getString(R.string.ride_reuest_accepted), Toast.LENGTH_LONG).show();
-
-
                         } else {
                             bundle = new Bundle();
                             bundle.putString("status", "CANCELLED");
@@ -554,27 +525,22 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                             ((HomeActivity) getActivity()).changeFragment(acceptedRequestFragment, getString(R.string.requests));
                             Toast.makeText(getActivity(), getString(R.string.ride_reuest_cancelled), Toast.LENGTH_LONG).show();
                         }
-
                     } else {
                         String data = response.getJSONObject("data").toString();
                         Toast.makeText(getActivity(), data, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-
                 }
             }
-
             @Override
             public void onFinish() {
                 super.onFinish();
                 swipeRefreshLayout.setRefreshing(false);
             }
-
         });
     }
 
     public void SendStatusAccept(String ride_id, final String status) {
-
         RequestParams params = new RequestParams();
         params.put("ride_id", ride_id);
         params.put("status", status);
@@ -584,7 +550,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         params.put("pickup_location", s_pic.getLatLng().latitude + "," + s_pic.getLatLng().longitude);
         params.put("drop_location", s_drop.getLatLng().latitude + "," + s_drop.getLatLng().latitude);
         params.put("distance", "0");
-
 
         Server.setHeader(SessionManager.getKEY());
         Server.setContentType();
@@ -597,11 +562,9 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             Log.i("ibrahim_waited", pojo.getbooked_set());
             Log.i("ibrahim_waited", pojo.getDate());
             Log.i("ibrahim_waited", pojo.getTime());
-            //
             params.put("amount", mPrice.getText().toString());
             params.put("available_set", mPassengers.getText().toString());
             params.put("pickup_point", mPickupPoint.getText().toString());
-            //
             params.put("booked_set", pojo.getbooked_set());
             params.put("travel_date", pojo.getDate());
             params.put("travel_time", pojo.getTime());
@@ -611,14 +574,12 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             Url = Server.CONFIRM_REQUST;
         } else
             Url = Server.STATUS_CHANGE;
-
         Server.post(Url, params, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
                 swipeRefreshLayout.setRefreshing(true);
             }
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
@@ -627,21 +588,21 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     Bundle bundle;
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         if (status.equalsIgnoreCase("COMPLETED")) {
-                            bundle = new Bundle();
-                            bundle.putString("status", "COMPLETED");
-                            acceptedRequestFragment.setArguments(bundle);
-                            ((HomeActivity) getActivity()).changeFragment(acceptedRequestFragment, getString(R.string.requests));
+//                            bundle = new Bundle();
+//                            bundle.putString("status", "COMPLETED");
+//                            acceptedRequestFragment.setArguments(bundle);
+//                            ((HomeActivity) getActivity()).changeFragment(acceptedRequestFragment, getString(R.string.requests));
                             Toast.makeText(getActivity(), getString(R.string.ride_reuest_completed), Toast.LENGTH_LONG).show();
                         } else if (status.equalsIgnoreCase("ACCEPTED")) {
                             startService();
-                            bundle = new Bundle();
-                            bundle.putString("status", "ACCEPTED");
-                            acceptedRequestFragment.setArguments(bundle);
-                            ((HomeActivity) getActivity()).setPojo(pojo);
-                            ((HomeActivity) getActivity()).setStatus(pojo, "accepted", true);
-                            ((HomeActivity) getActivity()).changeFragment(acceptedRequestFragment, getString(R.string.requests));
+//                            bundle = new Bundle();
+//                            bundle.putString("status", "ACCEPTED");
+//                            acceptedRequestFragment.setArguments(bundle);
+//                            ((HomeActivity) getActivity()).setPojo(pojo);
+//                            ((HomeActivity) getActivity()).setStatus(pojo, "accepted", true);
+//                            ((HomeActivity) getActivity()).changeFragment(acceptedRequestFragment, getString(R.string.requests));
+//                            ((HomeActivity) getActivity()).changeFragment(new SearchUser(), "fragment_search_user");
                             Toast.makeText(getActivity(), getString(R.string.ride_reuest_accepted), Toast.LENGTH_LONG).show();
-
                         } else if (status.equalsIgnoreCase("WAITED")) {
                             startService();
                             if (response.has("data")) {
@@ -650,16 +611,14 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                                 Log.i("ibrahim travel_id", String.valueOf(travel_id));
                                 if (Checkbox.isChecked()) {
                                     Log.i("ibrahim check box", "is checked");
-                                    SavePost(pickup_address, drop_address, pojo.getDate(), pojo.getTime(), travel_id);
-                                    updateRideFirebase("", status, pojo.getPayment_status(), pojo.getPayment_mode());
-                                    updateNotificationFirebase();
+                                    SavePost(pickup_address, drop_address, pojo.getDate(), pojo.getTime(), travel_id, status);
                                 } else {
                                     Log.i("ibrahim check box", "is not checked");
                                 }
-
                             } else {
                                 Log.i("ibrahim_response", "no travel id");
                             }
+//                            ((HomeActivity) getActivity()).changeFragment(new SearchUser(), "fragment_search_user");
 //                            bundle = new Bundle();
 //                            bundle.putString("status", "ACCEPTED");
 //                            acceptedRequestFragment.setArguments(bundle);
@@ -668,28 +627,24 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
 //                            ((HomeActivity) getActivity()).changeFragment(acceptedRequestFragment, getString(R.string.requests));
 //                            Toast.makeText(getActivity(), getString(R.string.ride_reuest_accepted), Toast.LENGTH_LONG).show();
                         } else {
-                            bundle = new Bundle();
-                            bundle.putString("status", "CANCELLED");
-                            acceptedRequestFragment.setArguments(bundle);
-                            ((HomeActivity) getActivity()).changeFragment(acceptedRequestFragment, getString(R.string.requests));
-                            Toast.makeText(getActivity(), getString(R.string.ride_reuest_cancelled), Toast.LENGTH_LONG).show();
+//                            bundle = new Bundle();
+//                            bundle.putString("status", "CANCELLED");
+//                            acceptedRequestFragment.setArguments(bundle);
+//                            ((HomeActivity) getActivity()).changeFragment(acceptedRequestFragment, getString(R.string.requests));
+//                            Toast.makeText(getActivity(), getString(R.string.ride_reuest_cancelled), Toast.LENGTH_LONG).show();
                         }
-
                     } else {
                         String data = response.getJSONObject("data").toString();
                         Toast.makeText(getActivity(), data, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-
                 }
             }
-
             @Override
             public void onFinish() {
                 super.onFinish();
                 swipeRefreshLayout.setRefreshing(false);
             }
-
         });
     }
 
@@ -704,11 +659,10 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency, pendingIntent);
     }
 
-    public void SavePost(String pickup_address, String Drop_address, String date_time_value, String time_value, int travel_id) {
+    public void SavePost(String pickup_address, String Drop_address, String date_time_value, String time_value, int travel_id, String status) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
-
         databaseRefID.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -719,15 +673,12 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                         + getString(R.string.Travel_to) + " " + Drop_address + System.getProperty("line.separator")
                         + getString(R.string.Travel_on) + " " + date_time_value + System.getProperty("line.separator")
                         + getString(R.string.the_clock) + " " + time_value;
-//                log.i("tag","success by ibrahim");
-//                log.i("tag", UserName);
                 // Firebase code here
                 DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("posts").push();
                 Map<String, Object> author = new HashMap<>();
                 author.put("uid", user.getUid());
                 author.put("username", UserName);
                 author.put("photoURL", photoURL);
-
                 Map<String, Object> userObject = new HashMap<>();
                 userObject.put("author", author);
                 userObject.put("text", text);
@@ -737,10 +688,21 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 userObject.put("privacy", "1");
                 userObject.put("travel_id", travel_id);
                 userObject.put("timestamp", ServerValue.TIMESTAMP);
-                databaseRef.setValue(userObject);
-                getFragmentManager().popBackStack();
+//                databaseRef.setValue(userObject);
+                databaseRef.setValue(userObject, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                        if (databaseError != null) {
+                            Log.i("ibrahim", "Data could not be saved. " + databaseError.getMessage());
+                        } else {
+//                            Log.i("ibrahim","Data saved successfully." + databaseError.getMessage());
+                            updateRideFirebase("", status, pojo.getPayment_status(), pojo.getPayment_mode());
+                            updateNotificationFirebase();
+                        }
+                    }
+                });
+//                getFragmentManager().popBackStack();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
@@ -751,13 +713,23 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     public void updateRideFirebase(String travel_status, String ride_status, String payment_status, String payment_mode) {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("rides").child(pojo.getRide_id());
         Map<String, Object> rideObject = new HashMap<>();
-
         rideObject.put("ride_status", ride_status);
         rideObject.put("travel_status", travel_status);
         rideObject.put("payment_status", payment_status);
         rideObject.put("payment_mode", payment_mode);
         rideObject.put("timestamp", ServerValue.TIMESTAMP);
-        databaseRef.setValue(rideObject);
+//        databaseRef.setValue(rideObject);
+        databaseRef.setValue(rideObject, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    Log.i("ibrahim", "Data could not be saved. " + databaseError.getMessage());
+                } else {
+//                    Log.i("ibrahim","Data saved successfully." + databaseError.getMessage());
+                    updateNotificationFirebase();
+                }
+            }
+        });
     }
 
     public void updateNotificationFirebase() {
@@ -768,20 +740,39 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         rideObject.put("readStatus", "0");
         rideObject.put("timestamp", ServerValue.TIMESTAMP);
         rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
-        databaseRef.setValue(rideObject);
+//        databaseRef.setValue(rideObject);
+        databaseRef.setValue(rideObject, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    Log.i("ibrahim", "Data could not be saved. " + databaseError.getMessage());
+                } else {
+//                    changeFragment(new SearchUser(), "fragment_search_user");
+//                    Log.i("ibrahim","Data saved successfully." + databaseError.getMessage());
+                    startActivity(new Intent(getContext(), HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                }
+            }
+        });
+    }
+
+    public void changeFragment(final Fragment fragment, final String fragmenttag) {
+        try {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().addToBackStack(null);
+            fragmentTransaction.replace(R.id.frame, fragment, fragmenttag);
+            fragmentTransaction.commit();
+        } catch (Exception e) {
+        }
     }
 
     public Boolean GPSEnable() {
         GPSTracker gpsTracker = new GPSTracker(getActivity());
         if (gpsTracker.canGetLocation()) {
             return true;
-
         } else {
             gpsTracker.showSettingsAlert();
             return false;
         }
-
-
     }
 
     void isStarted() {
@@ -795,38 +786,29 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     if (tracking.getStatus() != null) {
                         if (tracking.getStatus().equalsIgnoreCase("accepted")) {
                             trackRide.setText(getString(R.string.Pick_Customer));
-
                             trackRide.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                         askCompactPermissions(permissions, new PermissionResult() {
                                             @Override
                                             public void permissionGranted() {
                                                 gotoMap();
                                             }
-
                                             @Override
                                             public void permissionDenied() {
-
                                             }
-
                                             @Override
                                             public void permissionForeverDenied() {
-
                                             }
                                         });
                                     } else {
                                         gotoMap();
-
                                     }
                                 }
                             });
-
                         } else if (tracking.getStatus().equalsIgnoreCase("started")) {
                             trackRide.setText(getString(R.string.track_ride));
-
                             trackRide.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -835,15 +817,11 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                                         public void permissionGranted() {
                                             launchNavigation();
                                         }
-
                                         @Override
                                         public void permissionDenied() {
-
                                         }
-
                                         @Override
                                         public void permissionForeverDenied() {
-
                                         }
                                     });
                                 }
@@ -852,20 +830,14 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     }
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
-
     }
 
     private void launchNavigation() {
-
-
         if (GPSEnable()) {
-
             try {
                 String[] latlong = pojo.getpickup_location().split(",");
                 double latitude = Double.parseDouble(latlong[0]);
@@ -873,14 +845,10 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 String[] latlong1 = pojo.getdrop_location().split(",");
                 double latitude1 = Double.parseDouble(latlong1[0]);
                 double longitude1 = Double.parseDouble(latlong1[1]);
-
-
 // Create a NavigationViewOptions object to package everything together
                 Point origin = Point.fromLngLat(longitude, latitude);
                 Point destination = Point.fromLngLat(longitude1, latitude1);
-
                 fetchRoute(origin, destination);
-
             } catch (Exception e) {
                 Toast.makeText(getActivity(), e.toString() + " ", Toast.LENGTH_SHORT).show();
             }
@@ -901,10 +869,8 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                         DirectionsRoute directionsRoute = response.body().routes().get(0);
                         startNavigation(directionsRoute);
                     }
-
                     @Override
                     public void onFailure(Call<DirectionsResponse> call, Throwable t) {
-
                     }
                 });
     }
@@ -916,8 +882,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         navigationLauncherOptions.snapToRoute(true);
         navigationLauncherOptions.directionsRoute(directionsRoute);
         NavigationLauncher.startNavigation(getActivity(), navigationLauncherOptions.build());
-
-
     }
 
     public void onDirectionSuccess(Direction direction, String rawBody) {
@@ -928,16 +892,10 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 myMap.addMarker(new MarkerOptions().position(new LatLng(origin.latitude, origin.longitude)).title("Pickup Location").snippet(pickup_address).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                 myMap.addMarker(new MarkerOptions().position(new LatLng(destination.latitude, destination.longitude)).title("Drop Location").snippet(drop_address).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                 myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 10));
-
-
             } else {
                 // do nothing
             }
-
-
         }
-
-
     }
 
     public void onDirectionFailure(Throwable t) {
@@ -949,13 +907,9 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         setData();
         //loop for request dricestion
         new Handler().postDelayed(this::requestDirection, 2000);
-
-
     }
 
     public void requestDirection() {
-
-
         setData();
         Context context = getContext();
         if (context != null) {
@@ -965,8 +919,6 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     .to(destination)
                     .transportMode(TransportMode.DRIVING)
                     .execute(this);
-
-
         }
     }
 
@@ -988,26 +940,22 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         if (bundle != null) {
             pass1 = (PendingRequestPojo) bundle.getSerializable("data");
             if (pass1 != null) {
-                // add new palce for Search Pick up
                 s_pic = new Place() {
                     @Nullable
                     @Override
                     public String getAddress() {
                         return pass1.getPickup_address();
                     }
-
                     @Nullable
                     @Override
                     public List<String> getAttributions() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public String getId() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public LatLng getLatLng() {
@@ -1015,81 +963,67 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                         LatLng location = new LatLng(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]));
                         return location;
                     }
-
                     @Nullable
                     @Override
                     public String getName() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public OpeningHours getOpeningHours() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public String getPhoneNumber() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public List<PhotoMetadata> getPhotoMetadatas() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public PlusCode getPlusCode() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public Integer getPriceLevel() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public Double getRating() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public List<Type> getTypes() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public Integer getUserRatingsTotal() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public LatLngBounds getViewport() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public Uri getWebsiteUri() {
                         return null;
                     }
-
                     @Override
                     public int describeContents() {
                         return 0;
                     }
-
                     @Override
                     public void writeToParcel(Parcel dest, int flags) {
-
                     }
                 };
                 s_drop = new Place() {
@@ -1098,109 +1032,90 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     public String getAddress() {
                         return pass1.getDrop_address();
                     }
-
                     @Nullable
                     @Override
                     public List<String> getAttributions() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public String getId() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public LatLng getLatLng() {
                         String[] parts = pass1.getdrop_location().split(",");
                         LatLng location = new LatLng(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]));
-
                         return location;
                     }
-
                     @Nullable
                     @Override
                     public String getName() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public OpeningHours getOpeningHours() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public String getPhoneNumber() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public List<PhotoMetadata> getPhotoMetadatas() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public PlusCode getPlusCode() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public Integer getPriceLevel() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public Double getRating() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public List<Type> getTypes() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public Integer getUserRatingsTotal() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public LatLngBounds getViewport() {
                         return null;
                     }
-
                     @Nullable
                     @Override
                     public Uri getWebsiteUri() {
                         return null;
                     }
-
                     @Override
                     public int describeContents() {
                         return 0;
                     }
-
                     @Override
                     public void writeToParcel(Parcel dest, int flags) {
-
                     }
                 };
                 origin = s_pic.getLatLng();
                 destination = s_drop.getLatLng();
                 pickup_address = s_pic.getAddress().toString();
                 drop_address = s_drop.getAddress().toString();
-
             }
         }
     }

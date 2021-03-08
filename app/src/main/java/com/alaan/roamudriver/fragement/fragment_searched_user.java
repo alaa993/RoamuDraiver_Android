@@ -28,9 +28,10 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 
 
-public class fragment_searched_user extends Fragment  {
+public class fragment_searched_user extends Fragment {
     View rootView;
-   RecyclerView recyclerView;
+    RecyclerView recyclerView;
+
     public fragment_searched_user() {
         // Required empty public constructor
     }
@@ -52,8 +53,7 @@ public class fragment_searched_user extends Fragment  {
         rootView = inflater.inflate(R.layout.fragment_searched_user, container, false);
 
 
-
-              final Bundle bundle = this.getArguments();
+        final Bundle bundle = this.getArguments();
         if (bundle != null) {
 
             String search_pich_location = bundle.getString("search_pich_location");
@@ -67,14 +67,14 @@ public class fragment_searched_user extends Fragment  {
         }
 
 
-
         return rootView;
 
     }
-    private void GetRides(String pick , String drop,String smoke,String passn, String Date) {
+
+    private void GetRides(String pick, String drop, String smoke, String passn, String Date) {
         RequestParams params = new RequestParams();
-        params.put("pick_add",pick);
-        params.put("drop_add",drop);
+        params.put("pick_add", pick);
+        params.put("drop_add", drop);
         params.put("smoke", smoke);
         params.put("passn", passn);
         params.put("date", Date);
@@ -85,27 +85,15 @@ public class fragment_searched_user extends Fragment  {
                 super.onSuccess(statusCode, headers, response);
                 Log.e("success", response.toString());
                 try {
-
-                    // Driver_groups_model driver_groups_model = gson.fromJson(response.getJSONObject("data").toString(), Driver_groups_model.class);
-                    //driver_groups_model.setGroup_id(Integer.parseInt(response.getJSONObject("data").getString("group_id")));
-                    // driver_groups_model.setDriver_id(Integer.parseInt(response.getJSONObject("data").getString("d_id")));
-                    //driver_groups_model.setGroupName(response.getJSONObject("data").getString("name"));
                     Gson gson = new GsonBuilder().create();
                     List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                     }.getType());
-                    RecyclerView recyclerView = (RecyclerView)  rootView.findViewById(R.id.recyclerview_searchUser);
+                    RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_searchUser);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                     recyclerView.setLayoutManager(linearLayoutManager);
                     SearchUserAdapter searchUserAdapter = new SearchUserAdapter(list);
                     recyclerView.setAdapter(searchUserAdapter);
                     searchUserAdapter.notifyDataSetChanged();
-
-                    // if (response.getJSONObject("data").getString("is_online").equalsIgnoreCase("1")) {
-                    //} else {
-                    //}
-
-
-
 
                 } catch (JSONException e) {
                     Log.e("Get Data", e.getMessage());

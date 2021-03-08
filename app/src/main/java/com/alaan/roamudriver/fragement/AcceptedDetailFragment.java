@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -33,6 +34,10 @@ import android.widget.Toast;
 import com.alaan.roamudriver.pojo.SearchForUser;
 import com.alaan.roamudriver.pojo.firebaseRide;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -106,6 +111,8 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
     private String payment_mode;
     ValueEventListener listener;
 
+    Button acc_d_f_home_button;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -175,7 +182,6 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                         SendStatus(ride_id, status);
-
                     }
                 })
                 .setNegativeButton(getString(R.string.ccancel), new DialogInterface.OnClickListener() {
@@ -189,6 +195,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
     public void BindView() {
         gpsTracker = new GPSTracker(getActivity());
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        acc_d_f_home_button = (Button) view.findViewById(R.id.acc_d_f_home_button);
         linearChat = (LinearLayout) view.findViewById(R.id.linear_chat);
         accept = (AppCompatButton) view.findViewById(R.id.btn_accept);
         complete = (AppCompatButton) view.findViewById(R.id.btn_complete);
@@ -224,7 +231,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
                 drivername.setText(driver);
             }
             if (fare != null) {
-                fare.setText(basefare + " " + SessionManager.getUnit());
+                fare.setText(basefare);
             }
             if (mobile != null) {
                 mobilenumber.setText(mobile);
@@ -255,7 +262,12 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             @Override
             public void onClick(View v) {
                 AlertDialogCreate(getString(R.string.ride_acceptance), getString(R.string.ride_accept_msg), "ACCEPTED");
-
+            }
+        });
+        acc_d_f_home_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
             }
         });
     }
@@ -376,7 +388,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             MyAcceptedDetailFragment detailFragment = new MyAcceptedDetailFragment();
             detailFragment.setArguments(bundle);
 
-//            ((HomeActivity) getContext()).changeFragment(detailFragment, "Passenger Information");
+            ((HomeActivity) getContext()).changeFragment(detailFragment, "Passenger Information");
 
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -439,6 +451,10 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         updateRideFirebase(travel_status, status, payment_status, payment_mode);
                         updateNotificationFirebase(status);
+                        if (status.equals("ACCEPTED"))
+                        {
+                            updateTravelFirebase();
+                        }
                     } else {
                         String data = response.getJSONObject("data").toString();
                         Toast.makeText(getActivity(), data, Toast.LENGTH_LONG).show();
@@ -478,6 +494,28 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
         rideObject.put("timestamp", ServerValue.TIMESTAMP);
         rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
         databaseRef.setValue(rideObject);
+    }
+
+    public void updateTravelFirebase() {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id());
+        Map<String, Object> travelObject = new HashMap<>();
+        travelObject.put("driver_id", rideJson.getDriver_id());
+
+//        Map<String, String> Client = new HashMap<>();
+//        Client.put(rideJson.getUser_id(),rideJson.getUser_id());
+
+//        travelObject.put("Clients", Client);
+
+        databaseRef.updateChildren(travelObject).addOnSuccessListener(new OnSuccessListener() {
+            @Override
+            public void onSuccess(Object o) {
+                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Clients").child(rideJson.getUser_id());
+//                Map<String, String> Client = new HashMap<>();
+//                Client.put(rideJson.getUser_id(),rideJson.getUser_id());
+                databaseRef.setValue(rideJson.getUser_id());
+            }
+        });
+
     }
 
     public void SendTravelStatus(String ride_id, final String status, final String travelId, final String travel_statusParam) {
@@ -581,7 +619,6 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
                                         });
                                     } else {
                                         gotoMap();
-
                                     }
                                 }
                             });
@@ -596,6 +633,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
                                         @Override
                                         public void permissionGranted() {
                                             launchNavigation();
+                                            gotoMap();
                                         }
 
                                         @Override
@@ -624,10 +662,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
     }
 
     private void launchNavigation() {
-
-
         if (GPSEnable()) {
-
             try {
                 String[] latlong = rideJson.getpickup_location().split(",");
                 double latitude = Double.parseDouble(latlong[0]);

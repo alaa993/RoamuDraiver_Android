@@ -117,10 +117,8 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
     int mYear;
     int mMonth;
     int mDay;
-
     int mHour;
     int mMinute;
-
     String o = "";
     String d = "";
     Place pickup;
@@ -128,9 +126,6 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
 
     private int PLACE_PICKER_REQUEST = 7896;
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1234;
-
-
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -138,7 +133,6 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
         tryAgain = "try_again";
         directionRequest = "direction_request";
     }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -149,28 +143,6 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
         }
         bindView(savedInstanceState);
 
-     /*   setTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
-
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
-                        new TimePickerDialog.OnTimeSetListener() {
-
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-
-                                val_timel =hourOfDay + ":" + minute;
-                            }
-                        },hour, minute, false);
-                timePickerDialog.show();
-            }
-        });
-
-      */
         setDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,8 +184,6 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
                                 o = String.valueOf(pickup.getLatLng().latitude) + "," + String.valueOf(pickup.getLatLng().longitude);
                                 d = String.valueOf(drop.getLatLng().latitude) + "," + String.valueOf(drop.getLatLng().longitude);
 
-//                                AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d,txt_fare.getText().toString(), distance,btn_ava.getNumber(),btn_book.getNumber(),val_timel,val_date);
-//                                AddRide(String key, String pickup_address, String drop_address, String pickup_location, String drop_location, String amount, String distance, String a_set, String u_set, String s_time, String s_date)
                                 AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d, mPrice.getText().toString(), distance, mPassengers.getText().toString(), btn_book.getNumber(), val_date, val_date);
                                 Toast.makeText(getActivity(), "do tasked", Toast.LENGTH_SHORT).show();
 
@@ -253,13 +223,9 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                 new DatePickerDialog.OnDateSetListener() {
-
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-//                        date_time = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
                         date_time = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-                        //*************Call Time Picker Here ********************
                         tiemPicker();
                     }
                 }, mYear, mMonth, mDay);
@@ -267,7 +233,6 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
     }
 
     private void tiemPicker() {
-        // Get Current Time
         final Calendar c = Calendar.getInstance();
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
@@ -292,47 +257,39 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
                 }, mHour, mMinute, true);
         timePickerDialog.show();
     }
-
     @Override
     public void onPause() {
         super.onPause();
         mapView.onPause();
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
     }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
-
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
     }
-
     @Override
     public void onResume() {
         super.onResume();
         mapView.onResume();
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
     }
 
     public void bindView(Bundle savedInstanceState) {
         ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.home));
-//        ((HomeActivity) getActivity()).toolbar.setTitle(getString(R.string.request_ride));
-//        ((HomeActivity) getActivity()).toolbar.setTitle(getResources().getString(R.string.request_ride));
+
         mapView = (MapView) view.findViewById(R.id.mapview);
         calculateFare = (TextView) view.findViewById(R.id.txt_calfare);
         confirm = (AppCompatButton) view.findViewById(R.id.btn_confirm);
@@ -429,7 +386,6 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
             }
         }
     }
-
     @Override
     public void onDirectionSuccess(Direction direction, String rawBody) {
         if (getActivity() != null) {
@@ -439,36 +395,26 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
                 myMap.addMarker(new MarkerOptions().position(new LatLng(origin.latitude, origin.longitude)).title("Pickup Location").snippet(pickup_address).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                 myMap.addMarker(new MarkerOptions().position(new LatLng(destination.latitude, destination.longitude)).title("Drop Location").snippet(drop_address).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                 myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 10));
-
                 calculateDistance(Double.valueOf(direction.getRouteList().get(0).getLegList().get(0).getDistance().getValue()) / 1000);
-
             } else {
                 distanceAlert(direction.getErrorMessage());
                 //calculateFare.setVisibility(View.GONE);
                 dismiss();
             }
-
-
         }
-
-
     }
-
     @Override
     public void onDirectionFailure(Throwable t) {
         distanceAlert(t.getMessage() + "\n" + t.getLocalizedMessage() + "\n");
         //  calculateFare.setVisibility(View.GONE);
         dismiss();
     }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         myMap = googleMap;
         setData();
         //your code here
         new Handler().postDelayed(this::requestDirection, 2000);
-
-
     }
 
     public void requestDirection() {
@@ -536,6 +482,7 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
                 try {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         Toast.makeText(getActivity(), "ride_has_been_requested", Toast.LENGTH_LONG).show();
+
                         ((HomeActivity) getActivity()).changeFragment(new SearchUser(), "fragment_search_user");
                     } else {
                         Toast.makeText(getActivity(), tryAgain, Toast.LENGTH_LONG).show();
@@ -604,7 +551,6 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
 
     }
 
-
     public void distanceAlert(String message) {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
@@ -633,7 +579,6 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
 
         }
     }
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1000) {
@@ -674,6 +619,4 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
         }
 
     }
-
-
 }

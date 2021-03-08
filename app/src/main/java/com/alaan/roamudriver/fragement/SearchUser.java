@@ -571,6 +571,7 @@ public class SearchUser extends Fragment implements BackFragment {
                             int travel_id = Integer.parseInt(data.getString("travel_id"));
                             if (Checkbox.isChecked()) {
                                 SavePost(pickup_address, drop_address, date_time, time_value, travel_id);
+                                ((HomeActivity) getActivity()).changeFragment(new SearchUser(), "fragment_search_user");
                             } else {
                             }
                         } else {

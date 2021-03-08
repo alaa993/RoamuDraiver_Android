@@ -67,7 +67,7 @@
     <string name="complete_ride">COMPLETE RIDE</string>
     <string name="cancel_ride">CANCEL RIDE</string>
     <string name="no_status">NO STATUS</string>
-    <string name="basefare">"Base Fare       "</string>
+    <string name="basefare">Base Fare</string>
     <string name="approve_payment_offline">Payment was made in cash</string>
     <string name="vehicle">vehicle No</string>
     <string name="doc">doc</string>
@@ -106,7 +106,7 @@
     <string name="from">FROM</string>
     <string name="to">TO</string>
     <string name="date">DATE</string>
-    <string name="customer_name">CUSTOMER NAME</string>
+    <string name="customer_name">Customer Name</string>
     <string name="new_password">New password</string>
     <string name="password_reset">Password Reset</string>
     <string name="registered_email">Enter your registered email address ,We will send you an email to reset your password</string>
@@ -301,5 +301,7 @@ But the owner of the car will have to check the car documents before agreeing to
     <string name="ConfirmRideVC_AlertDetail">Please select Number of Seats more than passengers Number</string>
     <string name="Notification_Request">Sends You a Request</string>
     <string name="RideUpdated">Ride Updated:</string>
+    <string name="map">Map</string>
+    <string name="travel_info">Travel Information</string>
 
 </resources>

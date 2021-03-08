@@ -27,7 +27,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
-                android:text="Total Rides"
+                android:text="@string/customer_name"
                 android:textSize="@dimen/margin_20" />
 
             <TextView
@@ -68,7 +68,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
-                android:text="Earnings"
+                android:text="@string/travel_info"
                 android:textSize="@dimen/margin_20" />
 
             <FrameLayout
@@ -88,7 +88,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Today"
+                        android:text="@string/from"
                         android:textSize="@dimen/margin_20" />
 
                     <TextView
@@ -102,28 +102,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="This Week"
-                        android:textSize="@dimen/margin_20" />
-
-                    <TextView
-                        android:id="@+id/txt_weekearning"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/one_twenty"
-                        android:text="00"
-                        android:textSize="@dimen/margin_20" />
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -135,7 +113,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Overall"
+                        android:text="@string/to"
                         android:textSize="@dimen/margin_20" />
 
                     <TextView
