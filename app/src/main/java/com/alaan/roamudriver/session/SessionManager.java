@@ -41,6 +41,7 @@ public class SessionManager {
 
     public static final String LOGIN_AS = "login_as";
     public static final String USER_ID = "user_id";
+    public static final String car_type = "car_type";
 
 
     // Email address (make variable public to access from outside)
@@ -155,6 +156,10 @@ public class SessionManager {
 
     public static String getUserId() {
         return getUser() == null ? "" : getUser().getUser_id();
+    }
+
+    public static String getCarType() {
+        return getUser() == null ? "" : getUser().getCarType();
     }
 
     /**
@@ -305,6 +310,7 @@ public class SessionManager {
         // user email id
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
         user.put(USER_ID, pref.getString(USER_ID, null));
+        user.put(car_type, pref.getString(car_type, null));
         user.put(AVATAR, pref.getString(AVATAR, null));
 
         user.put(BRAND, pref.getString(BRAND, null));

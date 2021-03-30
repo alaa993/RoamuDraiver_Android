@@ -55,6 +55,7 @@ import com.alaan.roamudriver.fragement.SearchUser;
 import com.alaan.roamudriver.fragement.UsersCommentsFragment;
 import com.alaan.roamudriver.fragement.about_us;
 import com.alaan.roamudriver.fragement.lang;
+import com.alaan.roamudriver.fragement.myTravelsFragment;
 import com.alaan.roamudriver.fragement.platform;
 import com.alaan.roamudriver.fragement.privacy;
 import com.alaan.roamudriver.pojo.Driver_groups_model;
@@ -296,6 +297,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         AcceptedRequestFragment acceptedRequestFragment;
+        myTravelsFragment myTravelsFragment;
         MyAcceptedRequestFragment myAcceptedRequestFragment;
         Bundle bundle;
         switch (item.getItemId()) {
@@ -388,6 +390,15 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                 bundle.putString("status", "ACCEPTED");
                 myAcceptedRequestFragment.setArguments(bundle);
                 changeFragment(myAcceptedRequestFragment, getString(R.string.requests));
+                break;
+
+                case R.id.my_travels:
+                addPost.setVisibility(View.GONE);
+                    myTravelsFragment = new myTravelsFragment();
+                bundle = new Bundle();
+                bundle.putString("status", "ACCEPTED");
+                    myTravelsFragment.setArguments(bundle);
+                changeFragment(myTravelsFragment, getString(R.string.requests));
                 break;
 
             case R.id.vehicle_information:

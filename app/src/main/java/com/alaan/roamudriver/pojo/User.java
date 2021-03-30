@@ -16,6 +16,7 @@ public class User implements Serializable {
     String paypal_id;
     String cost;
     String unit;
+    String car_type;
     String vehicle_info;
 
 
@@ -128,6 +129,9 @@ public class User implements Serializable {
 
     public String getUnit() {
         return unit;
+    }
+    public String getCarType() {
+        return car_type;
     }
 
     public void setUnit(String unit) {

@@ -124,7 +124,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             payment_status = rideJson.getPayment_status();
             payment_mode = rideJson.getPayment_mode();
 
-            Log.i("ibrahim", rideJson.getRide_id());
+//            Log.i("ibrahim", rideJson.getRide_id());
             databaseRides = FirebaseDatabase.getInstance().getReference("rides").child(rideJson.getRide_id());
         }
         view = inflater.inflate(R.layout.accepted_detail_fragmnet, container, false);
@@ -451,8 +451,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         updateRideFirebase(travel_status, status, payment_status, payment_mode);
                         updateNotificationFirebase(status);
-                        if (status.equals("ACCEPTED"))
-                        {
+                        if (status.equals("ACCEPTED")) {
                             updateTravelFirebase();
                         }
                     } else {
@@ -511,7 +510,8 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             public void onSuccess(Object o) {
                 DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Clients").child(rideJson.getUser_id());
 //                Map<String, String> Client = new HashMap<>();
-//                Client.put(rideJson.getUser_id(),rideJson.getUser_id());
+//                Client.put(rideJson.getUser_id(),rideJson.getUser_id());Map<String, String> Client = new HashMap<>();
+////                Client.put(rideJson.getUser_id(),rideJson.getUser_id());
                 databaseRef.setValue(rideJson.getUser_id());
             }
         });

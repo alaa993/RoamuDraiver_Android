@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layoutDirection="ltr"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
@@ -48,25 +47,25 @@
 
                         <TextView
                             android:id="@+id/from"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
                             android:layout_gravity="left|start"
                             android:layout_marginStart="5dp"
                             android:layout_marginLeft="5dp"
                             android:gravity="left|start"
+                            android:padding="1dp"
                             android:text="@string/from" />
 
                         <TextView
                             android:id="@+id/txt_from_add"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_gravity="left|start"
-                            android:layout_marginStart="@dimen/margin_5"
-                            android:layout_marginLeft="@dimen/margin_5"
-                            android:layout_weight="1"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
                             android:gravity="left|start"
-                            android:maxLines="1"
                             android:padding="1dp"
                             android:text="NewYork NY 10025" />
 
@@ -91,28 +90,28 @@
 
                         <TextView
                             android:id="@+id/to"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:layout_marginRight="5dp"
-                            android:gravity="right|end"
+                            android:gravity="left|start"
                             android:text="@string/to"
-                            tools:gravity="right|end" />
+                            tools:gravity="left|start" />
 
 
                         <TextView
                             android:id="@+id/txt_to_add"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
+                            android:layout_alignParentLeft="true"
                             android:layout_marginEnd="5dp"
                             android:layout_marginRight="5dp"
                             android:layout_weight="1"
-                            android:gravity="right|end"
+                            android:gravity="left|start"
                             android:maxLines="1"
                             android:padding="1dp"
                             android:text="Wooside NY 11104"
-                            tools:gravity="right|end" />
+                            tools:gravity="left|start" />
                     </LinearLayout>
 
 
@@ -179,7 +178,7 @@
 
                     <TextView
                         android:id="@+id/date"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_gravity="left|start"
@@ -187,7 +186,8 @@
                         android:layout_marginLeft="5dp"
                         android:gravity="left|start"
                         android:padding="1dp"
-                        android:text="March 7th,2017" />
+                        android:text="March 7th,2017"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
 
@@ -210,29 +210,28 @@
 
                     <TextView
                         android:id="@+id/drivername"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
                         android:layout_marginRight="5dp"
-                        android:gravity="right|end"
-                        tools:gravity="right|end"
-                        android:text="@string/customer_name" />
+                        android:gravity="left|start"
+                        android:text="@string/customer_count"
+                        tools:gravity="left|start" />
 
 
                     <TextView
-                        android:id="@+id/txt_drivername"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/txt_customer_count"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentLeft="true"
                         android:layout_marginEnd="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:gravity="right|end"
+                        android:gravity="left|start"
                         android:maxLines="1"
                         android:padding="1dp"
-                        tools:gravity="right|end"
-                        android:text="John Doe"
-                        />
+                        android:text="1"
+                        tools:gravity="left|start" />
                 </LinearLayout>
 
 

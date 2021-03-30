@@ -45,6 +45,7 @@ public class Gruop_managment extends Fragment implements AdapterView.OnItemSelec
     RecyclerView recyclerView;
     TextView txt_name,txt_mobile_number,txt_email,txt_country,txt_status,txt_vehicle;
     ImageView image;
+    Spinner droplist;
     String[] status_arr={"PENDING","ACCEPTED","COMPLETED","CANCELLED","REQUESTED"};
     public Gruop_managment() {
         // Required empty public constructor
@@ -68,7 +69,7 @@ public class Gruop_managment extends Fragment implements AdapterView.OnItemSelec
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_gruop_managment, container, false);
         ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.group_members));
-        Spinner droplist = (Spinner) rootView.findViewById(R.id.simpleSpinner);
+        droplist = (Spinner) rootView.findViewById(R.id.simpleSpinner);
         droplist.setOnItemSelectedListener(this);
         ArrayAdapter data = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,status_arr);
         droplist.setAdapter(data);
@@ -183,7 +184,6 @@ public class Gruop_managment extends Fragment implements AdapterView.OnItemSelec
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 
 }

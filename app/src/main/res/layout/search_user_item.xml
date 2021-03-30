@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layoutDirection="ltr"
+
 
     android:orientation="vertical">
 
@@ -64,7 +64,7 @@
                             android:layout_marginLeft="5dp"
                             android:layout_marginStart="5dp"
                             android:gravity="left|start"
-                            android:text="FROM" />
+                            android:text="@string/from" />
 
                         <TextView
                             android:id="@+id/txt_from_add"
@@ -106,7 +106,7 @@
                             android:layout_marginEnd="5dp"
                             android:layout_marginRight="5dp"
                             android:gravity="right|end"
-                            android:text="TO"
+                            android:text="@string/to"
                             tools:gravity="right|end" />
 
 
@@ -171,7 +171,7 @@
                             android:layout_marginStart="5dp"
                             android:gravity="left|start"
                             android:padding="1dp"
-                            android:text="DATE" />
+                            android:text="@string/date" />
 
                         <TextView android:textStyle="bold"
                             android:id="@+id/time"

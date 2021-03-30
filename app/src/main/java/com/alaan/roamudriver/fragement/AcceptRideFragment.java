@@ -611,7 +611,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                                 Log.i("ibrahim travel_id", String.valueOf(travel_id));
                                 if (Checkbox.isChecked()) {
                                     Log.i("ibrahim check box", "is checked");
-                                    SavePost(pickup_address, drop_address, pojo.getDate(), pojo.getTime(), travel_id, status);
+                                    SavePost(pickup_address, drop_address, pojo.getDate(), pojo.getTime(), travel_id, status, "PENDING");
                                 } else {
                                     Log.i("ibrahim check box", "is not checked");
                                 }
@@ -659,7 +659,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency, pendingIntent);
     }
 
-    public void SavePost(String pickup_address, String Drop_address, String date_time_value, String time_value, int travel_id, String status) {
+    public void SavePost(String pickup_address, String Drop_address, String date_time_value, String time_value, int travel_id, String status, String travel_status) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(uid.toString());
@@ -696,7 +696,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                             Log.i("ibrahim", "Data could not be saved. " + databaseError.getMessage());
                         } else {
 //                            Log.i("ibrahim","Data saved successfully." + databaseError.getMessage());
-                            updateRideFirebase("", status, pojo.getPayment_status(), pojo.getPayment_mode());
+                            updateRideFirebase(travel_status, status, pojo.getPayment_status(), pojo.getPayment_mode());
                             updateNotificationFirebase();
                         }
                     }

@@ -27,7 +27,7 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
 
     @Override
     public MyAcceptedRequestAdapter.Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyAcceptedRequestAdapter.Holder(LayoutInflater.from(parent.getContext()).inflate(R.layout.acceptedrequest_item, parent, false));
+        return new MyAcceptedRequestAdapter.Holder(LayoutInflater.from(parent.getContext()).inflate(R.layout.my_acceptedrequest_item, parent, false));
     }
 
     @Override
@@ -39,10 +39,7 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
         holder.from_add.setText(pojo.getPickup_address());
         holder.to_add.setText(pojo.getDrop_address());
         holder.drivername.setText(pojo.getUser_name());
-        holder.time.setText(Utils.getformattedTime(pojo.getTime()));
-        Utils utils = new Utils();
         holder.status.setText(pojo.getStatus());
-        holder.date.setText(utils.getCurrentDateInSpecificFormat(pojo.getTime()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,11 +54,10 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
         BookFont(holder, holder.f);
         BookFont(holder, holder.t);
         BookFont(holder, holder.dn);
-        BookFont(holder, holder.dt);
+//        BookFont(holder, holder.dt);
 
         MediumFont(holder, holder.from_add);
         MediumFont(holder, holder.to_add);
-        MediumFont(holder, holder.date);
 
 
     }
@@ -74,8 +70,8 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
     public class Holder extends RecyclerView.ViewHolder {
 
 
-        TextView from, to, drivername, from_add, to_add, date, time, status;
-        TextView f, t, dn, dt;
+        TextView drivername, from_add, to_add, status;
+        TextView f, t, dn;
 
         public Holder(View itemView) {
             super(itemView);
@@ -84,14 +80,12 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
             t = (TextView) itemView.findViewById(R.id.to);
 
             dn = (TextView) itemView.findViewById(R.id.drivername);
-            dt = (TextView) itemView.findViewById(R.id.datee);
+//            dt = (TextView) itemView.findViewById(R.id.datee);
 
 
             drivername = (TextView) itemView.findViewById(R.id.txt_drivername);
             from_add = (TextView) itemView.findViewById(R.id.txt_from_add);
             to_add = (TextView) itemView.findViewById(R.id.txt_to_add);
-            date = (TextView) itemView.findViewById(R.id.date);
-            time = (TextView) itemView.findViewById(R.id.time);
             status = (TextView) itemView.findViewById(R.id.Statuss);
         }
     }

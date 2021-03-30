@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragement.myTravelDetailFragment">
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/MyADF_mapview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/my_acc_d_f_home_button"
+        android:visibility="visible"></com.google.android.gms.maps.MapView>
+
+    <!--    <ScrollView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_below="@+id/MyADF_mapview"-->
+    <!--        android:scrollbarThumbVertical="@android:color/transparent">-->
+
+    <RelativeLayout
+        android:id="@+id/MyADF_linear_child1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginTop="5dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <!--            android:background="@color/white"-->
+
+        <Button
+            android:id="@+id/my_acc_d_f_home_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ic_home_button" />
+
+        <TableLayout
+            android:id="@+id/MTD_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/MyADF_pickuplocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:text="@string/PickupAddress"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/MyADF_txt_pickuplocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:maxLines="1"
+                    android:padding="1dp"
+                    android:text="mazzeh" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/MyADF_droplocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:text="@string/DropAddress"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/MyADF_txt_droplocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:maxLines="1"
+                    android:padding="1dp"
+                    android:text="mazzeh" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/MyADF_textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:text="@string/pickup_point"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/MyADF_txt_PickupPoint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:maxLines="1"
+                    android:padding="1dp"
+                    android:text="mazzeh" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp">
+
+                <TextView
+                    android:id="@+id/MyADF_Dateandtimefled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:text="@string/date"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#286556"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/MyADF_dateTimeVal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:maxLines="1"
+                    android:padding="1dp"
+                    android:text="12-12"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#286556"
+                    android:textStyle="bold" />
+
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp">
+
+                <TextView
+                    android:id="@+id/MyADF_timefled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:text="@string/TIME"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#286556"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/MyADF_TimeVal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:maxLines="1"
+                    android:padding="1dp"
+                    android:text="12-12"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#286556"
+                    android:textStyle="bold" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp">
+
+                <TextView
+                    android:id="@+id/MyADF_available_seats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:text="@string/available_seats"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#286556"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_Available_Seats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:maxLines="1"
+                    android:padding="1dp"
+                    android:text="0"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#286556"
+                    android:textStyle="bold" />
+
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp">
+
+                <TextView
+                    android:id="@+id/MyADF_empty_seats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:text="@string/empty_seats"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#286556"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_Empty_Seats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:maxLines="1"
+                    android:padding="1dp"
+                    android:text="0"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#286556"
+                    android:textStyle="bold" />
+
+
+            </TableRow>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/MyADF_btn_show_customers"
+                style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect"
+                android:text="@string/show_customers"
+                android:visibility="gone" />
+
+        </TableLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/MyADF_linear_child2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/l1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbarThumbVertical="@android:color/transparent"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/l1">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/MyADF_btn_start"
+                style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recyclerview"
+                android:layout_margin="@dimen/margin_10"
+                android:layout_marginTop="@dimen/detail_bottom_margin"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect"
+                android:text="@string/Start_Travel"
+                android:visibility="visible" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/MyADF_btn_complete"
+                style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:layout_marginTop="@dimen/detail_bottom_margin"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect"
+                android:text="@string/complete_ride"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/MyADF_btn_cancel"
+                style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:layout_marginTop="@dimen/detail_bottom_margin"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect"
+                android:text="@string/cancel_ride"
+                android:visibility="gone" />
+        </LinearLayout>
+    </RelativeLayout><!--    </ScrollView>-->
+</FrameLayout>

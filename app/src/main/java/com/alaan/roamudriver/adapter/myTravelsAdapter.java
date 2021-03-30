@@ -2,57 +2,78 @@ package com.alaan.roamudriver.adapter;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alaan.roamudriver.R;
+import com.alaan.roamudriver.Server.Server;
 import com.alaan.roamudriver.acitivities.HomeActivity;
 import com.alaan.roamudriver.custom.Utils;
 import com.alaan.roamudriver.fragement.AcceptedDetailFragment;
+import com.alaan.roamudriver.fragement.myTravelDetailFragment;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
-public class AcceptedRequestAdapter extends RecyclerView.Adapter<AcceptedRequestAdapter.Holder> {
+import cz.msebera.android.httpclient.Header;
+
+public class myTravelsAdapter extends RecyclerView.Adapter<myTravelsAdapter.Holder> {
+
     private List<PendingRequestPojo> list;
 
-    public AcceptedRequestAdapter(List<PendingRequestPojo> list) {
+    public myTravelsAdapter(List<PendingRequestPojo> list) {
         this.list = list;
     }
 
     @Override
-    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new Holder(LayoutInflater.from(parent.getContext()).inflate(R.layout.acceptedrequest_item, parent, false));
+    public myTravelsAdapter.Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new myTravelsAdapter.Holder(LayoutInflater.from(parent.getContext()).inflate(R.layout.travel_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(final Holder holder, int position) {
+    public void onBindViewHolder(final myTravelsAdapter.Holder holder, int position) {
         final PendingRequestPojo pojo = list.get(position);
         Log.i("ibrahim_pojo", pojo.toString());
-        Log.i("ibrahim_pojo", pojo.getTravel_status());
+//        Log.i("ibrahim_pojo", pojo.getTravel_status());
 
         holder.from_add.setText(pojo.getPickup_address());
         holder.to_add.setText(pojo.getDrop_address());
-        holder.drivername.setText(pojo.getUser_name());
-        holder.time.setText(Utils.getformattedTime(pojo.getTime()));
+        holder.customers_count.setText(pojo.getbooked_set());
+        Log.i("ibrahim", "pojo.getbooked_set()");
+        Log.i("ibrahim", pojo.getbooked_set());
         Utils utils = new Utils();
         holder.status.setText(pojo.getStatus());
 //        holder.date.setText(utils.getCurrentDateInSpecificFormat(pojo.getTime()));
         Log.i("ibrahim", "AcceptedRequestAdapter");
         Log.i("ibrahim", pojo.getTime());
         Log.i("ibrahim", utils.getCurrentDateInSpecificFormat(pojo.getTime()));
+        Log.i("ibrahim", "AcceptedRequestAdapter");
+        Log.i("ibrahim", utils.getCurrentDateInSpecificFormat(pojo.getTime()));
+        Log.i("ibrahim", Utils.getformattedTime(pojo.getTime()));
+
         holder.date.setText(utils.getCurrentDateInSpecificFormat(pojo.getTime()));
+        holder.time.setText(pojo.getTime());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("data", pojo);
-                AcceptedDetailFragment detailFragment = new AcceptedDetailFragment();
+                myTravelDetailFragment detailFragment = new myTravelDetailFragment();
                 detailFragment.setArguments(bundle);
                 ((HomeActivity) holder.itemView.getContext()).changeFragment(detailFragment, "Passenger Information");
             }
@@ -65,8 +86,6 @@ public class AcceptedRequestAdapter extends RecyclerView.Adapter<AcceptedRequest
         MediumFont(holder, holder.from_add);
         MediumFont(holder, holder.to_add);
         MediumFont(holder, holder.date);
-
-
     }
 
     @Override
@@ -76,8 +95,8 @@ public class AcceptedRequestAdapter extends RecyclerView.Adapter<AcceptedRequest
 
     public class Holder extends RecyclerView.ViewHolder {
 
-        public TextView from, to, drivername, from_add, to_add, date, time, status;
-        public TextView f, t, dn, dt;
+        TextView from, to, customers_count, from_add, to_add, date, time, status;
+        TextView f, t, dn, dt;
 
         public Holder(View itemView) {
             super(itemView);
@@ -85,11 +104,11 @@ public class AcceptedRequestAdapter extends RecyclerView.Adapter<AcceptedRequest
             f = (TextView) itemView.findViewById(R.id.from);
             t = (TextView) itemView.findViewById(R.id.to);
 
-            dn = (TextView) itemView.findViewById(R.id.drivername);
+            dn = (TextView) itemView.findViewById(R.id.txt_customer_count);
             dt = (TextView) itemView.findViewById(R.id.datee);
 
 
-            drivername = (TextView) itemView.findViewById(R.id.txt_drivername);
+            customers_count = (TextView) itemView.findViewById(R.id.txt_customer_count);
             from_add = (TextView) itemView.findViewById(R.id.txt_from_add);
             to_add = (TextView) itemView.findViewById(R.id.txt_to_add);
             date = (TextView) itemView.findViewById(R.id.date);
@@ -98,12 +117,12 @@ public class AcceptedRequestAdapter extends RecyclerView.Adapter<AcceptedRequest
         }
     }
 
-    public void BookFont(Holder holder, TextView view1) {
+    public void BookFont(myTravelsAdapter.Holder holder, TextView view1) {
         Typeface font1 = Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "font/AvenirLTStd_Book.otf");
         view1.setTypeface(font1);
     }
 
-    public void MediumFont(Holder holder, TextView view) {
+    public void MediumFont(myTravelsAdapter.Holder holder, TextView view) {
         Typeface font = Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "font/AvenirLTStd_Medium.otf");
         view.setTypeface(font);
     }

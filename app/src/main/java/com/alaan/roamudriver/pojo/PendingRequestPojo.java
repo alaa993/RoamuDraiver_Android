@@ -33,6 +33,7 @@ public class PendingRequestPojo implements Serializable {
     private String driver_mobile;
     private String driver_name;
     private String booked_set;
+    private String empty_set;
     private String Ride_smoked;
 
 //    private Place fromPlace;
@@ -44,6 +45,14 @@ public class PendingRequestPojo implements Serializable {
 
     public void setbooked_set(String booked_set) {
         this.booked_set = booked_set;
+    }
+
+    public String getempty_set() {
+        return empty_set;
+    }
+
+    public void setempty_set(String empty_set) {
+        this.empty_set = empty_set;
     }
 
     public String getRide_smoked() {

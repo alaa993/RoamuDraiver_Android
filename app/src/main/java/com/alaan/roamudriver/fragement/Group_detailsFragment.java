@@ -77,12 +77,12 @@ public class Group_detailsFragment extends Fragment {
         return rootView;
     }
 
-    private void getGroupList(int gruop_id) {
+    private void getGroupList(int driver_id) {
         Log.i("ibrahim", "inside getGroupList");
-        Log.i("ibrahim", String.valueOf(gruop_id));
+        Log.i("ibrahim", String.valueOf(driver_id));
 
         final RequestParams params = new RequestParams();
-        params.put("user_id", gruop_id);
+        params.put("user_id", driver_id);
         Server.setHeader(SessionManager.getKEY());
         Server.get(Server.GET_MyGroupLIST, params, new JsonHttpResponseHandler() {
             @Override
@@ -98,10 +98,10 @@ public class Group_detailsFragment extends Fragment {
                     Gson gson = new GsonBuilder().create();
                     List<Group_List_membar> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<Group_List_membar>>() {
                     }.getType());
-                    Log.i("ibrahim list reply", response.getJSONArray("data").toString());
-                    Log.i("ibrahim list reply", list.get(0).group_name);
-                    Log.i("ibrahim list reply", list.get(0).name);
-                    Log.i("ibrahim list reply", String.valueOf(list.get(0).group_id));
+//                    Log.i("ibrahim list reply", response.getJSONArray("data").toString());
+//                    Log.i("ibrahim list reply", list.get(0).group_name);
+//                    Log.i("ibrahim list reply", list.get(0).name);
+//                    Log.i("ibrahim list reply", String.valueOf(list.get(0).group_id));
 
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                     recyclerView.setLayoutManager(linearLayoutManager);

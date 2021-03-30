@@ -15,6 +15,7 @@ import com.alaan.roamudriver.Server.Server;
 import com.alaan.roamudriver.acitivities.HomeActivity;
 import com.alaan.roamudriver.fragement.AcceptRideFragment;
 import com.alaan.roamudriver.fragement.AcceptedDetailFragment;
+import com.alaan.roamudriver.fragement.MyAcceptedDetailFragment;
 import com.alaan.roamudriver.pojo.Notification;
 import com.alaan.roamudriver.pojo.Pass;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
@@ -120,7 +121,7 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
                     updateNotificationFirebase(ride_id, list.get(0).getDriver_id(), notification_id); // my id is driver id
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("data", list.get(0));
-                    AcceptedDetailFragment detailFragment = new AcceptedDetailFragment();
+                    MyAcceptedDetailFragment detailFragment = new MyAcceptedDetailFragment();
                     detailFragment.setArguments(bundle);
                     ((HomeActivity) getContext()).changeFragment(detailFragment, "Passenger Information");
 

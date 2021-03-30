@@ -58,11 +58,11 @@ public class fragment_searched_user extends Fragment {
 
             String search_pich_location = bundle.getString("search_pich_location");
             String search_drop_location = bundle.getString("search_drop_location");
-            String smoke_value = bundle.getString("smoke_value");
+
             String date_time_value = bundle.getString("date_time_value");
-            String passanger_value = bundle.getString("passanger_value");
+//            String passanger_value = bundle.getString("passanger_value");
             //  Toast.makeText(getContext(), ""+smoke_value+date_time_value+passanger_value, Toast.LENGTH_SHORT).show();
-            GetRides(search_pich_location, search_drop_location, smoke_value, passanger_value, date_time_value);
+            GetRides(search_pich_location, search_drop_location, "0", "", date_time_value, "");
 
         }
 
@@ -71,13 +71,17 @@ public class fragment_searched_user extends Fragment {
 
     }
 
-    private void GetRides(String pick, String drop, String smoke, String passn, String Date) {
+    private void GetRides(String pick, String drop, String smoke, String passn, String Date, String car_type) {
         RequestParams params = new RequestParams();
+        params.put("id", SessionManager.getUserId());
         params.put("pick_add", pick);
         params.put("drop_add", drop);
         params.put("smoke", smoke);
         params.put("passn", passn);
         params.put("date", Date);
+        Log.i("ibrahim","car_type");
+        Log.i("ibrahim",SessionManager.getCarType());
+        params.put("car_type", SessionManager.getCarType());
         Server.setHeader(SessionManager.getKEY());
         Server.get(Server.GET_SEARCHUSER, params, new JsonHttpResponseHandler() {
             @Override

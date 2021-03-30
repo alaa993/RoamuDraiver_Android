@@ -489,7 +489,7 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
 //            }
 //        }
         try {
-            Snackbar.make(rootView, getString(R.string.direct_requesting), Snackbar.LENGTH_SHORT).show();
+//            Snackbar.make(rootView, getString(R.string.direct_requesting), Snackbar.LENGTH_SHORT).show();
         } catch (Exception e) {
 
         }
@@ -620,7 +620,7 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
 
                         @Override
                         public void permissionForeverDenied() {
-                            Snackbar.make(rootView, getString(R.string.allow_permission), Snackbar.LENGTH_LONG).show();
+//                            Snackbar.make(rootView, getString(R.string.allow_permission), Snackbar.LENGTH_LONG).show();
                             openSettingsApp(getActivity());
 
                         }

@@ -12,8 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +39,7 @@ import cz.msebera.android.httpclient.Header;
  * Created by android on 8/4/17.
  */
 
-public class VehicleInformationFragment extends Fragment {
+public class VehicleInformationFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     ImageView vehicle_pic;
     TextInputEditText input_brand;
@@ -44,6 +47,12 @@ public class VehicleInformationFragment extends Fragment {
     TextInputEditText input_year;
     TextInputEditText input_color;
     AppCompatButton btn_continue;
+    TextView NS_car_type;
+    Spinner droplist;
+    String[] status_arr;
+    String[] status_Content_arr={"car","minibus","bus"};
+    String carType = "car";
+
     private TextInputEditText input_vehicleno;
 
     View view;
@@ -113,6 +122,14 @@ public class VehicleInformationFragment extends Fragment {
         input_color = (TextInputEditText) view.findViewById(R.id.input_color);
         btn_continue = (AppCompatButton) view.findViewById(R.id.btn_continue);
         input_vehicleno = (TextInputEditText) view.findViewById(R.id.input_vehicleno);
+
+        NS_car_type = (TextView) view.findViewById(R.id.NS_car_type);
+        droplist = (Spinner) view.findViewById(R.id.carTypeSpinner);
+        droplist.setOnItemSelectedListener(this);
+        status_arr = new String[]{getString(R.string.car_type1), getString(R.string.car_type2), getString(R.string.car_type3)};
+        ArrayAdapter data = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,status_arr);
+        droplist.setAdapter(data);
+
         overrideFonts(getActivity(), view);
     }
 
@@ -233,6 +250,7 @@ public class VehicleInformationFragment extends Fragment {
         params.put("year", year);
         params.put("color", color);
         params.put("vehicle_no", vehicleno);
+        params.put("car_type", carType);
         Server.post(Server.UPDATE, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -304,4 +322,13 @@ public class VehicleInformationFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        carType = status_Content_arr[i];
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }

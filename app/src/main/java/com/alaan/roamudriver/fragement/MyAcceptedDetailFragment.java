@@ -73,6 +73,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.PlaceLikelihood;
@@ -138,7 +139,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
     private String ride_id = "";
     private String user_id;
 
-    private SwipeRefreshLayout swipeRefreshLayout;
+    //    private SwipeRefreshLayout swipeRefreshLayout;
     TableRow mobilenumber_row;
     GPSTracker gpsTracker;
 
@@ -154,6 +155,8 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
 
     DatabaseReference databaseTravelRef;
     DatabaseReference databaseClientsLocation;
+
+    firebaseTravel fbTravel;
 
 
     Button my_acc_d_f_home_button;
@@ -175,7 +178,6 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
     String distance;
     private Double fare = 50.00;
     Double finalfare;
-    firebaseTravel fbTravel;
 
 
     public MyAcceptedDetailFragment() {
@@ -248,10 +250,12 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
             public void onDataChange(DataSnapshot dataSnapshot) {
                 firebaseRide fbRide = dataSnapshot.getValue(firebaseRide.class);
                 Log.i("ibrahim ride", "----------");
-                travel_status = fbRide.travel_status;
-                ride_status = fbRide.ride_status;
-                payment_status = fbRide.payment_status;
-                payment_mode = fbRide.payment_mode;
+                if (fbRide != null) {
+                    travel_status = fbRide.travel_status;
+                    ride_status = fbRide.ride_status;
+                    payment_status = fbRide.payment_status;
+                    payment_mode = fbRide.payment_mode;
+                }
                 setupData();
             }
 
@@ -298,7 +302,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(this);
 
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.MyADFswipe_refresh);
+//        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.MyADFswipe_refresh);
         my_acc_d_f_home_button = (Button) view.findViewById(R.id.my_acc_d_f_home_button);
         accept = (AppCompatButton) view.findViewById(R.id.MyADF_btn_accept);
         complete = (AppCompatButton) view.findViewById(R.id.MyADF_btn_complete);
@@ -497,12 +501,13 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
             }
         });
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//        });
+
         mobilenumber_row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -540,7 +545,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
             @Override
             public void onStart() {
                 super.onStart();
-                swipeRefreshLayout.setRefreshing(true);
+//                swipeRefreshLayout.setRefreshing(true);
             }
 
             @Override
@@ -555,7 +560,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
             @Override
             public void onFinish() {
                 super.onFinish();
-                swipeRefreshLayout.setRefreshing(false);
+//                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -571,7 +576,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
             @Override
             public void onStart() {
                 super.onStart();
-                swipeRefreshLayout.setRefreshing(true);
+//                swipeRefreshLayout.setRefreshing(true);
             }
 
             @Override
@@ -583,6 +588,9 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         updateRideFirebase(travel_status, status, payment_status, payment_mode);
                         updateNotificationFirebase(status);
+                        if (status.equals("ACCEPTED")) {
+                            updateTravelFirebase();
+                        }
                     } else {
                         String data = response.getJSONObject("data").toString();
                         Toast.makeText(getActivity(), data, Toast.LENGTH_LONG).show();
@@ -595,7 +603,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
             @Override
             public void onFinish() {
                 super.onFinish();
-                swipeRefreshLayout.setRefreshing(false);
+//                swipeRefreshLayout.setRefreshing(false);
             }
 
         });
@@ -624,6 +632,29 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
         databaseRef.setValue(rideObject);
     }
 
+    public void updateTravelFirebase() {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id());
+        Map<String, Object> travelObject = new HashMap<>();
+        travelObject.put("driver_id", rideJson.getDriver_id());
+
+//        Map<String, String> Client = new HashMap<>();
+//        Client.put(rideJson.getUser_id(),rideJson.getUser_id());
+
+//        travelObject.put("Clients", Client);
+
+        databaseRef.updateChildren(travelObject).addOnSuccessListener(new OnSuccessListener() {
+            @Override
+            public void onSuccess(Object o) {
+                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Clients").child(rideJson.getUser_id());
+//                Map<String, String> Client = new HashMap<>();
+//                Client.put(rideJson.getUser_id(),rideJson.getUser_id());Map<String, String> Client = new HashMap<>();
+////                Client.put(rideJson.getUser_id(),rideJson.getUser_id());
+                databaseRef.setValue(rideJson.getUser_id());
+            }
+        });
+
+    }
+
     public void SendTravelStatus(String ride_id, final String status, final String travelId, final String travel_statusParam) {
         RequestParams params = new RequestParams();
         params.put("ride_id", ride_id);
@@ -637,7 +668,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
             @Override
             public void onStart() {
                 super.onStart();
-                swipeRefreshLayout.setRefreshing(true);
+//                swipeRefreshLayout.setRefreshing(true);
             }
 
             @Override
@@ -660,7 +691,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
             @Override
             public void onFinish() {
                 super.onFinish();
-                swipeRefreshLayout.setRefreshing(false);
+//                swipeRefreshLayout.setRefreshing(false);
             }
 
         });
@@ -686,8 +717,6 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
             gpsTracker.showSettingsAlert();
             return false;
         }
-
-
     }
 
     void isStarted() {
@@ -891,10 +920,12 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 fbTravel = dataSnapshot.getValue(firebaseTravel.class);
-                Log.i("ibrahim", fbTravel.toString());
-                Log.i("ibrahim_travel", fbTravel.driver_id);
-                Log.i("ibrahim_travel", fbTravel.clients.toString());
-                drawMap(fbTravel);
+//                Log.i("ibrahim", fbTravel.toString());
+//                Log.i("ibrahim_travel", fbTravel.driver_id);
+//                Log.i("ibrahim_travel", fbTravel.Clients.toString());
+                if (fbTravel != null) {
+                    drawMap(fbTravel);
+                }
             }
 
             @Override
@@ -999,15 +1030,29 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
     public void requestDirection() {
 
         try {
-            Snackbar.make(view, getString(R.string.direct_requesting), Snackbar.LENGTH_SHORT).show();
+//            Snackbar.make(view, getString(R.string.direct_requesting), Snackbar.LENGTH_SHORT).show();
+            GPSTracker tracker = new GPSTracker(((HomeActivity) getActivity()));
+            LatLng myLocation = new LatLng(tracker.getLatitude(), tracker.getLongitude());
+
+            GoogleDirection.withServerKey(getString(R.string.google_android_map_api_key))
+                    .from(origin)
+                    .to(destination)
+                    .transportMode(TransportMode.DRIVING)//.waypoints(Collections.singletonList(origin))
+                    .execute(this);
+
+            GoogleDirection.withServerKey(getString(R.string.google_android_map_api_key))
+                    .from(myLocation)
+                    .to(origin)
+                    .transportMode(TransportMode.DRIVING)//.waypoints(Collections.singletonList())
+                    .execute(this);
         } catch (Exception e) {
 
         }
-        GoogleDirection.withServerKey(getString(R.string.google_android_map_api_key))
-                .from(origin)
-                .to(destination)
-                .transportMode(TransportMode.DRIVING)
-                .execute(this);
+//        GoogleDirection.withServerKey(getString(R.string.google_android_map_api_key))
+//                .from(origin)
+//                .to(destination)
+//                .transportMode(TransportMode.DRIVING)
+//                .execute(this);
     }
 
     @Override
@@ -1015,7 +1060,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
         if (getActivity() != null) {
             if (direction.isOK()) {
                 ArrayList<LatLng> directionPositionList = direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
-                myMap.addPolyline(DirectionConverter.createPolyline(getActivity(), directionPositionList, 5, Color.RED));
+                myMap.addPolyline(DirectionConverter.createPolyline(getActivity(), directionPositionList, 2, Color.BLUE));
                 myMap.addMarker(new MarkerOptions().position(new LatLng(origin.latitude, origin.longitude)).title(getString(R.string.pick_up_location)).snippet(rideJson.getPickup_address()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                 myMap.addMarker(new MarkerOptions().position(new LatLng(destination.latitude, destination.longitude)).title(getString(R.string.drop_up_location)).snippet(rideJson.getDrop_address()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 //                myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 10));
@@ -1043,7 +1088,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
                     myMap.clear();
                     my_marker = myMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("You are here.").icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi)));
                     my_marker.showInfoWindow();
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(currentLatitude, currentLongitude), 15);
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(currentLatitude, currentLongitude), 12);
                     myMap.animateCamera(cameraUpdate);
                     myMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                         @Override
@@ -1054,10 +1099,12 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             fbTravel = dataSnapshot.getValue(firebaseTravel.class);
-                            Log.i("ibrahim", fbTravel.toString());
-                            Log.i("ibrahim_travel", fbTravel.driver_id);
-                            Log.i("ibrahim_travel", fbTravel.clients.toString());
-                            drawMap(fbTravel);
+//                            Log.i("ibrahim", fbTravel.toString());
+//                            Log.i("ibrahim_travel", fbTravel.driver_id);
+//                            Log.i("ibrahim_travel", fbTravel.clients.toString());
+                            if (fbTravel != null) {
+                                drawMap(fbTravel);
+                            }
                         }
 
                         @Override
@@ -1086,11 +1133,11 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
                 currentLongitude = location.getLongitude();
 
                 if (myMap != null) {
-                    myMap.clear();
+//                    myMap.clear();
                     my_marker = myMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("You are here.").icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi)));
                     my_marker.showInfoWindow();
                     Log.i("ibrahim", "drawRoute");
-                    for (Map.Entry<String, String> entry : fbTravel.clients.entrySet()) {
+                    for (Map.Entry<String, String> entry : fbTravel.Clients.entrySet()) {
                         String key = entry.getKey();
                         String value = entry.getValue();
                         databaseClientsLocation = FirebaseDatabase.getInstance().getReference("Location").child(value);
@@ -1126,7 +1173,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
     public void setCurrentLocation(final Double lat, final Double log) {
         try {
             my_marker.setPosition(new LatLng(lat, log));
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(currentLatitude, currentLongitude), 15);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(currentLatitude, currentLongitude), 12);
             myMap.animateCamera(cameraUpdate);
             RequestParams par = new RequestParams();
             Server.setHeader(SessionManager.getKEY());

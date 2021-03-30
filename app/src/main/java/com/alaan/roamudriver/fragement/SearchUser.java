@@ -12,10 +12,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -23,6 +26,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -35,6 +39,7 @@ import com.alaan.roamudriver.custom.CheckConnection;
 import com.alaan.roamudriver.pojo.Pass;
 import com.alaan.roamudriver.session.SessionManager;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -80,18 +85,16 @@ public class SearchUser extends Fragment implements BackFragment {
 
     Pass pass;
     Button search_for_users_btn, add_travel;
-    TextView txt_vehicleinfo, rate, txt_info, txt_cost, txt_color, txt_address, request_ride, txt_date, txt_smoke, txt_fee,
-            passanger_search, bag_search, smoke_search, date_time_search;
+    TextView date_time_search;
     TextView pickup_location, drop_location;
     EditText mPickupPoint;
     private int PLACE_PICKER_REQUEST = 7896;
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1234;
     private int POINT_PICKER_REQUEST = 12345;
 
-    private String driver_id, passanger_value, bag_value, smoke_value, date_time_value;
+    private String date_time_value;
     private CheckBox Checkbox;
-    boolean Checkbox_bool = false;
-    Calendar date;
+
     String date_time = "";
     String time_value = "";
     int mYear;
@@ -105,9 +108,11 @@ public class SearchUser extends Fragment implements BackFragment {
     String d = "";
 
 
+
     private RelativeLayout footer;
 
-    public SearchUser() { }
+    public SearchUser() {
+    }
 
     public static SearchUser newInstance(String param1, String param2) {
         SearchUser fragment = new SearchUser();
@@ -131,9 +136,8 @@ public class SearchUser extends Fragment implements BackFragment {
         footer = (RelativeLayout) rootView.findViewById(R.id.search_box_rel);
         pickup_location = (TextView) rootView.findViewById(R.id.pickup_search_location);
         drop_location = (TextView) rootView.findViewById(R.id.search_drop_location);
-        smoke_search = (TextView) rootView.findViewById(R.id.somoke_search);
         date_time_search = (TextView) rootView.findViewById(R.id.Time_date_search);
-        passanger_search = (TextView) rootView.findViewById(R.id.passenger_search);
+
 
         search_for_users_btn = (Button) rootView.findViewById(R.id.search_for_users_btn);
         add_travel = (Button) rootView.findViewById(R.id.ride_add_btn);
@@ -174,23 +178,15 @@ public class SearchUser extends Fragment implements BackFragment {
         search_for_users_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = new fragment_searched_user();
+//                Fragment fragment = new fragment_searched_user();
                 Intent intent = new Intent(getActivity(), Search_list_acticity.class);
 
-                FragmentTransaction ft = getFragmentManager().beginTransaction().replace(R.id.frame, fragment);
-                ft.commit();
-                Bundle args = new Bundle();
                 intent.putExtra("search_pich_location", (pickup_location.getText().toString()));
                 intent.putExtra("search_drop_location", (drop_location.getText().toString()));
-                if (smoke_value != null) {
-                    intent.putExtra("smoke_value", String.valueOf(smoke_value));
-                }
-                if (smoke_value != null) {
-                    intent.putExtra("date_time_value", String.valueOf(date_time_value));
-                }
-                if (passanger_value != null) {
-                    intent.putExtra("passanger_value", String.valueOf(passanger_value));
-                }
+
+//                FragmentTransaction ft = getFragmentManager().beginTransaction().replace(R.id.frame, fragment);
+//                ft.commit();
+
                 startActivity(intent);
             }
         });
@@ -262,86 +258,6 @@ public class SearchUser extends Fragment implements BackFragment {
                         });
                     }
                 }
-            }
-        });
-        smoke_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Somke");
-                View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.box_input, (ViewGroup) getView(), false);
-                final EditText input = (EditText) viewInflated.findViewById(R.id.input);
-                final TextInputLayout inputvalue = (TextInputLayout) viewInflated.findViewById(R.id.input_value);
-                final RadioButton no = (RadioButton) viewInflated.findViewById(R.id.no);
-                final RadioButton yes = (RadioButton) viewInflated.findViewById(R.id.yes);
-
-                inputvalue.setVisibility(View.GONE);
-                builder.setView(viewInflated);
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        if (yes.isChecked()) {
-                            smoke_value = "Yes";
-                        } else {
-                            smoke_value = "no";
-                        }
-                        smoke_search.setText(smoke_value);
-
-                    }
-                });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-
-
-            }
-        });
-        passanger_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Passanger Number");
-                View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.box_input, (ViewGroup) getView(), false);
-                final EditText input = (EditText) viewInflated.findViewById(R.id.input);
-                final TextInputLayout inputvalue = (TextInputLayout) viewInflated.findViewById(R.id.input_value);
-                final LinearLayout smoke_lyner = (LinearLayout) viewInflated.findViewById(R.id.smoke_lyner);
-
-                smoke_lyner.setVisibility(View.GONE);
-                builder.setView(viewInflated);
-
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        if (!input.getText().toString().equals("")) {
-
-                            passanger_value = String.valueOf(input.getText());
-                            passanger_search.setText(String.valueOf(input.getText()));
-
-                        }
-                        //log.e("grouop_id", String.valueOf(gruop_id));
-                        //gruop_id = gruop_id;
-                        //phone = input.getText().toString();
-                        //Add_user_Group(phone,Driver_groups_model.getGroup_id());
-                        passanger_search.setText(passanger_value);
-                        //    Toast.makeText(getContext(), "passs" + passanger_value, Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
             }
         });
 
@@ -521,8 +437,7 @@ public class SearchUser extends Fragment implements BackFragment {
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Toast.makeText(getActivity(), status.getStatusMessage(), Toast.LENGTH_LONG).show();
             }
-        }
-        else if (requestCode == POINT_PICKER_REQUEST) {
+        } else if (requestCode == POINT_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 point = Autocomplete.getPlaceFromIntent(data);
                 mPickupPoint.setText(point.getAddress());
@@ -569,6 +484,7 @@ public class SearchUser extends Fragment implements BackFragment {
                         if (response.has("data")) {
                             JSONObject data = response.getJSONObject("data");
                             int travel_id = Integer.parseInt(data.getString("travel_id"));
+                            addTravelToFireBase(travel_id);
                             if (Checkbox.isChecked()) {
                                 SavePost(pickup_address, drop_address, date_time, time_value, travel_id);
                                 ((HomeActivity) getActivity()).changeFragment(new SearchUser(), "fragment_search_user");
@@ -603,6 +519,13 @@ public class SearchUser extends Fragment implements BackFragment {
 
             }
         });
+    }
+
+    public void addTravelToFireBase(int travel_id) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(String.valueOf(travel_id));
+        Map<String, Object> travelObject = new HashMap<>();
+        travelObject.put("driver_id", String.valueOf(SessionManager.getUserId()));
+        databaseRef.setValue(travelObject);
     }
 
     @Override

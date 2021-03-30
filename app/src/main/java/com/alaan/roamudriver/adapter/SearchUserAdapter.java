@@ -38,7 +38,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Ho
         holder.txt_from_add.setText(pojo.getPickup_address());
         holder.time.setText(pojo.getTime());
         holder.name.setText(pojo.getUser_name());
-        holder.date.setText(pojo.getAmount());
+        holder.date.setText(pojo.getDate());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

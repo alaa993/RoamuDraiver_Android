@@ -41,17 +41,18 @@
     <string name="password_nomatch">"كلمة المرور غير متطابقة"</string>
     <string name="ride_reuest_completed">"اكتمل طلب الرحلة"</string>
     <string name="ride_reuest_cancelled">"طلب الرحلة الملغى"</string>
-    <string name="accepted_request">"الطلبات المقبولة"</string>
     <string name="ccancel">"إلغاء"</string>
     <string name="ok">"حسنا"</string>
-    <string name="ride_completion">"اكتملت الرحلة"</string>
-    <string name="ride_cancellation">"إلغاء الإقلاع"</string>
+    <string name="ride_completion">اكتملت الرحلة</string>
+    <string name="ride_cancellation">"إلغاء الرحلة"</string>
     <string name="track_ride">"مسار الرحلة"</string>
     <string name="passanger_info">"معلومات الركاب"</string>
     <string name="taxi">"سيارة اجره"</string>
-    <string name="pending_request">"الطلبات المعلقة"</string>
-    <string name="cancelled_request">"الطلبات الملغات"</string>
-    <string name="completed_request">"الطلبات المكتملة"</string>
+    <string name="accepted_request">الرحلات المقبولة</string>
+    <string name="pending_request">الرحلات المعلقة</string>
+    <string name="started_request">الرحلات التي ابتدأت</string>
+    <string name="cancelled_request">"الرحلات الملغات"</string>
+    <string name="completed_request">"الرحلات المكتملة"</string>
     <string name="couldnt_get_location">"لا يمكن الحصول على موقعك"</string>
     <string name="direct_requesting">"طلب الاتجاه ..."</string>
     <string name="profile_updated">"تحديث الملف الشخصي"</string>
@@ -105,7 +106,7 @@
     <string name="continue_btn">استمر</string>
     <string name="from">من</string>
     <string name="to">إلى</string>
-    <string name="date">تاريخ</string>
+    <string name="date">التاريخ</string>
     <string name="customer_name">اسم المسافر</string>
     <string name="new_password">كلمة المرور الجديدة</string>
     <string name="password_reset">إعادة تعيين كلمة المرور</string>
@@ -321,6 +322,12 @@
     <string name="RideUpdated">تم تحديث معلومات الرحلة:</string>
     <string name="map">الخرائط</string>
     <string name="travel_info">معلومات الرحلة</string>
+    <string name="car_type">نوع المركبة</string>
+    <string name="car_type1">سيارة</string>
+    <string name="car_type2">حافلة صغيرة</string>
+    <string name="car_type3">حافلة كبيرة</string>
+    <string name="show_customers">عرض الركاب</string>
+    <string name="customer_count">عدد الركاب</string>
 
 
 </resources>

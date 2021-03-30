@@ -14,10 +14,17 @@
     <item
         android:id="@+id/my_accepted_requests"
         android:icon="@mipmap/ic_hourglass_empty_black_24dp"
+        android:visible="false"
         android:title="@string/my_accepted_travels" />
 
     <item
         android:id="@+id/my_requests"
+        android:visible="false"
+        android:icon="@mipmap/ic_hourglass_empty_black_24dp"
+        android:title="@string/my_travels" />
+
+    <item
+        android:id="@+id/my_travels"
         android:icon="@mipmap/ic_hourglass_empty_black_24dp"
         android:title="@string/my_travels" />
 

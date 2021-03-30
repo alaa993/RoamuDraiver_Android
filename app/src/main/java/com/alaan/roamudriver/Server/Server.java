@@ -41,6 +41,8 @@ public class Server {
     public static final String LOGIN = BASE_URL + "user/loginByMobile" + FORMAT;
     public static final String APPROVE_PAYMENT = BASE_URL + "api/user/rides" + FORMAT;
     public static final String STATUS_CHANGE = BASE_URL + "api/user/rides" + FORMAT;
+    public static final String RIDES_STATUS_CHANGE = BASE_URL + "api/user/rides_update" + FORMAT;
+
     public static final String CONFIRM_REQUST = BASE_URL + "api/user/confirm_requested_rides" + FORMAT;
     public static final String UPDATE = BASE_URL + "api/user/update" + FORMAT;
     public static final String FORGOT_PASSWORD = BASE_URL + "user/forgot_password" + FORMAT;
@@ -53,6 +55,8 @@ public class Server {
 
     public static final String GET_REQUEST = BASE_URL + "api/user/rides" + FORMAT;
     public static final String GET_REQUEST1 = BASE_URL + "api/user/rides2" + FORMAT;
+    public static final String GET_Travels = BASE_URL + "api/user/driver_travels" + FORMAT;
+    public static final String driver_specific_travel = BASE_URL + "api/user/driver_specific_travel" + FORMAT;
     public static final String GET_SPECIFIC_RIDE = BASE_URL + "api/user/ride_specific" + FORMAT;
 
     public static final String PASSWORD_RESET = BASE_URL + "api/user/change_password" + FORMAT;

@@ -47,6 +47,7 @@ public class Search_list_acticity extends AppCompatActivity {
             String smoke_value = bundle.getString("smoke_value");
             String date_time_value = bundle.getString("date_time_value");
             String passanger_value = bundle.getString("passanger_value");
+
             recyclerView = (RecyclerView) findViewById(R.id.recyclerview_searchUser);
             GetRides(search_pich_location, search_drop_location, smoke_value, passanger_value, date_time_value);
         } else {
@@ -62,6 +63,9 @@ public class Search_list_acticity extends AppCompatActivity {
         params.put("pickup_address", pick);
         params.put("drop_address", drop);
         params.put("date", Date);
+        Log.i("ibrahim","car_type");
+        Log.i("ibrahim",SessionManager.getCarType());
+        params.put("car_type", SessionManager.getCarType());
         Server.setHeader(SessionManager.getKEY());
         Server.get(Server.GET_SEARCHUSER1, params, new JsonHttpResponseHandler() {
             @Override

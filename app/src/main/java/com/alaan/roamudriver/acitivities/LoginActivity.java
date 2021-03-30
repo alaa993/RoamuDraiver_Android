@@ -147,6 +147,8 @@ public class LoginActivity extends ActivityManagePermission {
                         User user = gson.fromJson(response.getJSONObject("data").toString(), User.class);
                         SessionManager.setUser(gson.toJson(user));
                         SessionManager.setIsLogin();
+//                        Log.i("ibrahim", "carType");
+//                        Log.i("ibrahim", SessionManager.getCarType());
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 
 

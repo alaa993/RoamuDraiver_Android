@@ -14,8 +14,8 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
-    <string name="drop_up_location">drop location</string>
-    <string name="pick_up_location">pick up location</string>
+    <string name="drop_up_location">Drop Location</string>
+    <string name="pick_up_location">PickUp Location</string>
     <string name="update">Update</string>
     <string name="online">you are online</string>
     <string name="offline">you are offline</string>
@@ -41,17 +41,18 @@
     <string name="password_nomatch">password didn\'t match</string>
     <string name="ride_reuest_completed">ride request completed</string>
     <string name="ride_reuest_cancelled">ride request cancelled</string>
-    <string name="accepted_request">Accepted Request</string>
     <string name="ccancel">Cancel</string>
     <string name="ok">OK</string>
-    <string name="ride_completion">RIDE COMPLETION</string>
-    <string name="ride_cancellation">RIDE CANCELLATION</string>
+    <string name="ride_completion">Travel Completion</string>
+    <string name="ride_cancellation">Travel Cancellation</string>
     <string name="track_ride">Track Ride</string>
     <string name="passanger_info">Passenger Information</string>
     <string name="taxi">TAXI</string>
-    <string name="pending_request">Pending Request</string>
-    <string name="cancelled_request">Cancelled Request</string>
-    <string name="completed_request">Completed Request</string>
+    <string name="accepted_request">Accepted Travels</string>
+    <string name="pending_request">Pending Travels</string>
+    <string name="started_request">Started Travels</string>
+    <string name="cancelled_request">Cancelled Travels</string>
+    <string name="completed_request">Completed Travels</string>
     <string name="couldnt_get_location">couldn\'t get your location</string>
     <string name="direct_requesting">Direction Requesting...</string>
     <string name="profile_updated">Profile Updated</string>
@@ -61,7 +62,7 @@
     <string name="change">CHANGE</string>
     <string name="newpwd_required">new password is required</string>
     <string name="password_updated">password Updated</string>
-    <string name="ride_acceptance">RIDE ACCEPTANCE</string>
+    <string name="ride_acceptance">Travel Acceptance</string>
     <string name="ride_reuest_accepted">ride request accepted</string>
     <string name="accept_ride">ACCEPT RIDE</string>
     <string name="complete_ride">COMPLETE RIDE</string>
@@ -170,7 +171,7 @@
     <string name="ku">كردي</string>
     <string name="Affordable_everyday_rides">Affordable,everyday rides</string>
     <string name="date_And_time">Date And Time</string>
-    <string name="available_seats">available seats</string>
+    <string name="available_seats">Available Seats</string>
     <string name="Bookedseats">Booked seats</string>
     <string name="SetDate">Set Date </string>
     <string name="fareperseat">fare per seat</string>
@@ -303,5 +304,11 @@ But the owner of the car will have to check the car documents before agreeing to
     <string name="RideUpdated">Ride Updated:</string>
     <string name="map">Map</string>
     <string name="travel_info">Travel Information</string>
+    <string name="car_type">Car Type</string>
+    <string name="car_type1">Car</string>
+    <string name="car_type2">MiniBus</string>
+    <string name="car_type3">Bus</string>
+    <string name="show_customers">Show Customers</string>
+    <string name="customer_count">Customers Count</string>
 
 </resources>
