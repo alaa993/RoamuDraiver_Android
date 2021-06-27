@@ -132,6 +132,7 @@ public class PostList extends ArrayAdapter<Post> {
 
         TripDetail.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Log.i("success", String.valueOf(post.travel_id));
                 GetRides(String.valueOf(post.travel_id));
             }
         });
@@ -139,10 +140,11 @@ public class PostList extends ArrayAdapter<Post> {
     }
 
     private void GetRides(String ride_id) {
+        Log.i("success", ride_id);
         RequestParams params = new RequestParams();
         params.put("ride_id", ride_id);
         Server.setHeader(SessionManager.getKEY());
-        Server.get(Server.GET_SEARCHUSER1, params, new JsonHttpResponseHandler() {
+        Server.get(Server.GET_SEARCHUSER2, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
@@ -151,14 +153,17 @@ public class PostList extends ArrayAdapter<Post> {
                     Gson gson = new GsonBuilder().create();
                     List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                     }.getType());
+                    if (list.size()>0) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("data", list.get(0));
+                        AcceptRideFragment detailFragment = new AcceptRideFragment();
+                        detailFragment.setArguments(bundle);
 
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("data", list.get(0));
-                    AcceptRideFragment detailFragment = new AcceptRideFragment();
-                    detailFragment.setArguments(bundle);
-
-                    ((HomeActivity) getContext()).changeFragment(detailFragment, "Passenger Information");
-
+                        ((HomeActivity) getContext()).changeFragment(detailFragment, "Passenger Information");
+                    }else{
+//                        Toast.makeText(this, context.getString(R.string.sonething_went_wrong), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
+                    }
                 } catch (JSONException e) {
                     Log.e("Get Data", e.getMessage());
                 }

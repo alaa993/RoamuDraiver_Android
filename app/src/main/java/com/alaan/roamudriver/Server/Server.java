@@ -35,13 +35,16 @@ public class Server {
     public static String GET_RIDES =  BASE_URL +"api/user/driverTravelMange"+ FORMAT;
     public static String GET_SEARCHUSER = BASE_URL +"api/user/drivers_search"+ FORMAT;
     public static String GET_SEARCHUSER1 = BASE_URL +"api/user/requested_rides"+ FORMAT;
+    public static String GET_SEARCHUSER2 = BASE_URL +"api/user/requested_ride_id"+ FORMAT;
     public static String ManageRide = BASE_URL +"api/user/manage_ride"+ FORMAT;
 
     public static final String REGISTER = BASE_URL + "user/register" + FORMAT;
     public static final String LOGIN = BASE_URL + "user/loginByMobile" + FORMAT;
     public static final String APPROVE_PAYMENT = BASE_URL + "api/user/rides" + FORMAT;
+    public static final String APPROVE_PAYMENT_ALL = BASE_URL + "api/user/approve_payments" + FORMAT;
     public static final String STATUS_CHANGE = BASE_URL + "api/user/rides" + FORMAT;
     public static final String RIDES_STATUS_CHANGE = BASE_URL + "api/user/rides_update" + FORMAT;
+    public static final String checkAllPayments = BASE_URL + "api/user/checkallpayments" + FORMAT;
 
     public static final String CONFIRM_REQUST = BASE_URL + "api/user/confirm_requested_rides" + FORMAT;
     public static final String UPDATE = BASE_URL + "api/user/update" + FORMAT;
@@ -58,6 +61,7 @@ public class Server {
     public static final String GET_Travels = BASE_URL + "api/user/driver_travels" + FORMAT;
     public static final String driver_specific_travel = BASE_URL + "api/user/driver_specific_travel" + FORMAT;
     public static final String GET_SPECIFIC_RIDE = BASE_URL + "api/user/ride_specific" + FORMAT;
+    public static final String GET_SPECIFIC_TRAVEL = BASE_URL + "api/user/travel_specific" + FORMAT;
 
     public static final String PASSWORD_RESET = BASE_URL + "api/user/change_password" + FORMAT;
     public static final String PAYMENT_HISTORY = BASE_URL + "api/driver/rides" + FORMAT;

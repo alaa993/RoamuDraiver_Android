@@ -141,6 +141,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     String[] permissions = {PermissionUtils.Manifest_ACCESS_FINE_LOCATION, PermissionUtils.Manifest_ACCESS_COARSE_LOCATION};
     boolean post_notification = true;
     DatabaseReference databasePosts;
+    ValueEventListener listener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -304,10 +305,10 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             //groups_driver
             case R.id.home:
                 post_notification = false;
-                getNotificationsCount();
                 addPost.setBackgroundResource(R.drawable.ic_notification);
-                addPost.setText("");
+                addPost.setText("0");
                 addPost.setVisibility(View.VISIBLE);
+                getNotificationsCount();
                 changeFragment(new SearchUser(), getString(R.string.home));
                 break;
 
@@ -328,6 +329,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
 
             case R.id.platform:
                 post_notification = true;
+                databasePosts.removeEventListener(listener);
                 addPost.setBackgroundResource(R.drawable.ronded_button2);
                 addPost.setText(R.string.post);
                 addPost.setVisibility(View.VISIBLE);
@@ -369,10 +371,10 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                 changeFragment(new groups_driver(), getString(R.string.drivers));
                 break;
 
-            case R.id.manage_travel:
-                addPost.setVisibility(View.GONE);
-                changeFragment(new Manage_travels(), getString(R.string.drivers));
-                break;
+//            case R.id.manage_travel:
+//                addPost.setVisibility(View.GONE);
+//                changeFragment(new Manage_travels(), getString(R.string.drivers));
+//                break;
 
             case R.id.my_requests:
                 addPost.setVisibility(View.GONE);
@@ -392,12 +394,12 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                 changeFragment(myAcceptedRequestFragment, getString(R.string.requests));
                 break;
 
-                case R.id.my_travels:
+            case R.id.my_travels:
                 addPost.setVisibility(View.GONE);
-                    myTravelsFragment = new myTravelsFragment();
+                myTravelsFragment = new myTravelsFragment();
                 bundle = new Bundle();
                 bundle.putString("status", "ACCEPTED");
-                    myTravelsFragment.setArguments(bundle);
+                myTravelsFragment.setArguments(bundle);
                 changeFragment(myTravelsFragment, getString(R.string.requests));
                 break;
 
@@ -462,11 +464,13 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         } catch (Exception e) {
         }
     }
+
     @SuppressLint("MissingPermission")
     @Override
     public void onConnected() {
         locationEngine.requestLocationUpdates();
     }
+
     @Override
     public void onLocationChanged(Location location) {
         if (location != null && pojo != null) {
@@ -476,10 +480,13 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             setLocaiton(location);
         }
     }
+
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
+        databasePosts.removeEventListener(listener);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -557,12 +564,13 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             toolbar.setTitle((Html.fromHtml(String.valueOf(s))));
         }
     }
+
     @Override
     public void onBackPressed() {
         post_notification = false;
-        getNotificationsCount();
         addPost.setBackgroundResource(R.drawable.ic_notification);
-        addPost.setText("");
+        getNotificationsCount();
+        addPost.setText("0");
         addPost.setVisibility(View.VISIBLE);
 
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -606,13 +614,15 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
         is_online.setTypeface(font);
         toolbar.setTitle("");
         addPost = (Button) findViewById(R.id.toolbarPostBtn);
+//        addPost.setText("0");
         addPost.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (post_notification == true) {
                     Intent intent = new Intent(HomeActivity.this, AddPostActivity.class);
                     startActivity(intent);
                 } else {
-                    addPost.setVisibility(View.GONE);
+                    updateNotificationFirebase(SessionManager.getUserId()); // my id is user id
+//                    addPost.setVisibility(View.GONE);
                     changeFragment(new NotificationsFragment(), getString(R.string.notifications));
                 }
             }
@@ -628,6 +638,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             DrawableCompat.setTintList(DrawableCompat.wrap(switchCompat.getThumbDrawable()), new ColorStateList(states, thumbColors));
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -636,17 +647,44 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
             locationEngine.removeLocationEngineListener(this);
         }
     }
+
     @Override
     public void update(String url) {
         if (!url.equals("")) {
             //   Glide.with(getApplicationContext()).load(url).apply(new RequestOptions().error(R.drawable.user_default)).into(avatar);
         }
     }
+
     @Override
     public void name(String name) {
         if (!name.equals("")) {
             username.setText(name);
         }
+    }
+
+    public void updateNotificationFirebase(String user_id) {
+        Log.i("ibrahim", "updateNotificationFirebase");
+        Log.i("ibrahim", user_id);
+//        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(user_id).child(notification_id).child("readStatus");
+//        databaseRef.setValue("1");
+
+        // update all notificaitons read_status to be 1
+        FirebaseDatabase.getInstance().getReference("Notifications").child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Notification notification = postSnapshot.getValue(Notification.class);
+                    notification.id = postSnapshot.getKey();
+                    Log.i("ibrahim", notification.id);
+                    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(user_id).child(notification.id).child("readStatus");
+                    databaseRef.setValue("1");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     public void is_online(String user_id, String status, Boolean what) {
@@ -842,7 +880,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     private void getNotificationsCount() {
         try {
             databasePosts = FirebaseDatabase.getInstance().getReference("Notifications").child(SessionManager.getUser().getUser_id());
-            databasePosts.addValueEventListener(new ValueEventListener() {
+            listener = databasePosts.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     int NotificationsCount = 0;

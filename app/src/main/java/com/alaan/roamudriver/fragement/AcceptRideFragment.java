@@ -422,7 +422,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 approve.setVisibility(View.GONE);
                 complete.setVisibility(View.VISIBLE);
             }
-            trackRide.setVisibility(View.VISIBLE);
+            trackRide.setVisibility(View.GONE);
             if (pojo.getPayment_status().equals("") && pojo.getPayment_mode().equals("")) {
                 complete.setVisibility(View.GONE);
                 cancel.setVisibility(View.VISIBLE);
@@ -437,6 +437,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         mobilenumber_row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("ibrahim", "mobile call function");
                 askCompactPermission(PermissionUtils.Manifest_CALL_PHONE, new PermissionResult() {
                     @Override
                     public void permissionGranted() {

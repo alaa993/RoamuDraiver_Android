@@ -55,6 +55,8 @@
         android:layout_below="@id/Group_table"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/ronded_button1"
         android:text="@string/Create_group"
         android:tint="@color/white" />
@@ -62,6 +64,8 @@
     <Button
         android:id="@+id/button_change_gruop"
         android:layout_marginTop="4dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_below="@id/button_create_gruop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -71,6 +75,8 @@
     <Button
         android:id="@+id/button_my_gruops"
         android:layout_marginTop="4dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_below="@id/button_change_gruop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -84,6 +90,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_below="@id/button_my_gruops"
 
         android:layout_marginBottom="2dp"
@@ -102,6 +110,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/ronded_button1"
         android:text="@string/add_Driver"
         android:tint="@color/white" />
@@ -110,6 +120,8 @@
         android:layout_below="@id/button_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/ronded_button1"
         android:text="@string/delet_driver"
         android:tint="@color/white" />

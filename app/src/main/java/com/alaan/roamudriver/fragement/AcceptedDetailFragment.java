@@ -332,7 +332,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
                     complete.setVisibility(View.VISIBLE);
                 }
 
-                trackRide.setVisibility(View.VISIBLE);
+                trackRide.setVisibility(View.GONE);
 
                 if (payment_status.equals("") && payment_mode.equals("")) {
                     payment_status_TV.setText(R.string.unpaid);
@@ -353,6 +353,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
         mobilenumber_row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("ibrahim", "mobile call function");
                 askCompactPermission(PermissionUtils.Manifest_CALL_PHONE, new PermissionResult() {
                     @Override
                     public void permissionGranted() {

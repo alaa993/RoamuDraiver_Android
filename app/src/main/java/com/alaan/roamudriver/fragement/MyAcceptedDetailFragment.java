@@ -284,7 +284,6 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                         SendStatus(ride_id, status);
-
                     }
                 })
                 .setNegativeButton(getString(R.string.ccancel), new DialogInterface.OnClickListener() {
@@ -465,7 +464,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
                     complete.setVisibility(View.VISIBLE);
                 }
 
-                trackRide.setVisibility(View.VISIBLE);
+                trackRide.setVisibility(View.GONE);
 
                 if (payment_status.equals("") && payment_mode.equals("")) {
                     payment_status_TV.setText(R.string.unpaid);
@@ -511,6 +510,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
         mobilenumber_row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("ibrahim", "mobile call function");
                 askCompactPermission(PermissionUtils.Manifest_CALL_PHONE, new PermissionResult() {
                     @Override
                     public void permissionGranted() {

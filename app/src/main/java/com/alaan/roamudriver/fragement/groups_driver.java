@@ -191,6 +191,7 @@ public class groups_driver extends Fragment implements BackFragment {
                 super.onSuccess(statusCode, headers, response);
                 Toast.makeText(getContext(), "Successfully Added To Group", Toast.LENGTH_SHORT).show();
 //                getMemberList(Integer.parseInt(SessionManager.getUserId()));
+                phone_number.setText("");
             }
 
             @Override
@@ -217,6 +218,7 @@ public class groups_driver extends Fragment implements BackFragment {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 Toast.makeText(getContext(), "Successfully Removed From Group", Toast.LENGTH_SHORT).show();
+                phone_number.setText("");
 //                getMemberList(Integer.parseInt(SessionManager.getUserId()));
 
             }
@@ -333,6 +335,7 @@ public class groups_driver extends Fragment implements BackFragment {
                 super.onSuccess(statusCode, headers, response);
                 Toast.makeText(getContext(), "Group Added Successfully", Toast.LENGTH_SHORT).show();
                 group_name_et.setText("");
+                GetDirver();
             }
 
             @Override

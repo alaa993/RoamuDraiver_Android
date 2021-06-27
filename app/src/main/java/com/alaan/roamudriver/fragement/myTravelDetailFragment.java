@@ -44,6 +44,7 @@ import com.alaan.roamudriver.adapter.MyAcceptedRequestAdapter;
 import com.alaan.roamudriver.custom.GPSTracker;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
 import com.alaan.roamudriver.pojo.firebaseClients;
+import com.alaan.roamudriver.pojo.firebaseRide;
 import com.alaan.roamudriver.pojo.firebaseTravel;
 import com.alaan.roamudriver.session.SessionManager;
 import com.google.android.gms.common.ConnectionResult;
@@ -113,7 +114,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     private View view;
     RecyclerView recyclerView;
     Button my_acc_d_f_home_button;
-    AppCompatButton complete, cancel, start, show_customers;
+    AppCompatButton approve, complete, cancel, start, show_customers;
     TextView PickupPoint, pickup_address_tv, drop_address_tv, MyADF_date, MyADF_TimeVal, txt_Available_Seats, txt_Empty_Seats;
 
     String permissions[] = {PermissionUtils.Manifest_ACCESS_FINE_LOCATION, PermissionUtils.Manifest_ACCESS_COARSE_LOCATION};
@@ -128,6 +129,9 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 
     private LatLng origin;
     private LatLng destination;
+    private boolean checkPayments = false;
+
+
 //    private String pickup_address;
 //    private String drop_address;
 
@@ -176,7 +180,15 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
         ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.passanger_info));
         BindView(savedInstanceState);
         databaseTravelRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id());
+
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //attaching value event listener
+
     }
 
     public void BindView(Bundle savedInstanceState) {
@@ -195,6 +207,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
         start = (AppCompatButton) view.findViewById(R.id.MyADF_btn_start);
         complete = (AppCompatButton) view.findViewById(R.id.MyADF_btn_complete);
         cancel = (AppCompatButton) view.findViewById(R.id.MyADF_btn_cancel);
+        approve = (AppCompatButton) view.findViewById(R.id.MyADF_btn_approve);
 
         pickup_address_tv = (TextView) view.findViewById(R.id.MyADF_txt_pickuplocation);
         drop_address_tv = (TextView) view.findViewById(R.id.MyADF_txt_droplocation);
@@ -264,6 +277,12 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                 startActivity(new Intent(getContext(), HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
             }
         });
+        approve.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                approvePayment();
+            }
+        });
     }
 
     public void setupData() {
@@ -286,22 +305,43 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                 destination = new LatLng(droplatitude, droplongitude);
                 Log.i("ibrahim", destination.toString());
             }
+            Log.i("ibrahim", "status");
+            Log.i("ibrahim", travel_status);
             if (!travel_status.equals("") && travel_status.equalsIgnoreCase("PENDING")) {
+                approve.setVisibility(View.GONE);
                 start.setVisibility(View.VISIBLE);
                 complete.setVisibility(View.GONE);
                 cancel.setVisibility(View.VISIBLE);
             }
             if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("CANCELLED")) {
+                approve.setVisibility(View.GONE);
                 start.setVisibility(View.GONE);
                 complete.setVisibility(View.GONE);
                 cancel.setVisibility(View.GONE);
             }
             if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("COMPLETED")) {
+                approve.setVisibility(View.GONE);
                 start.setVisibility(View.GONE);
                 complete.setVisibility(View.GONE);
                 cancel.setVisibility(View.GONE);
             }
             if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("STARTED")) {
+                if (checkPayments()) {
+                    Log.i("ibrahim", "checkPayments");
+                    Log.i("ibrahim", String.valueOf(checkPayments()));
+                    approve.setVisibility(View.VISIBLE);
+                    complete.setVisibility(View.GONE);
+                    start.setVisibility(View.GONE);
+                    cancel.setVisibility(View.GONE);
+                } else {
+                    approve.setVisibility(View.GONE);
+                    start.setVisibility(View.GONE);
+                    complete.setVisibility(View.GONE);
+                    cancel.setVisibility(View.GONE);
+                }
+            }
+            if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("PAID")) {
+                approve.setVisibility(View.GONE);
                 start.setVisibility(View.GONE);
                 complete.setVisibility(View.VISIBLE);
                 cancel.setVisibility(View.GONE);
@@ -324,7 +364,6 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                         SendStatus(travel_id, status);
-
                     }
                 })
                 .setNegativeButton(getString(R.string.ccancel), new DialogInterface.OnClickListener() {
@@ -337,12 +376,8 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 
     public void SendStatus(String travel_id, final String status) {
         RequestParams params = new RequestParams();
-        Log.i("ibrahim", "SendStatus");
-        Log.i("ibrahim", travel_id);
-        Log.i("ibrahim", status);
         params.put("travel_id", travel_id);
         params.put("travel_status", status);
-//        params.put("driver_id", SessionManager.getUserId());
         Server.setHeader(SessionManager.getKEY());
         Server.setContentType();
         Server.post(Server.RIDES_STATUS_CHANGE, params, new JsonHttpResponseHandler() {
@@ -366,34 +401,57 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                         if (response.has("data") && response.getJSONArray("data").length() > 0) {
                             if (list.size() > 0) {
                                 for (int i = 0; i < list.size(); i++) {
+                                    if (status.equalsIgnoreCase("COMPLETED")) {
+                                        updateNotificationFirebase(list.get(i).getRide_id(), list.get(i).getUser_id(), getString(R.string.notification_5));
+                                    }
                                     updateRideFirebase(list.get(i).getRide_id(), status, list.get(i).getStatus(), list.get(i).getPayment_status(), list.get(i).getPayment_mode());
                                     updateNotificationFirebase(list.get(i).getRide_id(), list.get(i).getUser_id(), list.get(i).getStatus());
                                 }
                             }
                         }
-
-
-                        if (status.equals("STARTED")) {
-                            start.setVisibility(View.GONE);
-                            complete.setVisibility(View.VISIBLE);
-                            cancel.setVisibility(View.GONE);
+                        Log.i("ibrahim", "status");
+                        Log.i("ibrahim", status);
+                        if (status.equalsIgnoreCase("PENDING")) {
+                            approve.setVisibility(View.GONE);
+                            start.setVisibility(View.VISIBLE);
+                            complete.setVisibility(View.GONE);
+                            cancel.setVisibility(View.VISIBLE);
                         }
-                        if (status.equals("CANCELED")) {
+                        if (status.equalsIgnoreCase("CANCELLED")) {
+                            approve.setVisibility(View.GONE);
                             start.setVisibility(View.GONE);
                             complete.setVisibility(View.GONE);
                             cancel.setVisibility(View.GONE);
                         }
-                        if (status.equals("COMPLETED")) {
+                        if (status.equalsIgnoreCase("COMPLETED")) {
+                            approve.setVisibility(View.GONE);
                             start.setVisibility(View.GONE);
                             complete.setVisibility(View.GONE);
                             cancel.setVisibility(View.GONE);
+                        }
+                        if (status.equalsIgnoreCase("STARTED")) {
+                            checkPayments();
+//                            if (checkPayments()) {
+//                                Log.i("ibrahim", "checkPayments_true");
+//                                Log.i("ibrahim", String.valueOf(checkPayments()));
+//                                approve.setVisibility(View.VISIBLE);
+//                                complete.setVisibility(View.GONE);
+//                                start.setVisibility(View.GONE);
+//                                cancel.setVisibility(View.GONE);
+//                            } else {
+//                                Log.i("ibrahim", "checkPayments_false");
+//                                Log.i("ibrahim", String.valueOf(checkPayments()));
+//                                approve.setVisibility(View.GONE);
+//                                start.setVisibility(View.GONE);
+//                                complete.setVisibility(View.GONE);
+//                                cancel.setVisibility(View.GONE);
+//                            }
                         }
                     } else {
                         String data = response.getJSONObject("data").toString();
                         Toast.makeText(getActivity(), data, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-
                 }
             }
 
@@ -403,6 +461,115 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 //                swipeRefreshLayout.setRefreshing(false);
             }
 
+        });
+    }
+
+    public boolean checkPayments() {
+        Log.i("ibrahim", "checkPayments_inside");
+        RequestParams params = new RequestParams();
+        params.put("travel_id", travel_id);
+        Server.setHeader(SessionManager.getKEY());
+        Server.setContentType();
+        Server.get(Server.checkAllPayments, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+//                swipeRefreshLayout.setRefreshing(true);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.i("ibrahim", "response.toString()");
+                Log.i("ibrahim", response.toString());
+                try {
+                    Gson gson = new GsonBuilder().create();
+                    if (response.has("status")
+                            && response.getString("status").equalsIgnoreCase("success")
+                            && response.getString("data").equalsIgnoreCase("true")) {
+//                        checkPayments = true;
+//                        Log.i("ibrahim_checkPayments1", String.valueOf(checkPayments));
+                        approve.setVisibility(View.VISIBLE);
+                        complete.setVisibility(View.GONE);
+                        start.setVisibility(View.GONE);
+                        cancel.setVisibility(View.GONE);
+
+                    } else {
+//                        checkPayments = false;
+//                        Log.i("ibrahim_checkPayments2", String.valueOf(checkPayments));
+                        approve.setVisibility(View.GONE);
+                        start.setVisibility(View.GONE);
+                        complete.setVisibility(View.GONE);
+                        cancel.setVisibility(View.GONE);
+                    }
+                } catch (JSONException e) {
+                    checkPayments = false;
+                    Log.i("ibrahim_checkPayments3", String.valueOf(checkPayments));
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+//                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        Log.i("ibrahim_checkPayments4", String.valueOf(checkPayments));
+        return checkPayments;
+    }
+
+    private void approvePayment() {
+        Log.i("ibrahim", "approvePayment");
+        Log.i("ibrahim", "approvePayment");
+
+        RequestParams params = new RequestParams();
+        params.put("travel_id", travel_id);
+        Server.setHeader(SessionManager.getKEY());
+        Server.setContentType();
+        Server.get(Server.APPROVE_PAYMENT_ALL, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+//                swipeRefreshLayout.setRefreshing(true);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.i("ibrahim", "response.toString()");
+                Log.i("ibrahim", response.toString());
+                try {
+                    Gson gson = new GsonBuilder().create();
+                    if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
+                        List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
+                        }.getType());
+
+                        if (response.has("data") && response.getJSONArray("data").length() > 0) {
+                            if (list.size() > 0) {
+                                for (int i = 0; i < list.size(); i++) {
+                                    updateRideFirebase(list.get(i).getRide_id(), "PAID", list.get(i).getStatus(), list.get(i).getPayment_status(), list.get(i).getPayment_mode());
+                                    updateNotificationFirebase(list.get(i).getRide_id(), list.get(i).getUser_id(), getString(R.string.notification_5));
+                                }
+                            }
+                        }
+                        Toast.makeText(getActivity(), getString(R.string.approve_payment_offline), Toast.LENGTH_LONG).show();
+                        approve.setVisibility(View.GONE);
+                        start.setVisibility(View.GONE);
+                        complete.setVisibility(View.VISIBLE);
+                        cancel.setVisibility(View.GONE);
+                    } else {
+//                        String data = response.getJSONObject("data").toString();
+//                        Toast.makeText(getActivity(), data, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+//                swipeRefreshLayout.setRefreshing(false);
+            }
         });
     }
 
@@ -448,23 +615,18 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-//                Log.i("ibrahim", "travels");
-//                Log.i("ibrahim", response.toString());
                 try {
                     Gson gson = new GsonBuilder().create();
-//                    Log.e("success", response.toString());
 
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                         }.getType());
-//                        Log.e("success", response.toString());
 
                         if (response.has("data") && response.getJSONArray("data").length() == 0) {
 
                             MyAcceptedRequestAdapter acceptedRequestAdapter = new MyAcceptedRequestAdapter(list);
                             recyclerView.setAdapter(acceptedRequestAdapter);
                             acceptedRequestAdapter.notifyDataSetChanged();
-
 
                         } else {
 
@@ -511,7 +673,6 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                 ArrayList<LatLng> directionPositionList = direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
                 myMap.addPolyline(DirectionConverter.createPolyline(getActivity(), directionPositionList, 2, Color.BLUE));
 
-//                myMap.addPolyline(DirectionConverter.createPolyline(getActivity(), directionPositionList, 5, Color.RED));
                 myMap.addMarker(new MarkerOptions().position(new LatLng(origin.latitude, origin.longitude)).title(getString(R.string.pick_up_location)).snippet(rideJson.getPickup_address()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                 myMap.addMarker(new MarkerOptions().position(new LatLng(destination.latitude, destination.longitude)).title(getString(R.string.drop_up_location)).snippet(rideJson.getDrop_address()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 //                myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 10));
@@ -526,20 +687,17 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 
     @Override
     public void onDirectionFailure(Throwable t) {
-
     }
 
     @SuppressLint("MissingPermission")
     public void onConnected(@Nullable Bundle bundle) {
         try {
             @SuppressLint("MissingPermission") android.location.Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
             if (location == null) {
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             } else {
                 currentLatitude = location.getLatitude();
                 currentLongitude = location.getLongitude();
-
                 if (myMap != null) {
 //                    myMap.clear();
                     my_marker = myMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("You are here.").icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi)));

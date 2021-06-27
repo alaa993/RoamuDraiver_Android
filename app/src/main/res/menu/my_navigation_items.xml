@@ -28,10 +28,10 @@
         android:icon="@mipmap/ic_hourglass_empty_black_24dp"
         android:title="@string/my_travels" />
 
-    <item
-        android:id="@+id/manage_travel"
-        android:icon="@drawable/ic_directions_car_black_24dp"
-        android:title="@string/total_rides"></item>
+<!--    <item-->
+<!--        android:id="@+id/manage_travel"-->
+<!--        android:icon="@drawable/ic_directions_car_black_24dp"-->
+<!--        android:title="@string/total_rides"></item>-->
 
     <item
         android:id="@+id/payment_detail"

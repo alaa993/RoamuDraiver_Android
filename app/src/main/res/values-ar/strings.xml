@@ -27,7 +27,7 @@
     <string name="error_occurred">"حدث خطأ"</string>
     <string name="network">"الشبكة غير متوفرة"</string>
     <string name="add_vehicleinfo">"إضافة معلومات السيارة"</string>
-    <string name="upload_doc">"تحميل المستند"</string>
+    <string name="upload_doc">الرجاء رفع اوراق السائق وشهاداته</string>
     <string name="home">"الصفحة الرئيسية"</string>
     <string name="requests">"طلبات"</string>
     <string name="vehicle_info">"معلومات السيارة"</string>
@@ -158,7 +158,7 @@
     <string name="ku">كردي</string>
     <string name="Affordable_everyday_rides">رحلات يومية بأسعار معقولة</string>
     <string name="date_And_time">التاريخ و الوقت</string>
-    <string name="available_seats">عدد المسافرين المتاح</string>
+    <string name="available_seats">عدد المسافرين المطلوب</string>
     <string name="Bookedseats">عدد المسافرين الحاجزين</string>
     <string name="SetTime">ضبط الوقت</string>
     <string name="SetDate">حدد التاريخ</string>
@@ -262,13 +262,13 @@
     <string name="CheckBox">إضافة إلى المنصة </string>
     <string name="the_clock">الساعة: </string>
 
-    <string name="notification_0">اختاركم للسفر معكم</string>
-    <string name="notification_1">اسم اليوزر اختاركم للسفر معكم</string>
-    <string name="notification_2">سعيد بقبول طلبكم للسفر معه</string>
+    <string name="notification_0">اختاركم للسفر معه</string>
+    <string name="notification_1">اختاركم للسفر معه</string>
+    <string name="notification_2">بدأت الرحلة</string>
     <string name="notification_3">يعتذر عن قبول طلبكم</string>
-    <string name="notification_4">نشكر ثقتكم بنا تم الوصول بنجاح</string>
+    <string name="notification_4">تم الوصول بنجاح</string>
     <string name="notification_5">قبل الدفع دون اتصال</string>
-    <string name="notification_6">المستخدم دفع ثمن رحلتك للتو</string>
+    <string name="notification_6">تم الدفع</string>
     <string name="notification_7">اختاركم للسفر معكم</string>
     <string name="notification_8">تم ارسال الطلب وسيصلكم التأكيد في أقرب وقت</string>
 
@@ -328,6 +328,17 @@
     <string name="car_type3">حافلة كبيرة</string>
     <string name="show_customers">عرض الركاب</string>
     <string name="customer_count">عدد الركاب</string>
+    <string name="sonething_went_wrong">Something Went Wrong, Please Try Again Later</string>
+    <string name="paid_but_not_approved">بانتظار الموافقة على الدفع</string>
+    <string name="not_paid">لم يتم الدفع بعد</string>
+
+
+    <string name="accepted">مقبولة</string>
+    <string name="pending">معلقة</string>
+    <string name="cancelled">ملغات</string>
+    <string name="completed">مكتملة</string>
+    <string name="approve_all">قبول جميع الدفعات</string>
+
 
 
 </resources>

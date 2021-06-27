@@ -45,7 +45,7 @@
         <include
             layout="@layout/header"
             android:id="@+id/header_search"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -57,7 +57,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="1dp"
             android:layout_marginEnd="0dp"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
     </RelativeLayout>
 

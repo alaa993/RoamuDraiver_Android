@@ -16,6 +16,8 @@ import com.alaan.roamudriver.acitivities.HomeActivity;
 import com.alaan.roamudriver.fragement.AcceptRideFragment;
 import com.alaan.roamudriver.fragement.AcceptedDetailFragment;
 import com.alaan.roamudriver.fragement.MyAcceptedDetailFragment;
+import com.alaan.roamudriver.fragement.myTravelDetailFragment;
+import com.alaan.roamudriver.fragement.myTravelsFragment;
 import com.alaan.roamudriver.pojo.Notification;
 import com.alaan.roamudriver.pojo.Pass;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
@@ -101,15 +103,32 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
     }
 
     public void updateNotificationFirebase(String ride_id, String user_id, String notification_id) {
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(user_id).child(notification_id).child("readStatus");
-        databaseRef.setValue("1");
+//        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(user_id).child(notification_id).child("readStatus");
+//        databaseRef.setValue("1");
+
+        // update all notificaitons read_status to be 1
+        FirebaseDatabase.getInstance().getReference("Notifications").child(user_id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Notification notification = postSnapshot.getValue(Notification.class);
+                    notification.id = postSnapshot.getKey();
+                    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(user_id).child(notification.id).child("readStatus");
+                    databaseRef.setValue("1");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     private void GetRides(String ride_id, String notification_id) {
         RequestParams params = new RequestParams();
         params.put("ride_id", ride_id);
         Server.setHeader(SessionManager.getKEY());
-        Server.get(Server.GET_SPECIFIC_RIDE, params, new JsonHttpResponseHandler() {
+        Server.get(Server.GET_SPECIFIC_TRAVEL, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
@@ -118,10 +137,11 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
                     Gson gson = new GsonBuilder().create();
                     List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                     }.getType());
-                    updateNotificationFirebase(ride_id, list.get(0).getDriver_id(), notification_id); // my id is driver id
+//                    updateNotificationFirebase(ride_id, list.get(0).getDriver_id(), notification_id); // my id is driver id
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("data", list.get(0));
-                    MyAcceptedDetailFragment detailFragment = new MyAcceptedDetailFragment();
+//                    MyAcceptedDetailFragment detailFragment = new MyAcceptedDetailFragment();
+                    myTravelDetailFragment detailFragment = new myTravelDetailFragment();
                     detailFragment.setArguments(bundle);
                     ((HomeActivity) getContext()).changeFragment(detailFragment, "Passenger Information");
 
