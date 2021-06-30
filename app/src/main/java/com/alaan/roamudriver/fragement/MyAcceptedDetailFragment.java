@@ -569,6 +569,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
         RequestParams params = new RequestParams();
         params.put("ride_id", ride_id);
         params.put("status", status);
+        params.put("by", "driver");
         params.put("driver_id", SessionManager.getUserId());
         Server.setHeader(SessionManager.getKEY());
         Server.setContentType();
@@ -591,9 +592,15 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
                         if (status.equals("ACCEPTED")) {
                             updateTravelFirebase();
                         }
+                    } else if (response.has("status") && response.getString("status").equalsIgnoreCase("faild")) {
+                        Log.i("ibrahim", "all sets booked");
+                        Log.i("ibrahim", response.toString());
+                        Toast.makeText(getActivity(), "", Toast.LENGTH_LONG).show();
+
+
                     } else {
                         String data = response.getJSONObject("data").toString();
-                        Toast.makeText(getActivity(), data, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), getString(R.string.full_travel), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
 

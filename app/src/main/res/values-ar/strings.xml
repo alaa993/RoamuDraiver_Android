@@ -64,11 +64,12 @@
     <string name="ride_acceptance">اختيار المسافر</string>
     <string name="ride_reuest_accepted">"قبول الطلب"</string>
     <string name="accept_ride">"قبول الطلب"</string>
-    <string name="complete_ride">"انتهاء الرحلة"</string>
+    <string name="complete_ride">انتهاء الرحلة</string>
+    <string name="complete_travel">انتهاء الرحلة</string>
     <string name="cancel_ride">"إلغاء الرحلة"</string>
     <string name="no_status">"لا توجد حالة"</string>
     <string name="basefare">"الاجرة الاساسية"</string>
-    <string name="approve_payment_offline">تم الدفع نقداً</string>
+    <string name="approve_payment_offline">تأكيد الدفع نقداً</string>
     <string name="vehicle">رقم المركبة</string>
     <string name="doc">"وثيقة"</string>
     <string name="go">"اذهب"</string>
@@ -338,6 +339,8 @@
     <string name="cancelled">ملغات</string>
     <string name="completed">مكتملة</string>
     <string name="approve_all">قبول جميع الدفعات</string>
+    <string name="full_travel">لايوجد متسع لركاب جدد!</string>
+
 
 
 

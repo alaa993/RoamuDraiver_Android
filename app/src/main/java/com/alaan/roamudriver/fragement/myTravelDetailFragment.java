@@ -447,6 +447,8 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 //                                cancel.setVisibility(View.GONE);
 //                            }
                         }
+
+                        getMySpecificTravel(rideJson.getDriver_id(), rideJson.getTravel_id(), "All", SessionManager.getKEY());
                     } else {
                         String data = response.getJSONObject("data").toString();
                         Toast.makeText(getActivity(), data, Toast.LENGTH_LONG).show();
@@ -625,6 +627,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                         if (response.has("data") && response.getJSONArray("data").length() == 0) {
 
                             MyAcceptedRequestAdapter acceptedRequestAdapter = new MyAcceptedRequestAdapter(list);
+                            recyclerView.removeAllViews();
                             recyclerView.setAdapter(acceptedRequestAdapter);
                             acceptedRequestAdapter.notifyDataSetChanged();
 

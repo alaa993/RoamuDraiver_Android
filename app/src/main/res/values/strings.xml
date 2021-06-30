@@ -65,7 +65,8 @@
     <string name="ride_acceptance">Travel Acceptance</string>
     <string name="ride_reuest_accepted">ride request accepted</string>
     <string name="accept_ride">ACCEPT RIDE</string>
-    <string name="complete_ride">COMPLETE RIDE</string>
+    <string name="complete_ride">Complete Ride</string>
+    <string name="complete_travel">Complete Travel</string>
     <string name="cancel_ride">CANCEL RIDE</string>
     <string name="no_status">NO STATUS</string>
     <string name="basefare">Base Fare</string>
@@ -319,5 +320,6 @@ But the owner of the car will have to check the car documents before agreeing to
     <string name="cancelled">Cancelled</string>
     <string name="completed">Completed</string>
     <string name="approve_all">Approve all</string>
+    <string name="full_travel">Yoru travel is fulled by passengers..!</string>
 
 </resources>

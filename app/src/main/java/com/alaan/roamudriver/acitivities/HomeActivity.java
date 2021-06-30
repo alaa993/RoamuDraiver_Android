@@ -865,12 +865,14 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     }
 
     public void setLocaiton(Location location) {
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("Location").child(SessionManager.getUserId());
-        Map<String, Object> rideObject = new HashMap<>();
-        rideObject.put("latitude", location.getLatitude());
-        rideObject.put("longitude", location.getLongitude());
-        rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
-        databaseRef.setValue(rideObject);
+        if (location != null) {
+            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("Location").child(SessionManager.getUserId());
+            Map<String, Object> rideObject = new HashMap<>();
+            rideObject.put("latitude", location.getLatitude());
+            rideObject.put("longitude", location.getLongitude());
+            rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+            databaseRef.setValue(rideObject);
+        }
     }
 
     private void setListener() {

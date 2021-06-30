@@ -566,7 +566,11 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             params.put("amount", mPrice.getText().toString());
             params.put("available_set", mPassengers.getText().toString());
             params.put("pickup_point", mPickupPoint.getText().toString());
-            params.put("booked_set", pojo.getbooked_set());
+            //updated by ibrahim
+            //when user accept the request by driver then should the booked set of travel = booked set by user
+            //
+//            params.put("booked_set", pojo.getbooked_set());
+            params.put("booked_set", "0");
             params.put("travel_date", pojo.getDate());
             params.put("travel_time", pojo.getTime());
             params.put("ride_status", status);

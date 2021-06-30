@@ -75,7 +75,7 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
 
     @Override
     public void onBindViewHolder(final Holder holder, int position) {
-        final PendingRequestPojo pojo = list.get(position);
+        PendingRequestPojo pojo = list.get(position);
         Log.i("ibrahim_pojo", pojo.toString());
         Log.i("ibrahim_pojo", pojo.getTravel_status());
         Log.i("ibrahim_POSITION", String.valueOf(position));
@@ -110,28 +110,7 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
         }
         holder.status.setText(Status);
 
-//        setupData(holder, pojo);
-
-//        if (!ride_status.equals("") && ride_status.equalsIgnoreCase("PENDING")) {
-//            holder.item_Button.setVisibility(View.VISIBLE);
-//            holder.item_Button.setText(holder.itemView.getContext().getString(R.string.Pick_Customer));
-//        }
-//        if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("CANCELLED")) {
-//            holder.item_Button.setVisibility(View.GONE);
-//        }
-//        if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("COMPLETED")) {
-//            holder.item_Button.setVisibility(View.GONE);
-//        }
-//        if (!ride_status.equals("") && ride_status.equalsIgnoreCase("ACCEPTED")) {
-//            {
-//                if (payment_mode.equals("OFFLINE") && !payment_status.equals("PAID")) {
-//                    holder.item_Button.setVisibility(View.VISIBLE);
-//                    holder.item_Button.setText(holder.itemView.getContext().getString(R.string.approve_payment_offline));
-//                } else {
-//                    holder.item_Button.setVisibility(View.GONE);
-//                }
-//            }
-//        }
+        setupData(holder, pojo);
 
         databaseRides = FirebaseDatabase.getInstance().getReference("rides").child(pojo.getRide_id());
         listener = databaseRides.addValueEventListener(new ValueEventListener() {
@@ -168,27 +147,31 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
 
                     Log.i("ibrahim_status", String.valueOf(ride_status));
 
-//                    if (!ride_status.equals("") && ride_status.equalsIgnoreCase("PENDING")) {
-//                        holder.item_Button.setVisibility(View.VISIBLE);
+                    if (!ride_status.equals("") && ride_status.equalsIgnoreCase("PENDING")) {
+                        holder.item_Button.setVisibility(View.VISIBLE);
+                        holder.item_Button1.setVisibility(View.GONE);
 //                        holder.item_Button.setText(holder.itemView.getContext().getString(R.string.Pick_Customer));
-//                    }
-//                    if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("CANCELLED")) {
-//                        holder.item_Button.setVisibility(View.GONE);
-//                    }
-//                    if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("COMPLETED")) {
-//                        holder.item_Button.setVisibility(View.GONE);
-//                    }
-//                    if (!ride_status.equals("") && ride_status.equalsIgnoreCase("ACCEPTED")) {
-//                        {
-//                            if (payment_mode.equals("OFFLINE") && !payment_status.equals("PAID")) {
-//                                holder.item_Button.setVisibility(View.VISIBLE);
+                    }
+                    if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("CANCELLED")) {
+                        holder.item_Button.setVisibility(View.GONE);
+                        holder.item_Button1.setVisibility(View.GONE);
+                    }
+                    if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("COMPLETED")) {
+                        holder.item_Button.setVisibility(View.GONE);
+                        holder.item_Button1.setVisibility(View.GONE);
+                    }
+                    if (!ride_status.equals("") && ride_status.equalsIgnoreCase("ACCEPTED")) {
+                        {
+                            if (payment_mode.equals("OFFLINE") && !payment_status.equals("PAID")) {
+                                holder.item_Button.setVisibility(View.GONE);
+                                holder.item_Button1.setVisibility(View.VISIBLE);
 //                                holder.item_Button.setText(holder.itemView.getContext().getString(R.string.approve_payment_offline));
-//                            } else {
-//                                holder.item_Button.setVisibility(View.GONE);
-//                            }
-//                        }
-//                    }
-
+                            } else {
+                                holder.item_Button.setVisibility(View.GONE);
+                                holder.item_Button1.setVisibility(View.GONE);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -208,63 +191,96 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
             }
         });
 
+//        holder.item_Button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (pojo != null) {
+//                    Log.i("ibrahim_status", "item_Button");
+//                    Log.i("ibrahim_status", String.valueOf(ride_status));
+//                    Log.i("ibrahim_status", String.valueOf(payment_mode));
+//                    Log.i("ibrahim_status", String.valueOf(payment_status));
+//                    if (!ride_status.equals("") && ride_status.equalsIgnoreCase("PENDING")) {
+//                        AlertDialogCreate(pojo, holder.itemView.getContext(), holder.itemView.getContext().getString(R.string.ride_acceptance), holder.itemView.getContext().getString(R.string.ride_accept_msg), "ACCEPTED");
+//                    }
+//                    if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("CANCELLED")) {
+//
+//                    }
+//                    if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("COMPLETED")) {
+//
+//                    }
+//                    if (!ride_status.equals("") && ride_status.equalsIgnoreCase("ACCEPTED")) {
+//                        {
+//                            if (payment_mode.equals("OFFLINE") && !payment_status.equals("PAID")) {
+//                                approvePaymet(pojo, holder.itemView.getContext());
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        });
+
+        holder.item_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pojo != null) {
+                    Log.i("ibrahim_status", "item_Button");
+                    Log.i("ibrahim_status", String.valueOf(ride_status));
+                    Log.i("ibrahim_status", String.valueOf(payment_mode));
+                    Log.i("ibrahim_status", String.valueOf(payment_status));
+                    AlertDialogCreate(pojo, holder.itemView.getContext(), holder.itemView.getContext().getString(R.string.ride_acceptance), holder.itemView.getContext().getString(R.string.ride_accept_msg), "ACCEPTED");
+                }
+            }
+        });
+
+        holder.item_Button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pojo != null) {
+                    Log.i("ibrahim_status", "item_Button");
+                    Log.i("ibrahim_status", String.valueOf(ride_status));
+                    Log.i("ibrahim_status", String.valueOf(payment_mode));
+                    Log.i("ibrahim_status", String.valueOf(payment_status));
+
+                    approvePaymet(pojo, holder.itemView.getContext());
+                }
+            }
+        });
+
         BookFont(holder, holder.f);
         BookFont(holder, holder.t);
         BookFont(holder, holder.dn);
 
         MediumFont(holder, holder.from_add);
         MediumFont(holder, holder.to_add);
-
-        holder.item_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (pojo != null) {
-                    Log.i("ibrahim_status", String.valueOf(ride_status));
-                    if (!ride_status.equals("") && ride_status.equalsIgnoreCase("PENDING")) {
-                        AlertDialogCreate(pojo, holder.itemView.getContext(), holder.itemView.getContext().getString(R.string.ride_acceptance), holder.itemView.getContext().getString(R.string.ride_accept_msg), "ACCEPTED");
-                    }
-                    if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("CANCELLED")) {
-
-                    }
-                    if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("COMPLETED")) {
-
-                    }
-                    if (!ride_status.equals("") && ride_status.equalsIgnoreCase("ACCEPTED")) {
-                        {
-                            if (payment_mode.equals("OFFLINE") && !payment_status.equals("PAID")) {
-                                approvePaymet(pojo, holder.itemView.getContext());
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-
     }
 
     public void setupData(Holder holder, PendingRequestPojo pojo1) {
 //        if (pojo1 != null) {
-            if (!ride_status.equals("") && ride_status.equalsIgnoreCase("PENDING")) {
-                holder.item_Button.setVisibility(View.VISIBLE);
-                holder.item_Button.setText(holder.itemView.getContext().getString(R.string.Pick_Customer));
-            }
-            if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("CANCELLED")) {
-                holder.item_Button.setVisibility(View.GONE);
-            }
-            if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("COMPLETED")) {
-                holder.item_Button.setVisibility(View.GONE);
-            }
-            if (!ride_status.equals("") && ride_status.equalsIgnoreCase("ACCEPTED")) {
-                {
-                    if (payment_mode.equals("OFFLINE") && !payment_status.equals("PAID")) {
-                        holder.item_Button.setVisibility(View.VISIBLE);
-                        holder.item_Button.setText(holder.itemView.getContext().getString(R.string.approve_payment_offline));
-                    } else {
-                        holder.item_Button.setVisibility(View.GONE);
-                    }
+        if (!pojo1.getStatus().equals("") && pojo1.getStatus().equalsIgnoreCase("PENDING")) {
+            holder.item_Button.setVisibility(View.VISIBLE);
+            holder.item_Button1.setVisibility(View.GONE);
+//            holder.item_Button.setText(holder.itemView.getContext().getString(R.string.Pick_Customer));
+        }
+        if (pojo1.getStatus() != null && !pojo1.getStatus().equals("") && pojo1.getStatus().equalsIgnoreCase("CANCELLED")) {
+            holder.item_Button.setVisibility(View.GONE);
+            holder.item_Button1.setVisibility(View.GONE);
+        }
+        if (pojo1.getStatus() != null && !pojo1.getStatus().equals("") && pojo1.getStatus().equalsIgnoreCase("COMPLETED")) {
+            holder.item_Button.setVisibility(View.GONE);
+            holder.item_Button1.setVisibility(View.GONE);
+        }
+        if (!pojo1.getStatus().equals("") && pojo1.getStatus().equalsIgnoreCase("ACCEPTED")) {
+            {
+                if (pojo1.getPayment_mode().equals("OFFLINE") && !pojo1.getPayment_status().equals("PAID")) {
+                    holder.item_Button.setVisibility(View.GONE);
+                    holder.item_Button1.setVisibility(View.VISIBLE);
+//                    holder.item_Button.setText(holder.itemView.getContext().getString(R.string.approve_payment_offline));
+                } else {
+                    holder.item_Button.setVisibility(View.GONE);
+                    holder.item_Button1.setVisibility(View.GONE);
                 }
             }
+        }
 //        }
     }
 
@@ -279,6 +295,7 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
         TextView drivername, from_add, to_add, status;
         TextView f, t, dn;
         AppCompatButton item_Button;
+        AppCompatButton item_Button1;
 
         public Holder(View itemView) {
             super(itemView);
@@ -293,6 +310,7 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
             to_add = (TextView) itemView.findViewById(R.id.txt_to_add);
             status = (TextView) itemView.findViewById(R.id.Statuss);
             item_Button = (AppCompatButton) itemView.findViewById(R.id.MyAR_I_btn);
+            item_Button1 = (AppCompatButton) itemView.findViewById(R.id.MyAR_I_btn1);
         }
     }
 
@@ -326,7 +344,7 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
         Log.i("ibrahim_SendStatus", ride_id);
 
         RequestParams params = new RequestParams();
-        params.put("ride_id", ride_id);
+        params.put("ride_id", pojo.getRide_id());
         params.put("status", status);
         params.put("driver_id", SessionManager.getUserId());
         Server.setHeader(SessionManager.getKEY());
@@ -370,7 +388,7 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
 
     private void approvePaymet(PendingRequestPojo pojo, Context context) {
         RequestParams params = new RequestParams();
-        params.put("ride_id", ride_id);
+        params.put("ride_id", pojo.getRide_id());
         params.put("payment_status", "PAID");
         Server.setHeader(SessionManager.getKEY());
         Server.setContentType();
