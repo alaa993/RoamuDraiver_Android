@@ -37,6 +37,7 @@ import com.alaan.roamudriver.acitivities.AddPostActivity;
 import com.alaan.roamudriver.acitivities.HomeActivity;
 import com.alaan.roamudriver.custom.CheckConnection;
 import com.alaan.roamudriver.pojo.Pass;
+import com.alaan.roamudriver.pojo.firebaseTravelCounters;
 import com.alaan.roamudriver.session.SessionManager;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -523,8 +524,10 @@ public class SearchUser extends Fragment implements BackFragment {
 
     public void addTravelToFireBase(int travel_id) {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(String.valueOf(travel_id));
+        firebaseTravelCounters counters = new firebaseTravelCounters();
         Map<String, Object> travelObject = new HashMap<>();
         travelObject.put("driver_id", String.valueOf(SessionManager.getUserId()));
+        travelObject.put("Counters", counters);
         databaseRef.setValue(travelObject);
     }
 

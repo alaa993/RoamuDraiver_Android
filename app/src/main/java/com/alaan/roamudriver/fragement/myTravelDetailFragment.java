@@ -130,6 +130,13 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     private LatLng origin;
     private LatLng destination;
     private boolean checkPayments = false;
+    int list_size = 0;
+
+//    ValueEventListener listener;
+//    DatabaseReference databaseRide;
+
+//    ValueEventListener[] listeners;
+//    DatabaseReference[] databaseRides;
 
 
 //    private String pickup_address;
@@ -150,6 +157,9 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 
     DatabaseReference databaseTravelRef;
     DatabaseReference databaseClientsLocation;
+    DatabaseReference databaseTravelRef1;
+    ValueEventListener listener;
+
 
     firebaseTravel fbTravel;
 
@@ -180,15 +190,53 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
         ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.passanger_info));
         BindView(savedInstanceState);
         databaseTravelRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id());
+        databaseTravelRef1 = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id());
+//        databaseRides = FirebaseDatabase.getInstance().getReference("rides").child(rideJson.getRide_id());
+        //attaching value event listener
+        listener = databaseTravelRef1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
+                Log.i("ibrahim", "onDataChange");
+                Log.i("ibrahim ride", "----------");
+                if (fbTravel != null) {
+                    Log.i("ibrahim", "fbTravel");
+                    Log.i("Counters.ACCEPTED", String.valueOf(fbTravel.Counters.ACCEPTED));
+//                    Log.i("Counters.PENDING", String.valueOf(fbTravel.Counters.PENDING));
+                    Log.i("Counters.COMPLETED", String.valueOf(fbTravel.Counters.COMPLETED));
+//                    Log.i("Counters.CANCELLED", String.valueOf(fbTravel.Counters.CANCELLED));
+                    Log.i("Counters.PAID", String.valueOf(fbTravel.Counters.PAID));
+                    Log.i("Counters.OFFLINE", String.valueOf(fbTravel.Counters.OFFLINE));
+                    if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("STARTED")) {
+                        if (fbTravel.Counters.ACCEPTED + fbTravel.Counters.COMPLETED == fbTravel.Counters.PAID && fbTravel.Counters.PAID > 0) {
+                            Log.i("ibrahim", "COMPLETED");
+                            approve.setVisibility(View.GONE);
+                            start.setVisibility(View.GONE);
+                            complete.setVisibility(View.VISIBLE);
+                            cancel.setVisibility(View.GONE);
+                        } else if (fbTravel.Counters.ACCEPTED + fbTravel.Counters.COMPLETED == fbTravel.Counters.OFFLINE && fbTravel.Counters.OFFLINE > 0) {
+                            Log.i("ibrahim", "approve");
+                            approve.setVisibility(View.VISIBLE);
+                            complete.setVisibility(View.GONE);
+                            start.setVisibility(View.GONE);
+                            cancel.setVisibility(View.GONE);
+                        }
+                    }
 
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        //attaching value event listener
-
+        Log.i("ibrahim", "onStart");
     }
 
     public void BindView(Bundle savedInstanceState) {
@@ -312,35 +360,36 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                 start.setVisibility(View.VISIBLE);
                 complete.setVisibility(View.GONE);
                 cancel.setVisibility(View.VISIBLE);
-            }
-            if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("CANCELLED")) {
+            } else if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("CANCELLED")) {
                 approve.setVisibility(View.GONE);
                 start.setVisibility(View.GONE);
                 complete.setVisibility(View.GONE);
                 cancel.setVisibility(View.GONE);
-            }
-            if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("COMPLETED")) {
+            } else if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("COMPLETED")) {
                 approve.setVisibility(View.GONE);
                 start.setVisibility(View.GONE);
                 complete.setVisibility(View.GONE);
                 cancel.setVisibility(View.GONE);
-            }
-            if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("STARTED")) {
-                if (checkPayments()) {
-                    Log.i("ibrahim", "checkPayments");
-                    Log.i("ibrahim", String.valueOf(checkPayments()));
-                    approve.setVisibility(View.VISIBLE);
-                    complete.setVisibility(View.GONE);
-                    start.setVisibility(View.GONE);
-                    cancel.setVisibility(View.GONE);
-                } else {
-                    approve.setVisibility(View.GONE);
-                    start.setVisibility(View.GONE);
-                    complete.setVisibility(View.GONE);
-                    cancel.setVisibility(View.GONE);
-                }
-            }
-            if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("PAID")) {
+            } else if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("STARTED")) {
+//                approve.setVisibility(View.GONE);
+//                start.setVisibility(View.GONE);
+//                complete.setVisibility(View.GONE);
+//                cancel.setVisibility(View.GONE);
+                checkPayments();
+//                if () {
+//                    Log.i("ibrahim", "checkPayments");
+//                    Log.i("ibrahim", String.valueOf(checkPayments()));
+//                    approve.setVisibility(View.VISIBLE);
+//                    complete.setVisibility(View.GONE);
+//                    start.setVisibility(View.GONE);
+//                    cancel.setVisibility(View.GONE);
+//                } else {
+//                    approve.setVisibility(View.GONE);
+//                    start.setVisibility(View.GONE);
+//                    complete.setVisibility(View.GONE);
+//                    cancel.setVisibility(View.GONE);
+//                }
+            } else if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("PAID")) {
                 approve.setVisibility(View.GONE);
                 start.setVisibility(View.GONE);
                 complete.setVisibility(View.VISIBLE);
@@ -492,7 +541,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 //                        checkPayments = true;
 //                        Log.i("ibrahim_checkPayments1", String.valueOf(checkPayments));
                         approve.setVisibility(View.VISIBLE);
-                        complete.setVisibility(View.GONE);
+//                        complete.setVisibility(View.GONE);
                         start.setVisibility(View.GONE);
                         cancel.setVisibility(View.GONE);
 
@@ -501,7 +550,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 //                        Log.i("ibrahim_checkPayments2", String.valueOf(checkPayments));
                         approve.setVisibility(View.GONE);
                         start.setVisibility(View.GONE);
-                        complete.setVisibility(View.GONE);
+//                        complete.setVisibility(View.GONE);
                         cancel.setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {
@@ -625,17 +674,51 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                         }.getType());
 
                         if (response.has("data") && response.getJSONArray("data").length() == 0) {
-
+                            //
+                            //
                             MyAcceptedRequestAdapter acceptedRequestAdapter = new MyAcceptedRequestAdapter(list);
                             recyclerView.removeAllViews();
                             recyclerView.setAdapter(acceptedRequestAdapter);
                             acceptedRequestAdapter.notifyDataSetChanged();
 
                         } else {
+                            if (list.size() > 0) {
+                                list_size = list.size();
 
-                            MyAcceptedRequestAdapter acceptedRequestAdapter = new MyAcceptedRequestAdapter(list);
-                            recyclerView.setAdapter(acceptedRequestAdapter);
-                            acceptedRequestAdapter.notifyDataSetChanged();
+//                                databaseRides = new DatabaseReference[list.size()];
+//                                listeners = new ValueEventListener[list.size()];
+
+//                                for (int i = 0; i < list.size(); i++) {
+//                                    databaseRide = FirebaseDatabase.getInstance().getReference("rides").child(list.get(i).getRide_id());
+//                                    Log.i("ibrahim", "databaseRide");
+//                                    Log.i("ibrahim", list.get(i).getRide_id());
+//                                    databaseRides[i] = databaseRide;
+//                                    listener = databaseRides[i].addValueEventListener(new ValueEventListener() {
+//                                        @Override
+//                                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                                            firebaseRide fbRide = dataSnapshot.getValue(firebaseRide.class);
+//                                            Log.i("ibrahim ride", "----------");
+//                                            Log.i("ibrahim", fbRide.toString());
+//
+//                                            if (fbRide != null) {
+//                                                Log.i("ibrahim", "not null");
+//
+//                                                checkPayments();
+//                                            }
+////                                        setupData();
+//                                        }
+//
+//                                        @Override
+//                                        public void onCancelled(DatabaseError databaseError) {
+//                                        }
+//                                    });
+//                                    listeners[i] = listener;
+//                                    databaseRide.removeEventListener(listener);
+//                                }
+                                MyAcceptedRequestAdapter acceptedRequestAdapter = new MyAcceptedRequestAdapter(list);
+                                recyclerView.setAdapter(acceptedRequestAdapter);
+                                acceptedRequestAdapter.notifyDataSetChanged();
+                            }
                         }
 
                     } else {
@@ -715,6 +798,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                     databaseTravelRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.i("ibrahim", "onDataChange_1");
                             fbTravel = dataSnapshot.getValue(firebaseTravel.class);
 //                            Log.i("ibrahim", fbTravel.toString());
 //                            Log.i("ibrahim_travel", fbTravel.driver_id);
@@ -817,6 +901,17 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
         } catch (Exception e) {
 
         }
+    }
+
+    @Override
+    public void onPause() {
+        databaseTravelRef1.removeEventListener(listener);
+        super.onPause();
+//        if (list_size > 0) {
+//            for (int i = 0; i < list_size; i++) {
+//                databaseRides[i].removeEventListener(listeners[i]);
+//            }
+//        }
     }
 
     @Override

@@ -7,6 +7,8 @@ public class firebaseTravel {
 
     public String driver_id;
     public Map<String,String> Clients;
+    public firebaseTravelCounters Counters;
+
 
     public firebaseTravel()
     {

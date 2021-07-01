@@ -153,6 +153,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
     DatabaseReference databaseRides;
     ValueEventListener listener;
 
+
     DatabaseReference databaseTravelRef;
     DatabaseReference databaseClientsLocation;
 
@@ -553,6 +554,8 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
                 super.onSuccess(statusCode, headers, response);
                 updateRideFirebase(travel_status, ride_status, "PAID", payment_mode);
                 updateNotificationFirebase(getString(R.string.notification_5));
+                updateTravelFirebase();
+                updateTravelCounterFirebase();
                 approve.setVisibility(View.GONE);
                 payment_status_TV.setText("PAID");
             }
@@ -589,8 +592,9 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         updateRideFirebase(travel_status, status, payment_status, payment_mode);
                         updateNotificationFirebase(status);
+                        updateTravelCounterFirebase(status);
                         if (status.equals("ACCEPTED")) {
-                            updateTravelFirebase();
+                            updateTravelCounterFirebase();
                         }
                     } else if (response.has("status") && response.getString("status").equalsIgnoreCase("faild")) {
                         Log.i("ibrahim", "all sets booked");
@@ -644,11 +648,6 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
         Map<String, Object> travelObject = new HashMap<>();
         travelObject.put("driver_id", rideJson.getDriver_id());
 
-//        Map<String, String> Client = new HashMap<>();
-//        Client.put(rideJson.getUser_id(),rideJson.getUser_id());
-
-//        travelObject.put("Clients", Client);
-
         databaseRef.updateChildren(travelObject).addOnSuccessListener(new OnSuccessListener() {
             @Override
             public void onSuccess(Object o) {
@@ -660,6 +659,56 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
             }
         });
 
+    }
+
+    public void updateTravelCounterFirebase() {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id());
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
+                if (fbTravel != null) {
+                    Log.i("ibrahim", "fbTravel");
+                    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("PAID");
+                    databaseRef.setValue(fbTravel.Counters.PAID + 1);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+            }
+        });
+    }
+
+    public void updateTravelCounterFirebase(String status) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id());
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
+                if (fbTravel != null) {
+                    if(status.contains("ACCEPTED")){
+                        Log.i("ibrahim", "fbTravel");
+                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("ACCEPTED");
+                        databaseRef.setValue(fbTravel.Counters.ACCEPTED + 1);
+                    }
+                    else if(status.contains("COMPLETED")){
+                        Log.i("ibrahim", "fbTravel");
+                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("COMPLETED");
+                        databaseRef.setValue(fbTravel.Counters.COMPLETED + 1);
+
+                        DatabaseReference databaseRef1 = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("ACCEPTED");
+                        databaseRef1.setValue(fbTravel.Counters.ACCEPTED -1 );
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+            }
+        });
     }
 
     public void SendTravelStatus(String ride_id, final String status, final String travelId, final String travel_statusParam) {

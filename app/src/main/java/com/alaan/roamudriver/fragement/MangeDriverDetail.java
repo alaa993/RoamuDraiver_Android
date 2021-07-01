@@ -34,6 +34,7 @@ import com.alaan.roamudriver.pojo.DriverRides;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
 import com.alaan.roamudriver.pojo.SearchForUser;
 import com.alaan.roamudriver.pojo.Tracking;
+import com.alaan.roamudriver.pojo.firebaseTravel;
 import com.alaan.roamudriver.session.SessionManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -68,7 +69,7 @@ import retrofit2.Response;
  * Use the {@link MangeDriverDetail#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MangeDriverDetail extends   FragmentManagePermission {
+public class MangeDriverDetail extends FragmentManagePermission {
     AppCompatButton trackRide, complete, cancel, approve, accept;
     TextView title, drivername, mobilenumber, pickup_location, drop_location, fare, payment_status;
     String request = "";
@@ -109,6 +110,7 @@ public class MangeDriverDetail extends   FragmentManagePermission {
         super.onCreate(savedInstanceState);
 
     }
+
     public void AlertDialogCreate(String title, String message, final String status) {
         Drawable drawable = ContextCompat.getDrawable(getActivity(), R.mipmap.ic_warning_white_24dp);
         drawable = DrawableCompat.wrap(drawable);
@@ -133,6 +135,7 @@ public class MangeDriverDetail extends   FragmentManagePermission {
                     }
                 }).show();
     }
+
     public void BindView() {
         gpsTracker = new GPSTracker(getActivity());
 //        linearChat = (LinearLayout) view.findViewById(R.id.linear_chat);
@@ -170,9 +173,9 @@ public class MangeDriverDetail extends   FragmentManagePermission {
             }
             if (fare != null) {
                 fare.setText(basefare);
-                                }
+            }
             if (mobile != null) {
-                mobilenumber.setText(pojo.getTravel_date() +"Time : " + pojo.getTravel_time());
+                mobilenumber.setText(pojo.getTravel_date() + "Time : " + pojo.getTravel_time());
             }
             if (paymnt_mode == null) {
                 paymnt_mode = "";
@@ -182,13 +185,13 @@ public class MangeDriverDetail extends   FragmentManagePermission {
             } else {
                 ride_id = "";
             }
-            request = "PENDING" ;
+            request = "PENDING";
 
             if (!request.equals("") && request.equalsIgnoreCase("PENDING")) {
                 cancel.setVisibility(View.VISIBLE);
                 accept.setVisibility(View.VISIBLE);
             }
-           }
+        }
 
         mobilenumber_row.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,30 +220,23 @@ public class MangeDriverDetail extends   FragmentManagePermission {
             }
         });
     }
-    private void approvePaymet() {
-        RequestParams params = new RequestParams();
-        params.put("ride_id", ride_id);
-        params.put("payment_status", "PAID");
-        Server.setHeader(SessionManager.getKEY());
-        Server.setContentType();
-        Server.post(Server.APPROVE_PAYMENT, params, new JsonHttpResponseHandler() {
+
+    public void updateTravelCounterFirebase() {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id());
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onStart() {
-                super.onStart();
-                swipeRefreshLayout.setRefreshing(true);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
+                if (fbTravel != null) {
+                    Log.i("ibrahim", "fbTravel");
+                    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("PAID");
+                    databaseRef.setValue(fbTravel.Counters.PAID + 1);
+                }
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                approve.setVisibility(View.GONE);
-                payment_status.setText("PAID");
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                swipeRefreshLayout.setRefreshing(false);
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
             }
         });
     }
@@ -256,14 +252,14 @@ public class MangeDriverDetail extends   FragmentManagePermission {
             @Override
             public void onStart() {
                 super.onStart();
-              //  swipeRefreshLayout.setRefreshing(true);
+                //  swipeRefreshLayout.setRefreshing(true);
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
 
-                    Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -286,6 +282,7 @@ public class MangeDriverDetail extends   FragmentManagePermission {
         long frequency = 60 * 1000; // in ms
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency, pendingIntent);
     }
+
     private void launchNavigation() {
 
 
@@ -365,6 +362,7 @@ public class MangeDriverDetail extends   FragmentManagePermission {
             gpsTracker.showSettingsAlert();
         }
     }
+
     public Boolean GPSEnable() {
         GPSTracker gpsTracker = new GPSTracker(getActivity());
         if (gpsTracker.canGetLocation()) {

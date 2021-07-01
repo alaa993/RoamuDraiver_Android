@@ -51,6 +51,7 @@ import com.alaan.roamudriver.pojo.Pass;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
 import com.alaan.roamudriver.pojo.SearchForUser;
 import com.alaan.roamudriver.pojo.Tracking;
+import com.alaan.roamudriver.pojo.firebaseTravel;
 import com.alaan.roamudriver.session.SessionManager;
 import com.fxn.stash.Stash;
 import com.google.android.gms.common.api.Status;
@@ -475,11 +476,32 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 super.onSuccess(statusCode, headers, response);
                 approve.setVisibility(View.GONE);
                 payment_status.setText("PAID");
+                updateTravelCounterFirebase();
             }
             @Override
             public void onFinish() {
                 super.onFinish();
                 swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    public void updateTravelCounterFirebase() {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id());
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
+                if (fbTravel != null) {
+                    Log.i("ibrahim", "fbTravel");
+                    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("PAID");
+                    databaseRef.setValue(fbTravel.Counters.PAID + 1);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
             }
         });
     }
@@ -526,6 +548,8 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                             ((HomeActivity) getActivity()).changeFragment(acceptedRequestFragment, getString(R.string.requests));
                             Toast.makeText(getActivity(), getString(R.string.ride_reuest_cancelled), Toast.LENGTH_LONG).show();
                         }
+                        updateTravelCounterFirebase(status);
+
                     } else {
                         String data = response.getJSONObject("data").toString();
                         Toast.makeText(getActivity(), data, Toast.LENGTH_LONG).show();
@@ -537,6 +561,36 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             public void onFinish() {
                 super.onFinish();
                 swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    public void updateTravelCounterFirebase(String status) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id());
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
+                if (fbTravel != null) {
+                    if(status.contains("ACCEPTED")){
+                        Log.i("ibrahim", "fbTravel");
+                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("ACCEPTED");
+                        databaseRef.setValue(fbTravel.Counters.ACCEPTED + 1);
+                    }
+                    else if(status.contains("COMPLETED")){
+                        Log.i("ibrahim", "fbTravel");
+                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("COMPLETED");
+                        databaseRef.setValue(fbTravel.Counters.COMPLETED + 1);
+
+                        DatabaseReference databaseRef1 = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("ACCEPTED");
+                        databaseRef1.setValue(fbTravel.Counters.ACCEPTED -1 );
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
             }
         });
     }
