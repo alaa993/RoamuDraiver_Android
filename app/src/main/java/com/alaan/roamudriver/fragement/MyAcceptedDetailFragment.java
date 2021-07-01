@@ -539,6 +539,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
     private void approvePaymet() {
         RequestParams params = new RequestParams();
         params.put("ride_id", ride_id);
+        params.put("travel_id", rideJson.getTravel_id());
         params.put("payment_status", "PAID");
         Server.setHeader(SessionManager.getKEY());
         Server.setContentType();
@@ -623,9 +624,13 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
     public void updateRideFirebase(String travel_status, String ride_status, String payment_status, String payment_mode) {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("rides").child(rideJson.getRide_id());
         Map<String, Object> rideObject = new HashMap<>();
-
         rideObject.put("ride_status", ride_status);
-        rideObject.put("travel_status", travel_status);
+        if(ride_status.contains("ACCEPTED")){
+            rideObject.put("travel_status", "STARTED");
+        }
+        else{
+            rideObject.put("travel_status", travel_status);
+        }
         rideObject.put("payment_status", payment_status);
         rideObject.put("payment_mode", payment_mode);
         rideObject.put("timestamp", ServerValue.TIMESTAMP);
@@ -643,6 +648,8 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
         databaseRef.setValue(rideObject);
     }
 
+
+
     public void updateTravelFirebase() {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id());
         Map<String, Object> travelObject = new HashMap<>();
@@ -658,8 +665,8 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
                 databaseRef.setValue(rideJson.getUser_id());
             }
         });
-
     }
+
 
     public void updateTravelCounterFirebase() {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id());

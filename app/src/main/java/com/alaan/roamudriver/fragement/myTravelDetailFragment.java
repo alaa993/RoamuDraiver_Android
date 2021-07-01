@@ -41,6 +41,7 @@ import com.alaan.roamudriver.Server.Server;
 import com.alaan.roamudriver.acitivities.HomeActivity;
 import com.alaan.roamudriver.adapter.AcceptedRequestAdapter;
 import com.alaan.roamudriver.adapter.MyAcceptedRequestAdapter;
+import com.alaan.roamudriver.adapter.myTravelsAdapter;
 import com.alaan.roamudriver.custom.GPSTracker;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
 import com.alaan.roamudriver.pojo.firebaseClients;
@@ -207,22 +208,22 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 //                    Log.i("Counters.CANCELLED", String.valueOf(fbTravel.Counters.CANCELLED));
                     Log.i("Counters.PAID", String.valueOf(fbTravel.Counters.PAID));
                     Log.i("Counters.OFFLINE", String.valueOf(fbTravel.Counters.OFFLINE));
-                    if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("STARTED")) {
-                        if (fbTravel.Counters.ACCEPTED + fbTravel.Counters.COMPLETED == fbTravel.Counters.PAID && fbTravel.Counters.PAID > 0) {
-                            Log.i("ibrahim", "COMPLETED");
-                            approve.setVisibility(View.GONE);
-                            start.setVisibility(View.GONE);
-                            complete.setVisibility(View.VISIBLE);
-                            cancel.setVisibility(View.GONE);
-                        } else if (fbTravel.Counters.ACCEPTED + fbTravel.Counters.COMPLETED == fbTravel.Counters.OFFLINE && fbTravel.Counters.OFFLINE > 0) {
-                            Log.i("ibrahim", "approve");
-                            approve.setVisibility(View.VISIBLE);
-                            complete.setVisibility(View.GONE);
-                            start.setVisibility(View.GONE);
-                            cancel.setVisibility(View.GONE);
-                        }
-                    }
-
+//                    if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("STARTED")) {
+//                        if (fbTravel.Counters.ACCEPTED + fbTravel.Counters.COMPLETED == fbTravel.Counters.PAID && fbTravel.Counters.PAID > 0) {
+//                            Log.i("ibrahim", "COMPLETED");
+//                            approve.setVisibility(View.GONE);
+//                            start.setVisibility(View.GONE);
+//                            complete.setVisibility(View.VISIBLE);
+//                            cancel.setVisibility(View.GONE);
+//                        } else if (fbTravel.Counters.ACCEPTED + fbTravel.Counters.COMPLETED == fbTravel.Counters.OFFLINE && fbTravel.Counters.OFFLINE > 0) {
+//                            Log.i("ibrahim", "approve");
+//                            approve.setVisibility(View.VISIBLE);
+//                            complete.setVisibility(View.GONE);
+//                            start.setVisibility(View.GONE);
+//                            cancel.setVisibility(View.GONE);
+//                        }
+//                    }
+                    getMyTravel(rideJson.getTravel_id());
                 }
             }
 
@@ -334,7 +335,11 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     }
 
     public void setupData() {
+        Log.i("ibrahim", "setupData");
+
         if (bundle != null) {
+            Log.i("ibrahim", "bundle != null");
+
             if (rideJson.getpickup_location() != null && rideJson.getdrop_location() != null) {
                 Log.i("ibrahim", "inside");
                 Log.i("ibrahim", rideJson.getpickup_location());
@@ -371,10 +376,10 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                 complete.setVisibility(View.GONE);
                 cancel.setVisibility(View.GONE);
             } else if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("STARTED")) {
-//                approve.setVisibility(View.GONE);
-//                start.setVisibility(View.GONE);
-//                complete.setVisibility(View.GONE);
-//                cancel.setVisibility(View.GONE);
+                approve.setVisibility(View.GONE);
+                start.setVisibility(View.GONE);
+                complete.setVisibility(View.GONE);
+                cancel.setVisibility(View.GONE);
                 checkPayments();
 //                if () {
 //                    Log.i("ibrahim", "checkPayments");
@@ -647,7 +652,6 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
         databaseRef.setValue(rideObject);
     }
 
-
     public void getMySpecificTravel(String driver_id, String travel_id, String status, String key) {
         Log.i("ibrahim", "getMyTravels");
 
@@ -732,6 +736,61 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             @Override
             public void onFinish() {
                 super.onFinish();
+            }
+        });
+    }
+
+    public void getMyTravel(String id) {
+        Log.i("ibrahim", "getMyTravels");
+
+        RequestParams params = new RequestParams();
+        params.put("id", id);
+        Server.setHeader(SessionManager.getKEY());
+        Server.get(Server.GET_MyTravel, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+//                Log.i("ibrahim","travels");
+                Log.i("ibrahim", "response.toString()");
+                Log.i("ibrahim", response.toString());
+                try {
+                    Gson gson = new GsonBuilder().create();
+//                    Log.e("success", response.toString());
+
+                    if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
+                        List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
+                        }.getType());
+//                        Log.e("success", response.toString());
+                        if (response.has("data") && response.getJSONArray("data").length() > 0) {
+                            Log.i("ibrahim", "LENGTH>0");
+                            if (list.size() > 0) {
+                                Log.i("ibrahim", "SIZE>0");
+                                rideJson = list.get(0);
+                                travel_status = rideJson.getStatus();
+                                setupData();
+                            }
+                        }
+
+                    } else {
+
+                        Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
+
+                    }
+                } catch (JSONException e) {
+
+                    Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+//                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }

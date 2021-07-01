@@ -462,6 +462,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     private void approvePaymet() {
         RequestParams params = new RequestParams();
         params.put("ride_id", ride_id);
+        params.put("travel_id", pojo.getTravel_id());
         params.put("payment_status", "PAID");
         Server.setHeader(SessionManager.getKEY());
         Server.setContentType();
@@ -773,7 +774,12 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("rides").child(pojo.getRide_id());
         Map<String, Object> rideObject = new HashMap<>();
         rideObject.put("ride_status", ride_status);
-        rideObject.put("travel_status", travel_status);
+        if(ride_status.contains("ACCEPTED")){
+            rideObject.put("travel_status", "STARTED");
+        }
+        else{
+            rideObject.put("travel_status", travel_status);
+        }
         rideObject.put("payment_status", payment_status);
         rideObject.put("payment_mode", payment_mode);
         rideObject.put("timestamp", ServerValue.TIMESTAMP);

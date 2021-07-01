@@ -420,6 +420,7 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
     private void approvePaymet(PendingRequestPojo pojo, Context context) {
         RequestParams params = new RequestParams();
         params.put("ride_id", pojo.getRide_id());
+        params.put("travel_id", pojo.getTravel_id());
         params.put("payment_status", "PAID");
         Server.setHeader(SessionManager.getKEY());
         Server.setContentType();
@@ -471,7 +472,11 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
         Map<String, Object> rideObject = new HashMap<>();
 
         rideObject.put("ride_status", ride_status);
-        rideObject.put("travel_status", travel_status);
+        if (ride_status.contains("ACCEPTED")) {
+            rideObject.put("travel_status", "STARTED");
+        } else {
+            rideObject.put("travel_status", travel_status);
+        }
         rideObject.put("payment_status", payment_status);
         rideObject.put("payment_mode", payment_mode);
         rideObject.put("timestamp", ServerValue.TIMESTAMP);

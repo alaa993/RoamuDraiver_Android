@@ -59,6 +59,7 @@ public class Server {
     public static final String GET_REQUEST = BASE_URL + "api/user/rides" + FORMAT;
     public static final String GET_REQUEST1 = BASE_URL + "api/user/rides2" + FORMAT;
     public static final String GET_Travels = BASE_URL + "api/user/driver_travels" + FORMAT;
+    public static final String GET_MyTravel = BASE_URL + "api/user/driver_mytravel" + FORMAT;
     public static final String driver_specific_travel = BASE_URL + "api/user/driver_specific_travel" + FORMAT;
     public static final String GET_SPECIFIC_RIDE = BASE_URL + "api/user/ride_specific" + FORMAT;
     public static final String GET_SPECIFIC_TRAVEL = BASE_URL + "api/user/travel_specific" + FORMAT;
