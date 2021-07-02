@@ -161,9 +161,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     DatabaseReference databaseTravelRef1;
     ValueEventListener listener;
 
-
     firebaseTravel fbTravel;
-
 
     public myTravelDetailFragment() {
         // Required empty public constructor

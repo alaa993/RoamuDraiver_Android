@@ -504,18 +504,17 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             public void onDataChange(DataSnapshot dataSnapshot) {
                 firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
                 if (fbTravel != null) {
-                    if(status.contains("ACCEPTED")){
+                    if (status.contains("ACCEPTED")) {
                         Log.i("ibrahim", "fbTravel");
                         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("ACCEPTED");
                         databaseRef.setValue(fbTravel.Counters.ACCEPTED + 1);
-                    }
-                    else if(status.contains("COMPLETED")){
+                    } else if (status.contains("COMPLETED")) {
                         Log.i("ibrahim", "fbTravel");
                         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("COMPLETED");
                         databaseRef.setValue(fbTravel.Counters.COMPLETED + 1);
 
                         DatabaseReference databaseRef1 = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("ACCEPTED");
-                        databaseRef1.setValue(fbTravel.Counters.ACCEPTED -1 );
+                        databaseRef1.setValue(fbTravel.Counters.ACCEPTED - 1);
                     }
                 }
             }
@@ -531,12 +530,13 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("rides").child(rideJson.getRide_id());
         Map<String, Object> rideObject = new HashMap<>();
         rideObject.put("ride_status", ride_status);
-        if(ride_status.contains("ACCEPTED")){
-            rideObject.put("travel_status", "STARTED");
-        }
-        else{
-            rideObject.put("travel_status", travel_status);
-        }
+//        if(ride_status.contains("ACCEPTED")){
+//            rideObject.put("travel_status", "STARTED");
+//        }
+//        else{
+//            rideObject.put("travel_status", travel_status);
+//        }
+        rideObject.put("travel_status", travel_status);
         rideObject.put("payment_status", payment_status);
         rideObject.put("payment_mode", payment_mode);
         rideObject.put("timestamp", ServerValue.TIMESTAMP);

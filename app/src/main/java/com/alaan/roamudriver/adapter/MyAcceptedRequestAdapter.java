@@ -472,11 +472,13 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
         Map<String, Object> rideObject = new HashMap<>();
 
         rideObject.put("ride_status", ride_status);
-        if (ride_status.contains("ACCEPTED")) {
-            rideObject.put("travel_status", "STARTED");
-        } else {
-            rideObject.put("travel_status", travel_status);
-        }
+//        if (ride_status.contains("ACCEPTED")) {
+//            rideObject.put("travel_status", "STARTED");
+//        } else {
+//            rideObject.put("travel_status", travel_status);
+//        }
+        rideObject.put("travel_status", travel_status);
+
         rideObject.put("payment_status", payment_status);
         rideObject.put("payment_mode", payment_mode);
         rideObject.put("timestamp", ServerValue.TIMESTAMP);

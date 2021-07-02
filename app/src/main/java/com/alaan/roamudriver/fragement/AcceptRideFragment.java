@@ -290,21 +290,25 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             }
         }
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
+
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
     @Override
     public void onResume() {
         super.onResume();
         mapView.onResume();
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -448,9 +452,11 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                             startActivity(callIntent);
                         }
                     }
+
                     @Override
                     public void permissionDenied() {
                     }
+
                     @Override
                     public void permissionForeverDenied() {
                     }
@@ -472,6 +478,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 super.onStart();
                 swipeRefreshLayout.setRefreshing(true);
             }
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
@@ -479,6 +486,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 payment_status.setText("PAID");
                 updateTravelCounterFirebase();
             }
+
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -520,6 +528,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 super.onStart();
                 swipeRefreshLayout.setRefreshing(true);
             }
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
@@ -558,6 +567,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 } catch (JSONException e) {
                 }
             }
+
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -573,18 +583,17 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             public void onDataChange(DataSnapshot dataSnapshot) {
                 firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
                 if (fbTravel != null) {
-                    if(status.contains("ACCEPTED")){
+                    if (status.contains("ACCEPTED")) {
                         Log.i("ibrahim", "fbTravel");
                         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("ACCEPTED");
                         databaseRef.setValue(fbTravel.Counters.ACCEPTED + 1);
-                    }
-                    else if(status.contains("COMPLETED")){
+                    } else if (status.contains("COMPLETED")) {
                         Log.i("ibrahim", "fbTravel");
                         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("COMPLETED");
                         databaseRef.setValue(fbTravel.Counters.COMPLETED + 1);
 
                         DatabaseReference databaseRef1 = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("ACCEPTED");
-                        databaseRef1.setValue(fbTravel.Counters.ACCEPTED -1 );
+                        databaseRef1.setValue(fbTravel.Counters.ACCEPTED - 1);
                     }
                 }
             }
@@ -640,6 +649,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 super.onStart();
                 swipeRefreshLayout.setRefreshing(true);
             }
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
@@ -700,6 +710,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 } catch (JSONException e) {
                 }
             }
+
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -763,6 +774,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 });
 //                getFragmentManager().popBackStack();
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
@@ -774,12 +786,14 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("rides").child(pojo.getRide_id());
         Map<String, Object> rideObject = new HashMap<>();
         rideObject.put("ride_status", ride_status);
-        if(ride_status.contains("ACCEPTED")){
-            rideObject.put("travel_status", "STARTED");
-        }
-        else{
-            rideObject.put("travel_status", travel_status);
-        }
+//        if(ride_status.contains("ACCEPTED")){
+//            rideObject.put("travel_status", "STARTED");
+//        }
+//        else{
+//            rideObject.put("travel_status", travel_status);
+//        }
+        rideObject.put("travel_status", travel_status);
+
         rideObject.put("payment_status", payment_status);
         rideObject.put("payment_mode", payment_mode);
         rideObject.put("timestamp", ServerValue.TIMESTAMP);
@@ -860,9 +874,11 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                                             public void permissionGranted() {
                                                 gotoMap();
                                             }
+
                                             @Override
                                             public void permissionDenied() {
                                             }
+
                                             @Override
                                             public void permissionForeverDenied() {
                                             }
@@ -882,9 +898,11 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                                         public void permissionGranted() {
                                             launchNavigation();
                                         }
+
                                         @Override
                                         public void permissionDenied() {
                                         }
+
                                         @Override
                                         public void permissionForeverDenied() {
                                         }
@@ -895,6 +913,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     }
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -934,6 +953,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                         DirectionsRoute directionsRoute = response.body().routes().get(0);
                         startNavigation(directionsRoute);
                     }
+
                     @Override
                     public void onFailure(Call<DirectionsResponse> call, Throwable t) {
                     }
@@ -1011,16 +1031,19 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     public String getAddress() {
                         return pass1.getPickup_address();
                     }
+
                     @Nullable
                     @Override
                     public List<String> getAttributions() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public String getId() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public LatLng getLatLng() {
@@ -1028,65 +1051,78 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                         LatLng location = new LatLng(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]));
                         return location;
                     }
+
                     @Nullable
                     @Override
                     public String getName() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public OpeningHours getOpeningHours() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public String getPhoneNumber() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public List<PhotoMetadata> getPhotoMetadatas() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public PlusCode getPlusCode() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public Integer getPriceLevel() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public Double getRating() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public List<Type> getTypes() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public Integer getUserRatingsTotal() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public LatLngBounds getViewport() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public Uri getWebsiteUri() {
                         return null;
                     }
+
                     @Override
                     public int describeContents() {
                         return 0;
                     }
+
                     @Override
                     public void writeToParcel(Parcel dest, int flags) {
                     }
@@ -1097,16 +1133,19 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     public String getAddress() {
                         return pass1.getDrop_address();
                     }
+
                     @Nullable
                     @Override
                     public List<String> getAttributions() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public String getId() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public LatLng getLatLng() {
@@ -1114,65 +1153,78 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                         LatLng location = new LatLng(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]));
                         return location;
                     }
+
                     @Nullable
                     @Override
                     public String getName() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public OpeningHours getOpeningHours() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public String getPhoneNumber() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public List<PhotoMetadata> getPhotoMetadatas() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public PlusCode getPlusCode() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public Integer getPriceLevel() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public Double getRating() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public List<Type> getTypes() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public Integer getUserRatingsTotal() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public LatLngBounds getViewport() {
                         return null;
                     }
+
                     @Nullable
                     @Override
                     public Uri getWebsiteUri() {
                         return null;
                     }
+
                     @Override
                     public int describeContents() {
                         return 0;
                     }
+
                     @Override
                     public void writeToParcel(Parcel dest, int flags) {
                     }
