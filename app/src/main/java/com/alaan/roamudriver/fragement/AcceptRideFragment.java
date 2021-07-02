@@ -52,6 +52,7 @@ import com.alaan.roamudriver.pojo.PendingRequestPojo;
 import com.alaan.roamudriver.pojo.SearchForUser;
 import com.alaan.roamudriver.pojo.Tracking;
 import com.alaan.roamudriver.pojo.firebaseTravel;
+import com.alaan.roamudriver.pojo.firebaseTravelCounters;
 import com.alaan.roamudriver.session.SessionManager;
 import com.fxn.stash.Stash;
 import com.google.android.gms.common.api.Status;
@@ -682,6 +683,10 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                                 if (Checkbox.isChecked()) {
                                     Log.i("ibrahim check box", "is checked");
                                     SavePost(pickup_address, drop_address, pojo.getDate(), pojo.getTime(), travel_id, status, "PENDING");
+                                    addTravelToFireBase(travel_id);
+                                    //
+                                    //
+                                    //
                                 } else {
                                     Log.i("ibrahim check box", "is not checked");
                                 }
@@ -717,6 +722,15 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    public void addTravelToFireBase(int travel_id) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(String.valueOf(travel_id));
+        firebaseTravelCounters counters = new firebaseTravelCounters();
+        Map<String, Object> travelObject = new HashMap<>();
+        travelObject.put("driver_id", String.valueOf(SessionManager.getUserId()));
+        travelObject.put("Counters", counters);
+        databaseRef.setValue(travelObject);
     }
 
     public void startService() {
