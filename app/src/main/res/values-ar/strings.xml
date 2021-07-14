@@ -238,7 +238,7 @@
     <string name="cancel">إلغاء</string>
     <string name="enter_coubbon_number">أدخل رقم الكوبون</string>
     <string name="date_and_time">التاريخ و الوقت</string>
-    <string name="reseve">حجز</string>
+    <string name="reseve">قبول الحجز</string>
     <string name="empty_seats">عدد المسافرين المتبقيين</string>
     <string name="driver_rate">تقييم السائق</string>
     <string name="travels_count">الرحلات المنجزة</string>

@@ -680,7 +680,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                     databaseRef.setValue("1");
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }

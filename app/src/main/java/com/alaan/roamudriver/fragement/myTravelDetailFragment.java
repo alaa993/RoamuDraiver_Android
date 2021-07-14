@@ -44,6 +44,8 @@ import com.alaan.roamudriver.adapter.MyAcceptedRequestAdapter;
 import com.alaan.roamudriver.adapter.myTravelsAdapter;
 import com.alaan.roamudriver.custom.GPSTracker;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
+import com.alaan.roamudriver.pojo.Post;
+import com.alaan.roamudriver.pojo.PostList;
 import com.alaan.roamudriver.pojo.firebaseClients;
 import com.alaan.roamudriver.pojo.firebaseRide;
 import com.alaan.roamudriver.pojo.firebaseTravel;
@@ -74,6 +76,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
@@ -480,6 +483,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                             start.setVisibility(View.GONE);
                             complete.setVisibility(View.GONE);
                             cancel.setVisibility(View.GONE);
+                            deletePostFirebase();
                         }
                         if (status.equalsIgnoreCase("STARTED")) {
                             checkPayments();
@@ -637,6 +641,32 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
         rideObject.put("payment_mode", payment_mode);
         rideObject.put("timestamp", ServerValue.TIMESTAMP);
         databaseRef.setValue(rideObject);
+    }
+
+    public void deletePostFirebase() {
+        Log.i("ibrahim", "deletePostFirebase");
+        FirebaseDatabase.getInstance().getReference("posts").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i("ibrahim","dataSnapshot");
+                Log.i("ibrahim",dataSnapshot.toString());
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Log.i("ibrahim","dataSnapshot");
+                    Log.i("ibrahim",postSnapshot.toString());
+                    Post post = postSnapshot.getValue(Post.class);
+                    if (rideJson.getTravel_id().equalsIgnoreCase(String.valueOf(post.travel_id))) {
+                        Log.i("ibrahim","dataSnapshot");
+                        Log.i("ibrahim",post.text);
+                        postSnapshot.getRef().removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void updateNotificationFirebase(String ride_id, String user_id, String notificationText) {

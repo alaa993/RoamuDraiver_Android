@@ -33,7 +33,7 @@ tools:context=".fragement.PostFragment">
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/Post_image"
-        android:text="ibrahim Marie"
+        android:text=""
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold" />
@@ -44,7 +44,7 @@ tools:context=".fragement.PostFragment">
         android:layout_height="wrap_content"
         android:layout_below="@id/Post_textViewName"
         android:layout_toRightOf="@id/Post_image"
-        android:text="1 Minute Ago"
+        android:text=""
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
     <TextView
@@ -54,7 +54,7 @@ tools:context=".fragement.PostFragment">
         android:layout_below="@id/Post_textViewDate"
         android:layout_toRightOf="@id/Post_image"
         android:maxLines="5"
-        android:text="this is an example of how the text of the post should apear"
+        android:text=""
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:textColor="@color/black" />
 

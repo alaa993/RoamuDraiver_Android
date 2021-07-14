@@ -22,7 +22,7 @@
         app:civ_border_width="1dp"/>
 
     <TextView
-        android:text="ibrahim Marie"
+        android:text=""
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
         android:layout_toRightOf="@+id/image"
         />
     <TextView
-        android:text="1 Minute Ago"
+        android:text=""
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
         android:id="@+id/textViewDate"
         android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
         android:layout_toRightOf="@id/image"/>
 
     <TextView
-        android:text="this is an example of how the text of the post should apear"
+        android:text=""
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:id="@+id/textViewText"
         android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
 <!--        android:background="@android:color/darker_gray"/>-->
 
     <TextView
-        android:text="Comments (5)"
+        android:text=""
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:id="@+id/textViewCommentsNo"
         android:layout_width="wrap_content"
