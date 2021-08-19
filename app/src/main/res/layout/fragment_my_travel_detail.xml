@@ -38,6 +38,15 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/ic_home_button" />
 
+        <Button
+            android:id="@+id/my_notes_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_below="@+id/my_acc_d_f_home_button"
+            android:background="@drawable/ic_notes_button" />
+
         <TableLayout
             android:id="@+id/MTD_table"
             android:layout_width="match_parent"

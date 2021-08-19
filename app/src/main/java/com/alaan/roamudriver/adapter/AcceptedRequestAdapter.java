@@ -33,7 +33,7 @@ public class AcceptedRequestAdapter extends RecyclerView.Adapter<AcceptedRequest
     public void onBindViewHolder(final Holder holder, int position) {
         final PendingRequestPojo pojo = list.get(position);
         Log.i("ibrahim_pojo", pojo.toString());
-        Log.i("ibrahim_pojo", pojo.getTravel_status());
+//        Log.i("ibrahim_pojo", pojo.getTravel_status());
 
         holder.from_add.setText(pojo.getPickup_address());
         holder.to_add.setText(pojo.getDrop_address());

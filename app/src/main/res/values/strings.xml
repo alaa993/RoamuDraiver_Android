@@ -13,7 +13,7 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="sign_up">Sign Up</string>
-    <string name="sign_in">Sign In</string>
+    <string name="sign_in">Login or Sign Up</string>
     <string name="drop_up_location">Drop Location</string>
     <string name="pick_up_location">PickUp Location</string>
     <string name="update">Update</string>
@@ -33,7 +33,7 @@
     <string name="vehicle_info">Vehicle Information</string>
     <string name="payment_history">Payment History</string>
     <string name="profile">Profile</string>
-    <string name="success">Welcome to </string>
+    <string name="success">Welcome to roamu</string>
     <string name="fiels_is_required">field is required</string>
     <string name="email_invalid">email is invalid</string>
     <string name="mobile_invalid">mobile number is invalid</string>
@@ -321,5 +321,24 @@ But the owner of the car will have to check the car documents before agreeing to
     <string name="completed">Completed</string>
     <string name="approve_all">Approve all</string>
     <string name="full_travel">Yoru travel is fulled by passengers..!</string>
+
+
+    <string name="notification_request">Client wants to travel with you</string>
+    <string name="notification_request_approve">Client approved your request!</string>
+    <string name="notification_accepted">the client accepted your request!</string>
+    <string name="notification_completed">Successful Arrivals</string>
+    <string name="notification_cancelled">the client apologizes for cancelling the request</string>
+    <string name="notification_started">Travel Started!</string>
+    <string name="notification_offline_request">the Client wants to pay cash!</string>
+    <string name="notification_offline_approved">the driver Accepted your offline payment</string>
+
+
+    <string name="addChangeGroup">Add Group or change Group Name</string>
+    <string name="addDeleteDriver">Add Driver or Delete Driver</string>
+
+    <string name="notes_bags_weights">Notes, like Number of Bags (Optional)</string>
+    <string name="notes">Notes</string>
+    <string name="invalid_phone_number">Invalid Phone Number, please try Again!</string>
+
 
 </resources>

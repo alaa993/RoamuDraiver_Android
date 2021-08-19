@@ -35,6 +35,8 @@ public class PendingRequestPojo implements Serializable {
     private String booked_set;
     private String empty_set;
     private String Ride_smoked;
+    public String ride_notes;
+    public String tr_notes;
 
 //    private Place fromPlace;
 //    private Place toPlace;

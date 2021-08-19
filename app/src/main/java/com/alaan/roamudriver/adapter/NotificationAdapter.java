@@ -41,6 +41,8 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,11 +70,30 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
         //listViewItem.setBackgroundResource(R.drawable.listview_item_border);
         TextView textViewName = (TextView) listViewItem.findViewById(R.id.Notificatoin_textViewName);
         TextView textViewText = (TextView) listViewItem.findViewById(R.id.Notificatoin_textViewText);
+        TextView textViewDate = (TextView) listViewItem.findViewById(R.id.textViewDate);
         ImageView PostAvatar = (ImageView) listViewItem.findViewById(R.id.Notificatoin_image);
         Notification notification = notifications.get(position);
 
-        Log.i("ibrahim_1", notification.toString());
         textViewText.setText(notification.text);
+        try {
+            String resourceAppStatusString = "notification_".concat(notification.text);
+            int messageId = getResourceId(resourceAppStatusString, "string", context.getPackageName());
+            String message = context.getString(messageId);
+
+
+//        textViewText.setText(notification.text);
+            textViewText.setText(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (notification.timestamp != null) {
+            Date date = new Date(notification.timestamp);
+            SimpleDateFormat DateFor = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String stringDate = DateFor.format(date);
+            textViewDate.setText(stringDate.toString());
+        }
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
         DatabaseReference databaseRefID = FirebaseDatabase.getInstance().getReference("users/profile").child(notification.uid);
@@ -150,5 +171,14 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
                 }
             }
         });
+    }
+
+    private int getResourceId(String pVariableName, String pResourceName, String pPackageName) {
+        try {
+            return context.getResources().getIdentifier(pVariableName, pResourceName, pPackageName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 }

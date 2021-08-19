@@ -43,6 +43,7 @@ import com.alaan.roamudriver.adapter.AcceptedRequestAdapter;
 import com.alaan.roamudriver.adapter.MyAcceptedRequestAdapter;
 import com.alaan.roamudriver.adapter.myTravelsAdapter;
 import com.alaan.roamudriver.custom.GPSTracker;
+import com.alaan.roamudriver.pojo.Notification;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
 import com.alaan.roamudriver.pojo.Post;
 import com.alaan.roamudriver.pojo.PostList;
@@ -117,7 +118,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 
     private View view;
     RecyclerView recyclerView;
-    Button my_acc_d_f_home_button;
+    Button my_acc_d_f_home_button, my_notes_button;
     AppCompatButton approve, complete, cancel, start, show_customers;
     TextView PickupPoint, pickup_address_tv, drop_address_tv, MyADF_date, MyADF_TimeVal, txt_Available_Seats, txt_Empty_Seats;
 
@@ -252,6 +253,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
         recyclerView.setLayoutManager(linearLayoutManager);
 
         my_acc_d_f_home_button = (Button) view.findViewById(R.id.my_acc_d_f_home_button);
+        my_notes_button = (Button) view.findViewById(R.id.my_notes_button);
 
         show_customers = (AppCompatButton) view.findViewById(R.id.MyADF_btn_show_customers);
         start = (AppCompatButton) view.findViewById(R.id.MyADF_btn_start);
@@ -325,6 +327,19 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            }
+        });
+
+        my_notes_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("travel_id", travel_id);
+                Log.i("ibrahim","my_notes_button");
+                Log.i("ibrahim",travel_id);
+                NoteFragment noteFragment = new NoteFragment();
+                noteFragment.setArguments(bundle);
+                ((HomeActivity) getActivity()).changeFragment(noteFragment, "fragment_note");
             }
         });
         approve.setOnClickListener(new View.OnClickListener() {
@@ -457,10 +472,13 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                             if (list.size() > 0) {
                                 for (int i = 0; i < list.size(); i++) {
                                     if (status.equalsIgnoreCase("COMPLETED")) {
-                                        updateNotificationFirebase(list.get(i).getRide_id(), list.get(i).getUser_id(), getString(R.string.notification_5));
+                                        //updateNotificationFirebase(list.get(i).getRide_id(), list.get(i).getTravel_id(), list.get(i).getUser_id(), "offline_approved");
+                                        deleteNotificationFirebase(list.get(i).getUser_id());
+                                        deleteNotificationFirebase(list.get(i).getDriver_id());
+
                                     }
                                     updateRideFirebase(list.get(i).getRide_id(), status, list.get(i).getStatus(), list.get(i).getPayment_status(), list.get(i).getPayment_mode());
-                                    updateNotificationFirebase(list.get(i).getRide_id(), list.get(i).getUser_id(), list.get(i).getStatus());
+                                    updateNotificationFirebase(list.get(i).getRide_id(), travel_id, list.get(i).getUser_id(), list.get(i).getStatus());
                                 }
                             }
                         }
@@ -606,7 +624,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                             if (list.size() > 0) {
                                 for (int i = 0; i < list.size(); i++) {
                                     updateRideFirebase(list.get(i).getRide_id(), "PAID", list.get(i).getStatus(), list.get(i).getPayment_status(), list.get(i).getPayment_mode());
-                                    updateNotificationFirebase(list.get(i).getRide_id(), list.get(i).getUser_id(), getString(R.string.notification_5));
+                                    updateNotificationFirebase(list.get(i).getRide_id(), travel_id, list.get(i).getUser_id(), "offline_approved");
                                 }
                             }
                         }
@@ -648,15 +666,15 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
         FirebaseDatabase.getInstance().getReference("posts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i("ibrahim","dataSnapshot");
-                Log.i("ibrahim",dataSnapshot.toString());
+                Log.i("ibrahim", "dataSnapshot");
+                Log.i("ibrahim", dataSnapshot.toString());
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Log.i("ibrahim","dataSnapshot");
-                    Log.i("ibrahim",postSnapshot.toString());
+                    Log.i("ibrahim", "dataSnapshot");
+                    Log.i("ibrahim", postSnapshot.toString());
                     Post post = postSnapshot.getValue(Post.class);
                     if (rideJson.getTravel_id().equalsIgnoreCase(String.valueOf(post.travel_id))) {
-                        Log.i("ibrahim","dataSnapshot");
-                        Log.i("ibrahim",post.text);
+                        Log.i("ibrahim", "dataSnapshot");
+                        Log.i("ibrahim", post.text);
                         postSnapshot.getRef().removeValue();
                     }
                 }
@@ -669,11 +687,38 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
         });
     }
 
-    public void updateNotificationFirebase(String ride_id, String user_id, String notificationText) {
+    public void deleteNotificationFirebase(String user_id) {
+        Log.i("ibrahim", "deletePostFirebase");
+        FirebaseDatabase.getInstance().getReference("Notifications").child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i("ibrahim", "dataSnapshot");
+                Log.i("ibrahim", dataSnapshot.toString());
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Log.i("ibrahim", "dataSnapshot");
+                    Log.i("ibrahim", postSnapshot.toString());
+                    Notification notification = postSnapshot.getValue(Notification.class);
+                    if (rideJson.getTravel_id().equalsIgnoreCase(String.valueOf(notification.travel_id))) {
+                        Log.i("ibrahim", "dataSnapshot");
+                        Log.i("ibrahim", notification.text);
+                        postSnapshot.getRef().removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void updateNotificationFirebase(String ride_id, String travel_id, String user_id, String notificationText) {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(user_id).push();
         Map<String, Object> rideObject = new HashMap<>();
         rideObject.put("ride_id", ride_id);
-        rideObject.put("text", getString(R.string.RideUpdated) + " " + notificationText);
+        rideObject.put("travel_id", travel_id);
+        rideObject.put("text", notificationText.toLowerCase());
         rideObject.put("readStatus", "0");
         rideObject.put("timestamp", ServerValue.TIMESTAMP);
         rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());

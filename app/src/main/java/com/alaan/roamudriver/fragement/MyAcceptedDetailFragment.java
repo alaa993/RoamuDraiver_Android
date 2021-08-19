@@ -554,7 +554,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 updateRideFirebase(travel_status, ride_status, "PAID", payment_mode);
-                updateNotificationFirebase(getString(R.string.notification_5));
+                updateNotificationFirebase("offline_approved");
                 updateTravelFirebase();
                 updateTravelCounterFirebase();
                 approve.setVisibility(View.GONE);
@@ -642,13 +642,13 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(rideJson.getUser_id()).push();
         Map<String, Object> rideObject = new HashMap<>();
         rideObject.put("ride_id", rideJson.getRide_id());
-        rideObject.put("text", getString(R.string.RideUpdated) + " " + notificationText);
+        rideObject.put("travel_id", rideJson.getTravel_id());
+        rideObject.put("text", notificationText.toLowerCase());
         rideObject.put("readStatus", "0");
         rideObject.put("timestamp", ServerValue.TIMESTAMP);
         rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
         databaseRef.setValue(rideObject);
     }
-
 
 
     public void updateTravelFirebase() {
@@ -696,18 +696,17 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
             public void onDataChange(DataSnapshot dataSnapshot) {
                 firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
                 if (fbTravel != null) {
-                    if(status.contains("ACCEPTED")){
+                    if (status.contains("ACCEPTED")) {
                         Log.i("ibrahim", "fbTravel");
                         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("ACCEPTED");
                         databaseRef.setValue(fbTravel.Counters.ACCEPTED + 1);
-                    }
-                    else if(status.contains("COMPLETED")){
+                    } else if (status.contains("COMPLETED")) {
                         Log.i("ibrahim", "fbTravel");
                         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("COMPLETED");
                         databaseRef.setValue(fbTravel.Counters.COMPLETED + 1);
 
                         DatabaseReference databaseRef1 = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("ACCEPTED");
-                        databaseRef1.setValue(fbTravel.Counters.ACCEPTED -1 );
+                        databaseRef1.setValue(fbTravel.Counters.ACCEPTED - 1);
                     }
                 }
             }

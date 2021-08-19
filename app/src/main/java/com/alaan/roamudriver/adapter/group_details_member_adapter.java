@@ -45,7 +45,7 @@ public class group_details_member_adapter extends RecyclerView.Adapter<group_det
         final Group_List_membar pojo = list.get(i);
 
         holder.group_name_item.setText(pojo.group_name);
-        holder.admin_name_item.setText(pojo.name);
+        holder.admin_name_item.setText(pojo.admin_name);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

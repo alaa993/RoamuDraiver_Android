@@ -13,7 +13,7 @@
     <string name="password">"كلمه السر"</string>
     <string name="confirm_password">"تأكيد كلمة المرور"</string>
     <string name="sign_up">"سجل"</string>
-    <string name="sign_in">"تسجيل الدخول"</string>
+    <string name="sign_in">تسجيل الدخول أو إنشاء حساب</string>
     <string name="drop_up_location">إلى</string>
     <string name="pick_up_location">من</string>
     <string name="update">"تحديث"</string>
@@ -33,7 +33,7 @@
     <string name="vehicle_info">"معلومات السيارة"</string>
     <string name="payment_history">"تاريخ الدفع"</string>
     <string name="profile">"الملف الشخصي"</string>
-    <string name="success">"مرحبا بك في"</string>
+    <string name="success">"مرحبا بك في روميو"</string>
     <string name="fiels_is_required">"الحقل مطلوب"</string>
     <string name="email_invalid">"البريد الإلكتروني غير صالح"</string>
     <string name="mobile_invalid">"رقم الجوال غير صالح"</string>
@@ -180,7 +180,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="drivers">مجموعة</string>
+    <string name="drivers">المجموعة</string>
     <string name="phone">الهاتف</string>
     <string name="PaymentStatsus">Payment Statsus        </string>
     <string name="QIBus_softui_txt_todo">To city</string>
@@ -341,6 +341,21 @@
     <string name="approve_all">قبول جميع الدفعات</string>
     <string name="full_travel">لايوجد متسع لركاب جدد!</string>
 
+    <string name="notification_request">يريد الزبون أن يسافر معكم</string>
+    <string name="notification_request_approve">تم تأكيد الطلب من قبل الزبون</string>
+    <string name="notification_accepted">قبل الزبون طلبكم</string>
+    <string name="notification_completed">تم الوصول بنجاح</string>
+    <string name="notification_cancelled">يعتذر الزبون عن قبول طلبكم!</string>
+    <string name="notification_started">بدأت الرحلة!</string>
+    <string name="notification_offline_request">يريد الزبون الدفع نقدا</string>
+    <string name="notification_offline_approved">تأكيد الدفع نقدا</string>
+
+    <string name="addChangeGroup">إضافة مجموعة أو تغيير اسم المجموعة</string>
+    <string name="addDeleteDriver">إضافة أو حذف سائق</string>
+
+    <string name="notes_bags_weights">ملاحظات، مثل عدد الحقائب ووزنها (اختياري)</string>
+    <string name="notes">الملاحظات</string>
+    <string name="invalid_phone_number">رقم الهاتف غير صحيح ، يرجى المحاولة مرة أخرى!</string>
 
 
 

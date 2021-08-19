@@ -72,7 +72,7 @@ public class Group_details_MembersFragment extends Fragment {
             pojo = (Group_List_membar) bundle.getSerializable("data");
             if (pojo != null) {
                 group_name_txt.setText(pojo.group_name);
-                admin_name_txt.setText(pojo.name);
+                admin_name_txt.setText(pojo.admin_name);
                 getMemberList(Integer.parseInt(SessionManager.getUserId()));
 
             }

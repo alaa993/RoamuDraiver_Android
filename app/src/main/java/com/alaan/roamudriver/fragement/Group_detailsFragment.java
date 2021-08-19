@@ -126,7 +126,5 @@ public class Group_detailsFragment extends Fragment {
                 }
             }
         });
-
-
     }
 }

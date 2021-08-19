@@ -94,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:background="@drawable/ronded_button1"
-                        android:text="Login"
+                        android:text="@string/sign_in"
                         android:textColor="@color/text_color" />
 
                     <TextView
@@ -129,7 +129,34 @@
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:text="Create an Account"
+                            android:visibility="gone"
                             android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/label1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/lang" />
+
+                        <Button
+                            android:id="@+id/b1en"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@+id/label1"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/English" />
+
+                        <Button
+                            android:id="@+id/b2ar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@+id/b1en"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/arabic" />
                     </RelativeLayout>
 
 

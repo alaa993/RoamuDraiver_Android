@@ -63,10 +63,14 @@ import net.skoumal.fragmentback.BackFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
@@ -107,7 +111,6 @@ public class SearchUser extends Fragment implements BackFragment {
     private String drop_address;
     String o = "";
     String d = "";
-
 
 
     private RelativeLayout footer;
@@ -207,6 +210,7 @@ public class SearchUser extends Fragment implements BackFragment {
                         View mView = getLayoutInflater().inflate(R.layout.dialog_addtravel_layout, null);
                         final EditText mPassengers = (EditText) mView.findViewById(R.id.etPassengers);
                         final EditText mPrice = (EditText) mView.findViewById(R.id.etPrice);
+                        final EditText etNotes = (EditText) mView.findViewById(R.id.etNotes);
                         mPickupPoint = (EditText) mView.findViewById(R.id.etPickupPoint);
                         Button mSubmit = (Button) mView.findViewById(R.id.btnSubmitDialog);
                         Button mCancel = (Button) mView.findViewById(R.id.btnCancelDialog);
@@ -243,7 +247,7 @@ public class SearchUser extends Fragment implements BackFragment {
                                     d = String.valueOf(drop.getLatLng().latitude) + "," + String.valueOf(drop.getLatLng().longitude);
                                     AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d,
                                             mPrice.getText().toString(), "0", mPassengers.getText().toString(),
-                                            "", date_time_value, time_value, mPickupPoint.getText().toString());
+                                            "", date_time_value, time_value, mPickupPoint.getText().toString(), String.valueOf(etNotes.getText()));
                                 } else {
                                     Toast.makeText(SearchUser.this.getContext(),
                                             getString(R.string.Post_Empty),
@@ -265,12 +269,9 @@ public class SearchUser extends Fragment implements BackFragment {
         date_time_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+//                Locale current = getResources().getConfiguration().locale;
                 datePicker();
-                //  Toast.makeText(getContext(), "date" + date_time_value, Toast.LENGTH_SHORT).show();
-
-
+//                setLocale(current.getLanguage(), getActivity());
             }
         });
 
@@ -371,8 +372,29 @@ public class SearchUser extends Fragment implements BackFragment {
         }
     }
 
+    static String formatDateWithPattern1(String strDate) {
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        try {
+            Date date = fmt.parse(strDate);
+            return fmt.format(date);
+        } catch (ParseException pe) {
+            return "Date";
+        }
+    }
+
+    static String formatDateWithPattern2(String strDate) {
+        SimpleDateFormat fmt = new SimpleDateFormat("kk:mm", Locale.ENGLISH);
+        try {
+            Date date = fmt.parse(strDate);
+            return fmt.format(date);
+        } catch (ParseException pe) {
+            return "Date";
+        }
+    }
+
     private void datePicker() {
-        setLocale("en", getActivity());
+
+//        setLocale("en", getActivity());
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
@@ -381,7 +403,10 @@ public class SearchUser extends Fragment implements BackFragment {
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        date_time = String.format("%04d-%02d-%02d", year, 1 + monthOfYear, dayOfMonth);
+
+//                        date_time = String.format("%04d-%02d-%02d", year, 1 + monthOfYear, dayOfMonth);
+                        date_time = formatDateWithPattern1(String.format("%04d-%02d-%02d", year, 1 + monthOfYear, dayOfMonth));
+                        Log.i("ibrahim", date_time);
                         //date_time = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                         tiemPicker();
                     }
@@ -390,6 +415,7 @@ public class SearchUser extends Fragment implements BackFragment {
     }
 
     private void tiemPicker() {
+//        setLocale("en", getActivity());
         final Calendar c = Calendar.getInstance();
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
@@ -399,9 +425,10 @@ public class SearchUser extends Fragment implements BackFragment {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         mHour = hourOfDay;
                         mMinute = minute;
-                        date_time_value = date_time + " " + hourOfDay + ":" + minute;
+//                        date_time_value = date_time + " " + hourOfDay + ":" + minute;
+                        date_time_value = date_time + " " + formatDateWithPattern2(String.format("%02d:%02d", hourOfDay, minute));
                         time_value = hourOfDay + ":" + minute;
-                        date_time_search.setText(date_time + " " + String.format("%02d:%02d", hourOfDay, minute));
+                        date_time_search.setText(date_time + " " + formatDateWithPattern2(String.format("%02d:%02d", hourOfDay, minute)));
                     }
                 }, mHour, mMinute, true);
         timePickerDialog.show();
@@ -450,7 +477,7 @@ public class SearchUser extends Fragment implements BackFragment {
     }
 
     public void AddRide(String key, String pickup_address, String drop_address, String pickup_location, String drop_location, String amount,
-                        String distance, String a_set, String u_set, String s_date, String s_time, String PickupPoint) {
+                        String distance, String a_set, String u_set, String s_date, String s_time, String PickupPoint, String tr_notes) {
         final RequestParams params = new RequestParams();
         params.put("driver_id", SessionManager.getUserId());
         params.put("pickup_address", pickup_address);
@@ -466,6 +493,7 @@ public class SearchUser extends Fragment implements BackFragment {
         params.put("travel_time", s_time);
         params.put("smoked", "1");
         params.put("status", "0");
+        params.put("tr_notes", tr_notes);
 
         Server.setHeader(key);
         Server.post("https://roamu.net/api/user/addTravel2/format/json", params, new JsonHttpResponseHandler() {

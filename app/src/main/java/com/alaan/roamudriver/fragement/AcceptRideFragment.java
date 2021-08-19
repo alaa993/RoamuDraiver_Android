@@ -114,7 +114,7 @@ import static com.loopj.android.http.AsyncHttpClient.log;
 
 public class AcceptRideFragment extends FragmentManagePermission implements OnMapReadyCallback, DirectionCallback {
     AppCompatButton trackRide, complete, cancel, approve, accept;
-    TextView title, drivername, txt_city, mobilenumber, pickup_location, drop_location, fare, payment_status, bag, txt_dateandtime;
+    TextView title, drivername, txt_city, mobilenumber, pickup_location, drop_location, fare, payment_status, bag, txt_dateandtime, txt_notes;
     String request = "";
     String permissions[] = {PermissionUtils.Manifest_ACCESS_FINE_LOCATION, PermissionUtils.Manifest_ACCESS_COARSE_LOCATION};
     GoogleMap myMap;
@@ -202,7 +202,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        SendStatusAccept(ride_id, status);
+                        SendStatusAccept(ride_id, status, "");
                     }
                 })
                 .setNegativeButton(getString(R.string.ccancel), new DialogInterface.OnClickListener() {
@@ -216,6 +216,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     public void AlertDialogAddTravel() {
         android.app.AlertDialog.Builder mBuilder = new android.app.AlertDialog.Builder(AcceptRideFragment.this.getContext());
         View mView = getLayoutInflater().inflate(R.layout.dialog_addtravel_layout, null);
+        final EditText etNotes = (EditText) mView.findViewById(R.id.etNotes);
         mPassengers = (EditText) mView.findViewById(R.id.etPassengers);
         mPrice = (EditText) mView.findViewById(R.id.etPrice);
         mPickupPoint = (EditText) mView.findViewById(R.id.etPickupPoint);
@@ -251,7 +252,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                                 Toast.LENGTH_SHORT).show();
                     } else {
                         dialog.dismiss();
-                        SendStatusAccept(ride_id, "WAITED");
+                        SendStatusAccept(ride_id, "WAITED", String.valueOf(etNotes.getText()));
                     }
                 } else {
                     Toast.makeText(AcceptRideFragment.this.getContext(),
@@ -335,6 +336,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         payment_status = (TextView) view.findViewById(R.id.txt_paymentstatus);
         pickup_location = (TextView) view.findViewById(R.id.txt_pickuplocation);
         txt_dateandtime = (TextView) view.findViewById(R.id.txt_dateandtime);
+        txt_notes = (TextView) view.findViewById(R.id.txt_notes);
         drop_location = (TextView) view.findViewById(R.id.txt_droplocation);
         fare = (TextView) view.findViewById(R.id.txt_basefare);
         bag = (TextView) view.findViewById(R.id.bagnumber);
@@ -360,7 +362,11 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             bag.setText(pojo.getbooked_set());
             paymnt_mode = pojo.getRide_smoked();
             txt_dateandtime.setText(pojo.getTime() + " " + pojo.getDate());
+            mobilenumber.setText(pojo.getUser_mobile());
             payment_status.setText(pojo.getRide_smoked());
+            if (pojo.ride_notes.length() > 0) {
+                txt_notes.setText(pojo.ride_notes);
+            }
 
             if (pickup != null) {
                 pickup_location.setText(pickup);
@@ -606,7 +612,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         });
     }
 
-    public void SendStatusAccept(String ride_id, final String status) {
+    public void SendStatusAccept(String ride_id, final String status, String tr_notes) {
         RequestParams params = new RequestParams();
         params.put("ride_id", ride_id);
         params.put("status", status);
@@ -616,6 +622,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         params.put("pickup_location", s_pic.getLatLng().latitude + "," + s_pic.getLatLng().longitude);
         params.put("drop_location", s_drop.getLatLng().latitude + "," + s_drop.getLatLng().latitude);
         params.put("distance", "0");
+
 
         Server.setHeader(SessionManager.getKEY());
         Server.setContentType();
@@ -641,6 +648,12 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             params.put("ride_status", status);
             params.put("status", "0");
             params.put("smoked", "0");
+            if (tr_notes.length() > 0) {
+                params.put("tr_notes", tr_notes);
+            }
+            else{
+                params.put("tr_notes", "");
+            }
             Url = Server.CONFIRM_REQUST;
         } else
             Url = Server.STATUS_CHANGE;
@@ -782,7 +795,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                         } else {
 //                            Log.i("ibrahim","Data saved successfully." + databaseError.getMessage());
                             updateRideFirebase(travel_status, status, pojo.getPayment_status(), pojo.getPayment_mode());
-                            updateNotificationFirebase();
+                            updateNotificationFirebase(travel_id);
                         }
                     }
                 });
@@ -819,17 +832,18 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     Log.i("ibrahim", "Data could not be saved. " + databaseError.getMessage());
                 } else {
 //                    Log.i("ibrahim","Data saved successfully." + databaseError.getMessage());
-                    updateNotificationFirebase();
+//                    updateNotificationFirebase();
                 }
             }
         });
     }
 
-    public void updateNotificationFirebase() {
+    public void updateNotificationFirebase(int travel_id) {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(pojo.getUser_id()).push();
         Map<String, Object> rideObject = new HashMap<>();
         rideObject.put("ride_id", pojo.getRide_id());
-        rideObject.put("text", getString(R.string.Notification_Request));
+        rideObject.put("travel_id", String.valueOf(travel_id));
+        rideObject.put("text", "request");
         rideObject.put("readStatus", "0");
         rideObject.put("timestamp", ServerValue.TIMESTAMP);
         rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());

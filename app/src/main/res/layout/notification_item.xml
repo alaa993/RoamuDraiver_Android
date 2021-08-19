@@ -30,10 +30,19 @@
         />
 
     <TextView
+        android:text=""
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+        android:id="@+id/textViewDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Notificatoin_textViewName"
+        android:layout_toRightOf="@id/Notificatoin_image"/>
+
+    <TextView
         android:text="this is an example of how the text of the post should apear"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:id="@+id/Notificatoin_textViewText"
-        android:layout_below="@+id/Notificatoin_textViewName"
+        android:layout_below="@+id/textViewDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/Notificatoin_image"

@@ -1,42 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     tools:context=".fragement.lang">
 
     <!-- TODO: Update blank fragment layout -->
+
     <TextView
         android:id="@+id/label1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:text="" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/lang" />
 
     <Button
         android:id="@+id/b1en"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/QIBus_softui_bg_decrease10dp"
+        android:layout_below="@+id/label1"
         android:text="@string/English" />
 
     <Button
         android:id="@+id/b2ar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/QIBus_softui_bg_decrease10dp"
+        android:layout_below="@+id/b1en"
         android:text="@string/arabic" />
 
     <Button
-        android:visibility="gone"
         android:id="@+id/b3ka"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="100dp"
-        android:text="@string/ku" />
+        android:text="@string/ku"
+        android:visibility="gone" />
 
-</FrameLayout>
+</RelativeLayout>

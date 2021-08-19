@@ -106,7 +106,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
     DatabaseReference databaseRides;
     Bundle bundle;
     PendingRequestPojo rideJson;
-    private String travel_status;
+    private String travel_status = "";
     private String ride_status;
     private String payment_status;
     private String payment_mode;
@@ -418,7 +418,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 updateRideFirebase(travel_status, ride_status, "PAID", payment_mode);
-                updateNotificationFirebase(getString(R.string.notification_5));
+                updateNotificationFirebase("offline_approved");
                 updateTravelCounterFirebase();
                 approve.setVisibility(View.GONE);
                 payment_status_TV.setText("PAID");
@@ -547,7 +547,8 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(rideJson.getUser_id()).push();
         Map<String, Object> rideObject = new HashMap<>();
         rideObject.put("ride_id", rideJson.getRide_id());
-        rideObject.put("text", getString(R.string.RideUpdated) + " " + notificationText);
+        rideObject.put("travel_id", rideJson.getTravel_id());
+        rideObject.put("text", notificationText.toLowerCase());
         rideObject.put("readStatus", "0");
         rideObject.put("timestamp", ServerValue.TIMESTAMP);
         rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());

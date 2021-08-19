@@ -55,6 +55,7 @@ public class Server {
     public static final String GET_GROUP = BASE_URL + "api/driver/getAdminGroupInfo" +FORMAT;
     public static final String GET_MEBLIST =  BASE_URL + "api/driver/getGroupList" +FORMAT;
     public static final String GET_MyGroupLIST =  BASE_URL + "api/driver/getMyGroupList" +FORMAT;
+    public static final String GET_Rides_Notes =  BASE_URL + "api/user/rides_notes/format/json" +FORMAT;
 
     public static final String GET_REQUEST = BASE_URL + "api/user/rides" + FORMAT;
     public static final String GET_REQUEST1 = BASE_URL + "api/user/rides2" + FORMAT;
@@ -71,7 +72,7 @@ public class Server {
         client.setTimeout(3000);
         client.get(getAbsoluteUrl(url), params, responseHandler);
 
-        Log.d(TAG, getAbsoluteUrl(url));
+        Log.e(TAG, getAbsoluteUrl(url));
     }
 
     public static void postSync(String url, RequestParams params, JsonHttpResponseHandler jsonHttpResponseHandler) {

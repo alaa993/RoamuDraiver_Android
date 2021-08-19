@@ -163,7 +163,7 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
                     }
                     if (!ride_status.equals("") && ride_status.equalsIgnoreCase("ACCEPTED")) {
                         {
-                            if (payment_mode.equals("OFFLINE") && !payment_status.equals("PAID")) {
+                            if (payment_mode.equals("OFFLINE") && !payment_status.equals("PAID") && travel_status.equals("STARTED")) {
                                 holder.item_Button.setVisibility(View.GONE);
                                 holder.item_Button1.setVisibility(View.VISIBLE);
 //                                holder.item_Button.setText(holder.itemView.getContext().getString(R.string.approve_payment_offline));
@@ -272,7 +272,7 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
         }
         if (!pojo1.getStatus().equals("") && pojo1.getStatus().equalsIgnoreCase("ACCEPTED")) {
             {
-                if (pojo1.getPayment_mode().equals("OFFLINE") && !pojo1.getPayment_status().equals("PAID")) {
+                if (pojo1.getPayment_mode().equals("OFFLINE") && !pojo1.getPayment_status().equals("PAID") && travel_status.equals("STARTED")) {
                     holder.item_Button.setVisibility(View.GONE);
                     holder.item_Button1.setVisibility(View.VISIBLE);
 //                    holder.item_Button.setText(holder.itemView.getContext().getString(R.string.approve_payment_offline));
@@ -435,7 +435,7 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 updateRideFirebase(travel_status, ride_status, "PAID", payment_mode, pojo);
-                updateNotificationFirebase(context, context.getString(R.string.notification_5), pojo);
+                updateNotificationFirebase(context, "offline_approved", pojo);
                 updateTravelCounterFirebase(pojo);
             }
 
@@ -489,7 +489,8 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Notifications").child(pojo1.getUser_id()).push();
         Map<String, Object> rideObject = new HashMap<>();
         rideObject.put("ride_id", pojo1.getRide_id());
-        rideObject.put("text", context.getString(R.string.RideUpdated) + " " + notificationText);
+        rideObject.put("travel_id", pojo1.getTravel_id());
+        rideObject.put("text", notificationText.toLowerCase());
         rideObject.put("readStatus", "0");
         rideObject.put("timestamp", ServerValue.TIMESTAMP);
         rideObject.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());

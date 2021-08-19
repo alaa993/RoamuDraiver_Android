@@ -154,6 +154,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/customer_name"
+                            android:layout_marginRight="10dp"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
@@ -177,6 +178,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/city"
+                            android:layout_marginRight="10dp"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
@@ -227,6 +229,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/PickupAddress"
+                            android:layout_marginRight="10dp"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
@@ -250,6 +253,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/DropAddress"
+                            android:layout_marginRight="10dp"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
@@ -334,6 +338,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/customer_number"
+                            android:layout_marginRight="10dp"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
@@ -392,10 +397,36 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/date_amp_time"
+                            android:layout_marginRight="10dp"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
                             android:id="@+id/txt_dateandtime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/notefiled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:id="@+id/note"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/notes"
+                            android:layout_marginRight="10dp"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <TextView
+                            android:id="@+id/txt_notes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="1"

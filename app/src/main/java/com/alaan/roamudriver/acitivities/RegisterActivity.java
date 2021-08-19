@@ -1,10 +1,14 @@
 package com.alaan.roamudriver.acitivities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.location.Address;
@@ -21,11 +25,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alaan.roamudriver.pojo.User;
+import com.fxn.stash.Stash;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -102,6 +108,7 @@ public class RegisterActivity extends ActivityManagePermission implements Google
     TextInputEditText input_email, input_password, input_confirmPassword, input_mobile, input_name;
     AppCompatButton sign_up;
     String token;
+
 
     private CircleImageView imageProfile;
     private TextView changePhoto;
@@ -232,8 +239,12 @@ public class RegisterActivity extends ActivityManagePermission implements Google
                     // utype = "0" means user and "1" = driver
                     // mtype = "0" means iOS  and "1" = Android
 
-                    register(email, mobile, password, name, latitude, longitude, country, state, city, "1", token, "1", "");
-                    saveProfile(name);
+                    if (input_name.getText().toString().trim().equals("")) {
+                        input_name.setError(getString(R.string.fiels_is_required));
+                    } else {
+                        register(email, mobile, password, name, latitude, longitude, country, state, city, "1", token, "1", "");
+                        saveProfile(name);
+                    }
                     //uploadImage2();
 
                 } else {
@@ -450,8 +461,9 @@ public class RegisterActivity extends ActivityManagePermission implements Google
 
         AskPermission();
         swipeRefreshLayout.setOnRefreshListener(() -> swipeRefreshLayout.setRefreshing(false));
-
     }
+
+
 
     public Boolean GPSEnable() {
         GPSTracker gpsTracker = new GPSTracker(getApplicationContext());

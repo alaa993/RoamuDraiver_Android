@@ -140,7 +140,7 @@ public class Gruop_managment extends Fragment implements AdapterView.OnItemSelec
         params.put("status", status);
         params.put("utype", "1");
         Server.setHeader(key);
-        Server.get(Server.GET_REQUEST, params, new JsonHttpResponseHandler() {
+        Server.get(Server.GET_REQUEST1, params, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();

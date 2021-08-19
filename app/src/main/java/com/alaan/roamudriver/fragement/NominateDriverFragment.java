@@ -1,68 +1,92 @@
 package com.alaan.roamudriver.fragement;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.alaan.roamudriver.R;
 import com.alaan.roamudriver.acitivities.HomeActivity;
+import com.alaan.roamudriver.custom.CheckConnection;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NominateDriverFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NominateDriverFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private View view;
+    EditText driverName, driverCity, driverCountry, driverPhone, driverVehicle, description;
+    AppCompatButton btn_send;
 
     public NominateDriverFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NominateDriverFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NominateDriverFragment newInstance(String param1, String param2) {
-        NominateDriverFragment fragment = new NominateDriverFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @SuppressLint("ResourceType")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.nominate_a_driver));
-        return inflater.inflate(R.layout.fragment_nominate_driver, container, false);
+        view = inflater.inflate(R.layout.fragment_nominate_driver, container, false);
+        BindView();
+        return view;
+    }
+
+    public void BindView() {
+        driverName = (EditText) view.findViewById(R.id.FN_Etxt1);
+//        email = (EditText) view.findViewById(R.id.FN_Etxt2);
+        driverCity = (EditText) view.findViewById(R.id.FN_Etxt3);
+        driverCountry = (EditText) view.findViewById(R.id.FN_Etxt4);
+        driverPhone = (EditText) view.findViewById(R.id.FN_Etxt5);
+        driverVehicle = (EditText) view.findViewById(R.id.FN_Etxt6);
+        description = (EditText) view.findViewById(R.id.FN_Etxt7);
+        btn_send = (AppCompatButton) view.findViewById(R.id.FN_BTN);
+
+        btn_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (CheckConnection.haveNetworkConnection(getActivity())) {
+                    sendEmail(view);
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.network), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    public void sendEmail(View view) {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        String text = "Driver Name: " + driverName.getText().toString() + "\n"
+//                + "Email: " + email.getText().toString() + "\n"
+                + "Driver City: " + driverCity.getText().toString() + "\n"
+                + "Driver Country: " + driverCountry.getText().toString() + "\n"
+                + "Driver Phone: " + driverPhone.getText().toString() + "\n"
+                + "Driver Vehicle: " + driverVehicle.getText().toString() + "\n"
+                + "Description: " + description.getText().toString();
+
+        emailIntent.setType("message/rfc822");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL  , "info@roamu.net");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Nominate a Driver");
+        emailIntent.putExtra(Intent.EXTRA_TEXT   , text);
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Select Email Client"));
+            driverName.setText("");
+            driverCity.setText("");
+            driverCountry.setText("");
+            driverPhone.setText("");
+            driverVehicle.setText("");
+            description.setText("");
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getActivity(), "No Email client found!!",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }

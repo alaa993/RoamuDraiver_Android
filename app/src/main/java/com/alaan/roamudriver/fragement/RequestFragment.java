@@ -65,10 +65,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -146,7 +148,9 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
         setDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Locale current = getResources().getConfiguration().locale;
                 datePicker();
+                setLocale(current.getLanguage(), getActivity());
             }
         });
 
@@ -213,8 +217,28 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
         return view;
     }
 
+    static String formatDateWithPattern1(String strDate) {
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+        try {
+            Date date = fmt.parse(strDate);
+            return fmt.format(date);
+        } catch (ParseException pe) {
+            return "Date";
+        }
+    }
+
+    static String formatDateWithPattern2(String strDate) {
+        SimpleDateFormat fmt = new SimpleDateFormat("kk:mm",Locale.ENGLISH);
+        try {
+            Date date = fmt.parse(strDate);
+            return fmt.format(date);
+        } catch (ParseException pe) {
+            return "Date";
+        }
+    }
+
     private void datePicker() {
-        setLocale("en", getActivity());
+//        setLocale("en", getActivity());
         // Get Current Date
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
