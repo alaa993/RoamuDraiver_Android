@@ -9,7 +9,9 @@
 
     <string name="mobile_number">"رقم الهاتف المحمول"</string>
     <string name="email">"البريد الإلكتروني"</string>
-    <string name="name">"اسم"</string>
+    <string name="name">الإسم</string>
+    <string name="first_name">الإسم</string>
+    <string name="last_name">الكنية</string>
     <string name="password">"كلمه السر"</string>
     <string name="confirm_password">"تأكيد كلمة المرور"</string>
     <string name="sign_up">"سجل"</string>
@@ -27,7 +29,7 @@
     <string name="error_occurred">"حدث خطأ"</string>
     <string name="network">"الشبكة غير متوفرة"</string>
     <string name="add_vehicleinfo">"إضافة معلومات السيارة"</string>
-    <string name="upload_doc">الرجاء رفع اوراق السائق وشهاداته</string>
+    <string name="upload_doc">الرجاء رفع اوراق الكابتن وشهاداته</string>
     <string name="home">"الصفحة الرئيسية"</string>
     <string name="requests">"طلبات"</string>
     <string name="vehicle_info">"معلومات السيارة"</string>
@@ -140,8 +142,8 @@
     <string name="persons">1-4 أشخاص</string>
     <string name="PickupLocation">من</string>
     <string name="DropLocation">إلى</string>
-    <string name="Name1">الاسم       </string>
-    <string name="chat">محادثة  </string>
+    <string name="Name1">الاسم</string>
+    <string name="chat">محادثة</string>
     <string name="No_Data_Found">لايوجد بيانات</string>
     <string name="NewYorkNY">NewYork NY 10025</string>
     <string name="TO">إلى</string>
@@ -193,8 +195,8 @@
 أن اشاعة التنقل التشاركي وفق الاهداف التي ذكرناها أعلاه ، تدفع بجميع اطراف هذه الخدمة للحرص على التعاون و الارتقاء بالتنقل إلى درجات متميزة  "</string>
     <string name="about_us"><![CDATA["عن التطبيق
 يعمل التطبيق في مجال التنقل التشاركي ، مع ميزة رائدة في هذا النوع من التنقل ، إذ منحنا كلا من صاحب وسيلة النقل و المستخدم فرصة الحجز لدى الآخر بحرية تامة   و عندما يرغب المسافر الذهاب إلى منطقة داخل مدينته أو إلى مدينة اخرى يبحث عن وسائل النقل المتاحة في الوقت المناسب له ، و يختار ما يرى أنها مناسبة لرحلته من بين السيارات المتاحة ، و للسائق حرية الموافقة أو الاعتذار بعد مشاهدة ملف المسافر.
-و يبحث السائق عن الراغبين بالسفر في التوقيت الذي يغادر به و الوجهة المقررة ، و يختار المسافرين المناسبين للسفر معه ، و تكون الموافقة النهائية  للمسافر نفسه بعد الاطلاع على ملف السائق و تقييمه من قبل الآخرين.
-التقييم في التطبيق لا يقتصر على  المركبة  واداء السائق فقط ، بل اضفنا تقييما للأجرة التي يحددها صاحب السيارة ، و هدفنا  من ذلك تقديم افضل الأسعار و خدمة متميزة للمسافرين مع التطبيق.
+و يبحث الكابتن عن الراغبين بالسفر في التوقيت الذي يغادر به و الوجهة المقررة ، و يختار المسافرين المناسبين للسفر معه ، و تكون الموافقة النهائية  للمسافر نفسه بعد الاطلاع على ملف الكابتن و تقييمه من قبل الآخرين.
+التقييم في التطبيق لا يقتصر على  المركبة  واداء الكابتن فقط ، بل اضفنا تقييما للأجرة التي يحددها صاحب السيارة ، و هدفنا  من ذلك تقديم افضل الأسعار و خدمة متميزة للمسافرين مع التطبيق.
 يكون المسافر على اطلاع قبل الحجز على مواصفات المركبة و عدد الحقائب المسموح بها ، و فيما إذا كان مسموحا بالتدخين خلال الرحلة من عدمه."]]></string>
     <string name="about_uss">عن التطبيق</string>
     <string name="pricvys">الأحكام العامة</string>
@@ -206,8 +208,7 @@
     <string name="add_travel">حفظ</string>
     <string name="find_travel">البحث عن راكب</string>
     <string name="smoking">smoking</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
+
 
     <string name="btn_advance">Advance (Auth)</string>
     <string name="btn_basic">Basic (No Auth)</string>
@@ -238,9 +239,9 @@
     <string name="cancel">إلغاء</string>
     <string name="enter_coubbon_number">أدخل رقم الكوبون</string>
     <string name="date_and_time">التاريخ و الوقت</string>
-    <string name="reseve">قبول الحجز</string>
+    <string name="reseve">تأكيد الحجز</string>
     <string name="empty_seats">عدد المسافرين المتبقيين</string>
-    <string name="driver_rate">تقييم السائق</string>
+    <string name="driver_rate">تقييم الكابتن</string>
     <string name="travels_count">الرحلات المنجزة</string>
     <string name="pickup_point">نقطة التقاط</string>
     <string name="platform">منصة التواصل الاجتماعي</string>
@@ -279,21 +280,21 @@
         <item>My Posts</item>
         <item>My Top Posts</item>
     </string-array>
-    <string name="driver_city">مدينة السائق</string>
-    <string name="driver_country">بلد السائق</string>
-    <string name="driver_phone">هاتف السائق</string>
-    <string name="driver_vehicle">مركبة السائق</string>
+    <string name="driver_city">مدينة الكابتن</string>
+    <string name="driver_country">بلد الكابتن</string>
+    <string name="driver_phone">هاتف الكابتن</string>
+    <string name="driver_vehicle">مركبة الكابتن</string>
     <string name="description">التفاصيل</string>
     <string name="send">إرسال</string>
     <string name="Driver_Phone_number">رقم الهاتف</string>
-    <string name="delet_driver">حذف السائق</string>
+    <string name="delet_driver">حذف الكابتن</string>
     <string name="country">المدينة</string>
     <string name="Create_group">إضافة مجموعة</string>
-    <string name="DRIVERNAME">"اسم السائق"</string>
+    <string name="DRIVERNAME">"اسم الكابتن"</string>
     <string name="show">عرض المعلومات</string>
     <string name="group_name">اسم المجموعة</string>
     <string name="change_group_name">تغيير اسم المجموعة</string>
-    <string name="my_groups">مجموعاتي</string>
+    <string name="my_groups">مجموعتي</string>
     <string name="admin_name">مدير المجموعة</string>
     <string name="group_members">أعضاء المجموعة</string>
     <string name="group_management">إدارة المجموعات</string>
@@ -349,6 +350,8 @@
     <string name="notification_started">بدأت الرحلة!</string>
     <string name="notification_offline_request">يريد الزبون الدفع نقدا</string>
     <string name="notification_offline_approved">تأكيد الدفع نقدا</string>
+    <string name="notification_add_driver">تم اختيارك ضمن مجموعة: </string>
+    <string name="notification_del_driver">تم إخراجك من مجموعة: </string>
 
     <string name="addChangeGroup">إضافة مجموعة أو تغيير اسم المجموعة</string>
     <string name="addDeleteDriver">إضافة أو حذف سائق</string>
@@ -357,6 +360,19 @@
     <string name="notes">الملاحظات</string>
     <string name="invalid_phone_number">رقم الهاتف غير صحيح ، يرجى المحاولة مرة أخرى!</string>
 
+    <string name="distance_info">معلومات المسافة والزمن</string>
+    <string name="distance1_info">المسافة بين النقطتين</string>
+    <string name="distance_time_info">الوقت اللازم للوصول</string>
+
+    <string name="edit">تعديل</string>
+    <string name="delete">حذف</string>
+    <string name="Post_updated_successfully">تم تحديث المنشور بنجاح!</string>
+    <string name="Post_deleted_successfully">تم حذف المنشور بنجاح!</string>
+    <string name="do_you_want_to_delete">هل تريد الحذف؟</string>
+    <string name="no">لا</string>
+    <string name="yes">نعم</string>
+    <string name="whatsapp">رقمنا</string>
+    <string name="thank_uploading_images">شكرا لرفع اوراق الكابتن وشهاداته، الآن يمكنك التمتع باستخدام روميو</string>
 
 
 </resources>

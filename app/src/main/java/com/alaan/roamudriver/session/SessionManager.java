@@ -59,7 +59,7 @@ public class SessionManager {
     public static final String VehiclePermit = "permit";
     public static final String VehicleRegistartion = "registration";
     // Sharedpref file name
-    private static final String PREF_NAME = "taxiapp";
+    private static final String PREF_NAME = "roamu";
     // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
     // Shared Preferences

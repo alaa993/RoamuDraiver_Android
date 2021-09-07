@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragement.Contact_usFragment">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -60,7 +61,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="0dp"
-                        android:padding="10dp">
+                        android:padding="10dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/FN_txt2"
@@ -101,6 +103,29 @@
                             android:layout_marginLeft="5dp"
                             android:maxLines="10"
                             android:padding="1dp" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:id="@+id/FN_txt4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/whatsapp"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <TextView
+                            android:id="@+id/FN_txt5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+447732830221"
+                            android:gravity="center_horizontal"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     </TableRow>
 

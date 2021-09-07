@@ -1,11 +1,15 @@
 package com.alaan.roamudriver.fragement;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatButton;
@@ -58,6 +62,7 @@ public class UploadDomentFragment extends FragmentManagePermission {
     private File imageFile;
     ProgressBar progressBar_licence, progressBar_insurance, progressBar_permit, ProgressBar_registration;
     ImageView img_licence, img_insurance, img_permit, img_registration;
+    int imageCounter = 0;
 
 
     @Nullable
@@ -65,32 +70,20 @@ public class UploadDomentFragment extends FragmentManagePermission {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.upload_document, container, false);
         ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.upload_doc));
+        ((DrawerLocker) getActivity()).setDrawerLocked(true);
+        BindView();
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((DrawerLocker) getActivity()).setDrawerLocked(false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        BindView();
-    }
-
-    public void setofflineDoc(String doc, String url) {
-        User user = SessionManager.getUser();
-        Gson gson = new Gson();
-
-        if (doc.equalsIgnoreCase("l")) {
-            user.setLicence(url);
-        } else if (doc.equalsIgnoreCase("i")) {
-            user.setInsurance(url);
-        } else if (doc.equalsIgnoreCase("p")) {
-            user.setPermit(url);
-        } else if (doc.equalsIgnoreCase("r")) {
-            user.setRegisteration(url);
-        } else {
-            //Nothing
-        }
-        SessionManager.setUser(gson.toJson(user));
-
     }
 
     public void BindView() {
@@ -130,30 +123,6 @@ public class UploadDomentFragment extends FragmentManagePermission {
                     askCompactPermissions(permissionAsk, new PermissionResult() {
                         @Override
                         public void permissionGranted() {
-                            TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(getActivity())
-                                    .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
-                                        @Override
-                                        public void onImageSelected(Uri uri) {
-                                            // here is selected uri
-                                            imageFile = new File(uri.getPath());
-                                            String format = getMimeType(getActivity(), uri);
-                                            if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("png") || format.equalsIgnoreCase("gif") || format.equalsIgnoreCase("jpeg")) {
-                                                upload_pic("l", format);
-                                            } else {
-                                                Toast.makeText(getActivity(), getString(R.string.format_msg), Toast.LENGTH_LONG).show();
-                                            }
-
-                                        }
-                                    }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
-                                        @Override
-                                        public void onError(String message) {
-                                            Toast.makeText(getActivity(), getString(R.string.tryagian), Toast.LENGTH_LONG).show();
-                                            Log.d(getTag(), message);
-                                        }
-                                    })
-                                    .create();
-
-                            tedBottomPicker.show(getActivity().getSupportFragmentManager());
                         }
 
                         @Override
@@ -168,10 +137,64 @@ public class UploadDomentFragment extends FragmentManagePermission {
                     });
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.network), Toast.LENGTH_LONG).show();
-
                 }
+                int MyVersion = Build.VERSION.SDK_INT;
+                if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    if (!checkIfAlreadyhavePermission()) {
+                        requestForSpecificPermission();
+                    } else {
+                        TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(getActivity())
+                                .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+                                    @Override
+                                    public void onImageSelected(Uri uri) {
+
+                                        imageFile = new File(uri.getPath());
+                                        String format = getMimeType(getActivity(), uri);
+                                        if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("png") || format.equalsIgnoreCase("gif") || format.equalsIgnoreCase("jpeg")) {
+                                            upload_pic("l", format);
+                                        } else {
+                                            Toast.makeText(getActivity(), getString(R.string.format_msg), Toast.LENGTH_LONG).show();
+                                        }
 
 
+                                    }
+                                }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
+                                    @Override
+                                    public void onError(String message) {
+                                        Toast.makeText(getActivity(), getString(R.string.tryagian), Toast.LENGTH_LONG).show();
+                                        Log.d(getTag(), message);
+                                    }
+                                })
+                                .create();
+
+                        tedBottomPicker.show(getActivity().getSupportFragmentManager());
+                    }
+                } else {
+                    TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(getActivity())
+                            .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+                                @Override
+                                public void onImageSelected(Uri uri) {
+
+                                    imageFile = new File(uri.getPath());
+                                    String format = getMimeType(getActivity(), uri);
+                                    if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("png") || format.equalsIgnoreCase("gif") || format.equalsIgnoreCase("jpeg")) {
+                                        upload_pic("l", format);
+                                    } else {
+                                        Toast.makeText(getActivity(), getString(R.string.format_msg), Toast.LENGTH_LONG).show();
+                                    }
+
+                                }
+                            }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
+                                @Override
+                                public void onError(String message) {
+                                    Toast.makeText(getActivity(), getString(R.string.tryagian), Toast.LENGTH_LONG).show();
+                                    Log.d(getTag(), message);
+                                }
+                            })
+                            .create();
+
+                    tedBottomPicker.show(getActivity().getSupportFragmentManager());
+                }
             }
         });
         card_insurance.setOnClickListener(new View.OnClickListener() {
@@ -328,25 +351,31 @@ public class UploadDomentFragment extends FragmentManagePermission {
 
     }
 
+    public void setofflineDoc(String doc, String url) {
+        User user = SessionManager.getUser();
+        Gson gson = new Gson();
+
+        if (doc.equalsIgnoreCase("l")) {
+            user.setLicence(url);
+        } else if (doc.equalsIgnoreCase("i")) {
+            user.setInsurance(url);
+        } else if (doc.equalsIgnoreCase("p")) {
+            user.setPermit(url);
+        } else if (doc.equalsIgnoreCase("r")) {
+            user.setRegisteration(url);
+        } else {
+            //Nothing
+        }
+        SessionManager.setUser(gson.toJson(user));
+
+    }
+
     private void getInfo() {
         RequestParams params = new RequestParams();
         params.put("user_id", SessionManager.getUserId());
 
-        User user = SessionManager.getUser();
-        img_licence.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-        Glide.with(getActivity()).load(user.getLicence()).into(imageview_licence);
-
-        img_insurance.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-        Glide.with(getActivity()).load(user.getInsurance()).into(imageview_insurace);
-
-        img_permit.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-        Glide.with(getActivity()).load(user.getPermit()).into(imageview_permit);
-
-        img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-        Glide.with(getActivity()).load(user.getRegisteration()).into(imageview_registration);
-
-
-        Server.setHeader(user.getKey());
+        User user1 = SessionManager.getUser();
+        Server.setHeader(user1.getKey());
         Server.get(Server.GET_PROFILE, params, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -364,53 +393,72 @@ public class UploadDomentFragment extends FragmentManagePermission {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 try {
+                    Log.i("ibrahim", "getInfo");
+                    Log.i("ibrahim", "response");
+                    Log.i("ibrahim", response.toString());
+
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
-                       if (user.getLicence() != null) {
-                            img_licence.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-                            Glide.with(UploadDomentFragment.this).load(user.getLicence()).into(imageview_licence);
-                        } else {
-                            img_licence.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
+                        Gson gson = new Gson();
+                        User user = gson.fromJson(response.getJSONObject("data").toString(), User.class);
+                        Log.i("ibrahim", "user");
+                        Log.i("ibrahim", user.toString());
+                        if (user.getLicence() != null) {
+                            if (user.getLicence().length() > 0) {
+                                imageCounter++;
+                                img_licence.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
+                                Log.i("ibrahim", "user.getLicence()");
+                                Log.i("ibrahim", user.getLicence());
+                                Glide.with(UploadDomentFragment.this).load(user.getLicence()).into(imageview_licence);
+                            } else {
+                                img_licence.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
+                            }
                         }
                         if (user.getInsurance() != null) {
-                            img_insurance.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-                            Glide.with(getActivity()).load(user.getInsurance()).into(imageview_insurace);
-                        } else {
-                            img_insurance.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
+                            if (user.getInsurance().length() > 0) {
+                                imageCounter++;
+                                img_insurance.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
+                                Log.i("ibrahim", "user.getInsurance()");
+                                Log.i("ibrahim", user.getInsurance());
+                                Glide.with(getActivity()).load(user.getInsurance()).into(imageview_insurace);
+                            } else {
+                                img_insurance.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
+                            }
                         }
                         if (user.getPermit() != null) {
-                            img_permit.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-                            Glide.with(getActivity()).load(user.getPermit()).into(imageview_permit);
-                        } else {
-                            img_permit.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
+                            if (user.getPermit().length() > 0) {
+                                imageCounter++;
+                                img_permit.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
+                                Log.i("ibrahim", "user.getPermit()");
+                                Log.i("ibrahim", user.getPermit());
+                                Glide.with(getActivity()).load(user.getPermit()).into(imageview_permit);
+                            } else {
+                                img_permit.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
+                            }
                         }
                         if (user.getRegisteration() != null) {
-                            img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-                            Glide.with(getActivity()).load(user.getRegisteration()).into(imageview_registration);
-                        } else {
-                            img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
+                            if (user.getRegisteration().length() > 0) {
+                                imageCounter++;
+                                img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
+                                Log.i("ibrahim", "user.getRegisteration()");
+                                Log.i("ibrahim", user.getRegisteration());
+                                Glide.with(getActivity()).load(user.getRegisteration()).into(imageview_registration);
+                            } else {
+                                img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
+                            }
                         }
-
-
                     } else {
-
                         Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
-
                     }
                 } catch (JSONException e) {
-
                     Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
-
                 }
             }
-
-
         });
 
     }
 
     public static String getMimeType(Context context, Uri uri) {
         String extension;
-
         //Check uri format to avoid null
         if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
             //If scheme is a content
@@ -420,9 +468,7 @@ public class UploadDomentFragment extends FragmentManagePermission {
             //If scheme is a File
             //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
             extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
-
         }
-
         return extension;
     }
 
@@ -432,7 +478,6 @@ public class UploadDomentFragment extends FragmentManagePermission {
             progressBar_licence.setVisibility(View.VISIBLE);
             if (imageFile != null) {
                 try {
-
                     if (type.equals("jpg")) {
                         params.put("license", imageFile, "image/jpeg");
                     } else if (type.equals("jpeg")) {
@@ -442,7 +487,6 @@ public class UploadDomentFragment extends FragmentManagePermission {
                     } else {
                         params.put("license", imageFile, "image/gif");
                     }
-
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -451,7 +495,6 @@ public class UploadDomentFragment extends FragmentManagePermission {
             progressBar_insurance.setVisibility(View.VISIBLE);
             if (imageFile != null) {
                 try {
-
                     if (type.equals("jpg")) {
                         params.put("insurance", imageFile, "image/jpeg");
                     } else if (type.equals("jpeg")) {
@@ -469,7 +512,6 @@ public class UploadDomentFragment extends FragmentManagePermission {
             progressBar_permit.setVisibility(View.VISIBLE);
             if (imageFile != null) {
                 try {
-
                     if (type.equals("jpg")) {
                         params.put("permit", imageFile, "image/jpeg");
                     } else if (type.equals("jpeg")) {
@@ -487,7 +529,6 @@ public class UploadDomentFragment extends FragmentManagePermission {
             ProgressBar_registration.setVisibility(View.VISIBLE);
             if (imageFile != null) {
                 try {
-
                     if (type.equals("jpg")) {
                         params.put("registration", imageFile, "image/jpeg");
                     } else if (type.equals("jpeg")) {
@@ -501,10 +542,8 @@ public class UploadDomentFragment extends FragmentManagePermission {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-
             }
         }
-
 
         Server.setHeader(SessionManager.getKEY());
         params.put("user_id", SessionManager.getUserId());
@@ -533,7 +572,6 @@ public class UploadDomentFragment extends FragmentManagePermission {
                     }
                 } catch (JSONException e) {
                     Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
-
                     setVisibility(DocName, "fail", "");
                 }
             }
@@ -541,50 +579,12 @@ public class UploadDomentFragment extends FragmentManagePermission {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                // Log.e("fialure",responseString+"  "+throwable.toString());
                 Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
                 setVisibility(DocName, "fail", "");
             }
         });
 
     }
-
-
-  /*  public void getVehicleInfo() {
-        Toast.makeText(getActivity(), getString(R.string.network), Toast.LENGTH_LONG).show();
-
-
-        String licence = user.get(SessionManager.DRivingLicence);
-        String insurance = user.get(SessionManager.VehicleInsurance);
-        String permit = user.get(SessionManager.VehiclePermit);
-        String registration = user.get(SessionManager.VehicleRegistartion);
-
-        if (licence != null && !licence.equals("")) {
-            img_licence.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-            Glide.with(getActivity()).load(licence).into(imageview_licence);
-        } else {
-            img_licence.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
-        }
-        if (insurance != null && !insurance.equals("")) {
-            img_insurance.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-            Glide.with(getActivity()).load(insurance).into(imageview_insurace);
-        } else {
-            img_insurance.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
-        }
-        if (permit != null && !permit.equals("")) {
-            img_permit.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-            Glide.with(getActivity()).load(permit).into(imageview_permit);
-        } else {
-            img_permit.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
-        }
-        if (registration != null && !registration.equals("")) {
-            img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-            Glide.with(getActivity()).load(registration).into(imageview_registration);
-        } else {
-            img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
-
-        }
-    }*/
 
     public void setVisibility(String DocName, String status, String url) {
         if (DocName.equalsIgnoreCase("l")) {
@@ -593,6 +593,7 @@ public class UploadDomentFragment extends FragmentManagePermission {
             if (status.equalsIgnoreCase("success")) {
                 Glide.with(getActivity()).load(url).into(imageview_licence);
                 img_licence.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
+                imageCounter++;
             } else {
                 img_licence.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
             }
@@ -602,6 +603,7 @@ public class UploadDomentFragment extends FragmentManagePermission {
             if (status.equalsIgnoreCase("success")) {
                 Glide.with(getActivity()).load(url).into(imageview_insurace);
                 img_insurance.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
+                imageCounter++;
 
             } else {
                 img_insurance.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
@@ -612,6 +614,7 @@ public class UploadDomentFragment extends FragmentManagePermission {
             if (status.equalsIgnoreCase("success")) {
                 Glide.with(getActivity()).load(url).into(imageview_permit);
                 img_permit.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
+                imageCounter++;
             } else {
                 img_permit.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
             }
@@ -621,12 +624,15 @@ public class UploadDomentFragment extends FragmentManagePermission {
             if (status.equalsIgnoreCase("success")) {
                 Glide.with(getActivity()).load(url).into(imageview_registration);
                 img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
+                imageCounter++;
             } else {
                 img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
             }
         }
-
-
+        if (imageCounter >= 4) {
+            ((DrawerLocker) getActivity()).setDrawerLocked(false);
+            Toast.makeText(getActivity(), getString(R.string.thank_uploading_images), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void overrideFonts(final Context context, final View v) {
@@ -644,9 +650,30 @@ public class UploadDomentFragment extends FragmentManagePermission {
             } else if (v instanceof TextView) {
                 ((TextView) v).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "font/AvenirLTStd_Book.otf"));
             }
-
         } catch (Exception e) {
+        }
+    }
+
+    private boolean checkIfAlreadyhavePermission() {
+        int fine = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
+        int read = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+        int write = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (fine == PackageManager.PERMISSION_GRANTED) {
+            return true;
 
         }
+        if (read == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        if (write == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void requestForSpecificPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
     }
 }

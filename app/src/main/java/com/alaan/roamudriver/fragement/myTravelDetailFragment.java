@@ -10,6 +10,8 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -26,8 +28,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +41,7 @@ import com.akexorcist.googledirection.constant.TransportMode;
 import com.akexorcist.googledirection.model.Direction;
 import com.akexorcist.googledirection.util.DirectionConverter;
 import com.alaan.roamudriver.R;
+import com.alaan.roamudriver.Server.GoogMatrixRequest;
 import com.alaan.roamudriver.Server.Server;
 import com.alaan.roamudriver.acitivities.HomeActivity;
 import com.alaan.roamudriver.adapter.AcceptedRequestAdapter;
@@ -97,9 +102,11 @@ import com.thebrownarrow.permissionhelper.PermissionUtils;
 
 import net.skoumal.fragmentback.BackFragment;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -117,6 +124,11 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private View view;
+
+    private RelativeLayout distancematrix_informations;
+    Animation animFadeIn, animFadeOut;
+    TextView txt_distance, txt_timedistance;
+
     RecyclerView recyclerView;
     Button my_acc_d_f_home_button, my_notes_button;
     AppCompatButton approve, complete, cancel, start, show_customers;
@@ -248,6 +260,24 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(this);
 
+        animFadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.dialogue_scale_anim_open);
+        animFadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.dialogue_scale_anim_exit);
+        animFadeIn.setAnimationListener(this);
+        animFadeOut.setAnimationListener(this);
+        distancematrix_informations = (RelativeLayout) view.findViewById(R.id.distancematrix);
+        txt_distance = (TextView) view.findViewById(R.id.txt_distance);
+        txt_timedistance = (TextView) view.findViewById(R.id.txt_timedistance);
+
+        distancematrix_informations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (distancematrix_informations.getVisibility() == View.VISIBLE) {
+                    distancematrix_informations.startAnimation(animFadeOut);
+                    distancematrix_informations.setVisibility(View.GONE);
+                }
+            }
+        });
+
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -335,8 +365,8 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("travel_id", travel_id);
-                Log.i("ibrahim","my_notes_button");
-                Log.i("ibrahim",travel_id);
+                Log.i("ibrahim", "my_notes_button");
+                Log.i("ibrahim", travel_id);
                 NoteFragment noteFragment = new NoteFragment();
                 noteFragment.setArguments(bundle);
                 ((HomeActivity) getActivity()).changeFragment(noteFragment, "fragment_note");
@@ -495,6 +525,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                             start.setVisibility(View.GONE);
                             complete.setVisibility(View.GONE);
                             cancel.setVisibility(View.GONE);
+                            deletePostFirebase();
                         }
                         if (status.equalsIgnoreCase("COMPLETED")) {
                             approve.setVisibility(View.GONE);
@@ -925,6 +956,114 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                     myMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                         @Override
                         public void onMapClick(LatLng latLng) {
+//                            Toast.makeText(getActivity(), "Lat " + latLng.latitude + " " + "Long " + latLng.longitude, Toast.LENGTH_LONG).show();
+                            if (distancematrix_informations.getVisibility() == View.VISIBLE) {
+                                distancematrix_informations.startAnimation(animFadeOut);
+                                distancematrix_informations.setVisibility(View.GONE);
+                            } else {
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //test GoogMatrixRequest
+                                        try {
+//                                        String googleMatrixResponse = GoogMatrixRequest.getGoogMatrixRequest("37.7680296,-122.4375126", "37.7663444,-122.4412006");
+                                            String googleMatrixResponse = GoogMatrixRequest.getGoogMatrixRequest(currentLatitude + "," + currentLongitude, latLng.latitude + "," + latLng.longitude);
+                                            try {
+                                                JSONObject jsonObject = new JSONObject(googleMatrixResponse);
+                                                JSONArray dist = (JSONArray) jsonObject.get("rows");
+                                                JSONObject obj2 = (JSONObject) dist.get(0);
+                                                JSONArray disting = (JSONArray) obj2.get("elements");
+                                                JSONObject obj3 = (JSONObject) disting.get(0);
+                                                JSONObject obj4 = (JSONObject) obj3.get("distance");
+                                                JSONObject obj5 = (JSONObject) obj3.get("duration");
+
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            System.out.println(obj4.get("text"));
+                                                            System.out.println(obj5.get("text"));
+                                                            txt_distance.setText(obj4.get("text").toString());
+                                                            txt_timedistance.setText(obj5.get("text").toString());
+                                                            distancematrix_informations.setVisibility(View.VISIBLE);
+                                                            distancematrix_informations.startAnimation(animFadeIn);
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                });
+
+                                            } catch (JSONException err) {
+                                                Log.d("Error", err.toString());
+                                            }
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        //
+                                    }
+                                });
+
+                                thread.start();
+                            }
+                        }
+                    });
+
+                    myMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {
+                            if (distancematrix_informations.getVisibility() == View.VISIBLE) {
+                                distancematrix_informations.startAnimation(animFadeOut);
+                                distancematrix_informations.setVisibility(View.GONE);
+                            } else {
+                                LatLng position = marker.getPosition();
+                                //                            Toast.makeText(getActivity(), "Lat " + position.latitude + " " + "Long " + position.longitude, Toast.LENGTH_LONG).show();
+                                Thread thread = new Thread(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        //test GoogMatrixRequest
+                                        try {
+//                                        String googleMatrixResponse = GoogMatrixRequest.getGoogMatrixRequest("37.7680296,-122.4375126", "37.7663444,-122.4412006");
+                                            String googleMatrixResponse = GoogMatrixRequest.getGoogMatrixRequest(currentLatitude + "," + currentLongitude, position.latitude + "," + position.longitude);
+                                            try {
+                                                JSONObject jsonObject = new JSONObject(googleMatrixResponse);
+                                                JSONArray dist = (JSONArray) jsonObject.get("rows");
+                                                JSONObject obj2 = (JSONObject) dist.get(0);
+                                                JSONArray disting = (JSONArray) obj2.get("elements");
+                                                JSONObject obj3 = (JSONObject) disting.get(0);
+                                                JSONObject obj4 = (JSONObject) obj3.get("distance");
+                                                JSONObject obj5 = (JSONObject) obj3.get("duration");
+
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            System.out.println(obj4.get("text"));
+                                                            System.out.println(obj5.get("text"));
+                                                            txt_distance.setText(obj4.get("text").toString());
+                                                            txt_timedistance.setText(obj5.get("text").toString());
+                                                            distancematrix_informations.setVisibility(View.VISIBLE);
+                                                            distancematrix_informations.startAnimation(animFadeIn);
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                });
+
+
+                                            } catch (JSONException err) {
+                                                Log.d("Error", err.toString());
+                                            }
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        //
+                                    }
+                                });
+
+                                thread.start();
+                            }
+                            return true;
                         }
                     });
                     databaseTravelRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -1344,5 +1483,4 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 
 
     }
-
 }

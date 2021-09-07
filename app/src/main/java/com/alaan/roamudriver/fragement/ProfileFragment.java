@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -72,7 +73,7 @@ public class ProfileFragment extends FragmentManagePermission {
     ImageView profile_pic;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
-    String photoURL ="";
+    String photoURL = "";
 
     @Nullable
     @Override
@@ -118,14 +119,19 @@ public class ProfileFragment extends FragmentManagePermission {
                                     public void onImageSelected(Uri uri) {
                                         // here is selected uri
                                         imageFile = new File(uri.getPath());
+                                        // profile_pic.setImageURI(uri);
                                         String format = getMimeType(getActivity(), uri);
                                         upload_pic(format);
+                                       /* if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("png") || format.equalsIgnoreCase("gif") || format.equalsIgnoreCase("jpeg")) {
 
+                                        } else {
+                                            Toast.makeText(getActivity(), "jpg,png or gif is only accepted", Toast.LENGTH_LONG).show();
+                                        }*/
                                     }
                                 }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
                                     @Override
                                     public void onError(String message) {
-                                        Toast.makeText(getActivity(), getString(R.string.tryagian), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_SHORT).show();
                                         Log.d(getTag(), message);
                                     }
                                 })
@@ -133,21 +139,23 @@ public class ProfileFragment extends FragmentManagePermission {
 
                         tedBottomPicker.show(getActivity().getSupportFragmentManager());
                     }
+
+
                 } else {
                     TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(getActivity())
                             .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
                                 @Override
                                 public void onImageSelected(Uri uri) {
-
+                                    // here is selected uri
                                     imageFile = new File(uri.getPath());
+                                    //  profile_pic.setImageURI(uri);
                                     String format = getMimeType(getActivity(), uri);
                                     upload_pic(format);
-
                                 }
                             }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
                                 @Override
                                 public void onError(String message) {
-                                    Toast.makeText(getActivity(), getString(R.string.tryagian), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_SHORT).show();
                                     Log.d(getTag(), message);
                                 }
                             })
@@ -176,6 +184,7 @@ public class ProfileFragment extends FragmentManagePermission {
                     + " must implement OnHeadlineSelectedListener");
         }
     }
+
     public void getPhotoUri() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
@@ -190,18 +199,20 @@ public class ProfileFragment extends FragmentManagePermission {
 //                log.i("tag","success by ibrahim");
 //                log.i("tag", UserName);
                 // Firebase code here
-               // User user = SessionManager.getUser();
+                // User user = SessionManager.getUser();
                 //user.setAvatar(photoURL);
-               // profile_pic.setImageURI(photoURL);
-               // profileUpdateListener.update(photoURL);
+                // profile_pic.setImageURI(photoURL);
+                // profileUpdateListener.update(photoURL);
 
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
             }
         });
     }
+
     public void upload_pic(String type) {
         progressBar.setVisibility(View.VISIBLE);
         RequestParams params = new RequestParams();
@@ -233,14 +244,12 @@ public class ProfileFragment extends FragmentManagePermission {
                 try {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         String url = response.getJSONObject("data").getString("avatar");
-
                         try {
-                          //  Glide.with(getActivity()).load(photoURL).apply(new RequestOptions().error(R.drawable.user_default)).into(profile_pic);
+                            Glide.with(getActivity()).load(photoURL).apply(new RequestOptions().error(R.drawable.user_default)).into(profile_pic);
                         } catch (Exception e) {
-
                         }
                         User user = SessionManager.getUser();
-                        //user.setAvatar(url);
+                        user.setAvatar(url);
                         Gson gson = new Gson();
                         SessionManager.setUser(gson.toJson(user));
                         profileUpdateListener.update(url);
@@ -257,7 +266,6 @@ public class ProfileFragment extends FragmentManagePermission {
                             userObject.put("photoURL", url);
                             databaseRef.updateChildren(userObject);
                         } catch (Exception e) {
-//                            e.printStackTrace();
                         }
 
                     } else {
@@ -269,7 +277,6 @@ public class ProfileFragment extends FragmentManagePermission {
                 } catch (JSONException e) {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
-
                 }
             }
 
@@ -281,7 +288,6 @@ public class ProfileFragment extends FragmentManagePermission {
 
             }
         });
-
     }
 
     private void getUserInfoOnline() {
@@ -313,7 +319,7 @@ public class ProfileFragment extends FragmentManagePermission {
                         User user1 = gson.fromJson(response.getJSONObject("data").toString(), User.class);
 
                         //Glide.with(ProfileFragment.this).load(user1.getAvatar()).apply(new RequestOptions().error(R.drawable.user_default)).into(profile_pic);
-                     //   Glide.with(getActivity()).load(photoURL).apply(new RequestOptions().error(R.drawable.user_default)).into(profile_pic);
+                        //   Glide.with(getActivity()).load(photoURL).apply(new RequestOptions().error(R.drawable.user_default)).into(profile_pic);
 
                         input_name.setText(user1.getName());
                         input_email.setText(user1.getEmail());
@@ -358,11 +364,10 @@ public class ProfileFragment extends FragmentManagePermission {
         input_mobile.setText(SessionManager.getUser().getMobile());
         input_vehicle.setText(SessionManager.getUser().getVehicle_info());
         //Glide.with(getActivity()).load(photoURL).apply(new RequestOptions().error(R.drawable.user_default)).into(profile_pic);
-      //  Glide.with(getActivity()).load("https://firebasestorage.googleapis.com/v0/b/roamu-f58c1.appspot.com/o/user%2F5wmUndhBP5NB68ZDzaLwJYI3moK2?alt=media&token=8c54d94a-63a0-444b-adcf-39bfc764a3f2").apply(new RequestOptions().error(R.drawable.user_default)).into(profile_pic);
+        //  Glide.with(getActivity()).load("https://firebasestorage.googleapis.com/v0/b/roamu-f58c1.appspot.com/o/user%2F5wmUndhBP5NB68ZDzaLwJYI3moK2?alt=media&token=8c54d94a-63a0-444b-adcf-39bfc764a3f2").apply(new RequestOptions().error(R.drawable.user_default)).into(profile_pic);
 
         input_paypalId.setText(SessionManager.getUser().getPaypal_id());
     }
-
 
     public Boolean validate() {
         Boolean value = true;
@@ -458,6 +463,28 @@ public class ProfileFragment extends FragmentManagePermission {
         view.setTypeface(font);
     }
 
+    private void requestForSpecificPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+    }
+
+    private boolean checkIfAlreadyhavePermission() {
+        int fine = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
+        int read = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+        int write = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (fine == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        if (read == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        if (write == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -465,6 +492,7 @@ public class ProfileFragment extends FragmentManagePermission {
         switch (requestCode) {
             case 1: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.e("permisson", "granted");
                     TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(getActivity())
                             .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
                                 @Override
@@ -475,7 +503,7 @@ public class ProfileFragment extends FragmentManagePermission {
                             }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
                                 @Override
                                 public void onError(String message) {
-                                    Toast.makeText(getActivity(), getString(R.string.tryagian), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), getString(R.string.try_again), Toast.LENGTH_LONG).show();
                                     Log.d(getTag(), message);
                                 }
                             })
@@ -487,29 +515,6 @@ public class ProfileFragment extends FragmentManagePermission {
 
                 }
             }
-        }
-    }
-
-    private void requestForSpecificPermission() {
-        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-    }
-
-    private boolean checkIfAlreadyhavePermission() {
-        int fine = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
-        int read = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
-        int write = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (fine == PackageManager.PERMISSION_GRANTED) {
-            return true;
-
-        }
-        if (read == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (write == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -608,7 +613,6 @@ public class ProfileFragment extends FragmentManagePermission {
         return extension;
     }
 
-
     @Override
     public void onPause() {
         super.onPause();
@@ -638,7 +642,6 @@ public class ProfileFragment extends FragmentManagePermission {
         super.onResume();
 
     }
-
 
     public interface ProfileUpdateListener {
         void update(String url);
@@ -759,6 +762,5 @@ public class ProfileFragment extends FragmentManagePermission {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-
     }
 }

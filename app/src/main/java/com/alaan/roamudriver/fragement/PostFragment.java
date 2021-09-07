@@ -1,15 +1,21 @@
 package com.alaan.roamudriver.fragement;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +26,9 @@ import com.alaan.roamudriver.pojo.CommentList;
 import com.alaan.roamudriver.pojo.Post;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +45,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import afu.org.checkerframework.checker.nullness.qual.NonNull;
+
 import static com.loopj.android.http.AsyncHttpClient.log;
 
 public class PostFragment extends Fragment {
@@ -44,6 +55,7 @@ public class PostFragment extends Fragment {
     EditText inputEditComment;
     TextView AddCommentBTN;
     ValueEventListener listener;
+    public ImageView more;
 
 
     //a list to store all the artist from firebase database
@@ -99,6 +111,8 @@ public class PostFragment extends Fragment {
                 }
             }
         });
+
+        more = view.findViewById(R.id.more);
 
         return view;
     }
@@ -160,11 +174,12 @@ public class PostFragment extends Fragment {
     public void onStart() {
         super.onStart();
 //        attaching value event listener
-        databasePost.addListenerForSingleValueEvent(new ValueEventListener() {
+        databasePost.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 //                // Get Post object and use the values to update the UI
                 Post post = dataSnapshot.getValue(Post.class);
+                post.id = dataSnapshot.getKey();
                 TextView textViewName = (TextView) view.findViewById(R.id.Post_textViewName);
                 TextView textViewText = (TextView) view.findViewById(R.id.Post_textViewText);
                 TextView textViewDate = (TextView) view.findViewById(R.id.Post_textViewDate);
@@ -197,6 +212,101 @@ public class PostFragment extends Fragment {
                         // Getting Post failed, log a message
                     }
                 });
+
+                if (post.author.uid.endsWith(user.getUid()) && post.travel_id == 0) {
+                    more.setVisibility(View.VISIBLE);
+                    more.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (post.author.uid.endsWith(user.getUid()) && post.travel_id == 0) {
+                                more.setVisibility(View.VISIBLE);
+                                PopupMenu popup = new PopupMenu(getContext(), more);
+                                popup.inflate(R.menu.post_menu);
+                                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(MenuItem item) {
+                                        switch (item.getItemId()) {
+                                            case R.id.nav_edit:
+                                                android.app.AlertDialog.Builder mBuilder = new android.app.AlertDialog.Builder(getContext());
+                                                LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                                View mView = li.inflate(R.layout.dialog_update_post_layout, null);
+                                                final EditText ET_DUOL = (EditText) mView.findViewById(R.id.ET_DUOL);
+                                                ET_DUOL.setText(post.text);
+                                                Button btnSubmit_DUOL = (Button) mView.findViewById(R.id.btnSubmit_DUOL);
+                                                Button btnCancel_DUOL = (Button) mView.findViewById(R.id.btnCancel_DUOL);
+                                                mBuilder.setView(mView);
+                                                final android.app.AlertDialog dialog = mBuilder.create();
+                                                dialog.show();
+
+                                                btnSubmit_DUOL.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+                                                        Log.i("ibrahim", ET_DUOL.getText().toString());
+                                                        HashMap<String, Object> map = new HashMap<>();
+                                                        map.put("text", ET_DUOL.getText().toString());
+                                                        Log.i("ibrahim_post_id", post.id);
+                                                        FirebaseDatabase.getInstance().getReference("posts").child(post.id).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    Toast.makeText(getContext(), getContext().getString(R.string.Post_updated_successfully), Toast.LENGTH_SHORT).show();
+                                                                    dialog.dismiss();
+                                                                }
+                                                            }
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                                                dialog.dismiss();
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                                btnCancel_DUOL.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+                                                        dialog.dismiss();
+                                                    }
+                                                });
+                                                return true;
+
+                                            case R.id.nav_delete:
+                                                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                                                alertDialog.setTitle(getContext().getString(R.string.do_you_want_to_delete));
+                                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.dismiss();
+                                                    }
+                                                });
+                                                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getContext().getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(final DialogInterface dialog, int which) {
+                                                        Log.i("ibrahim_post_id", post.id);
+                                                        FirebaseDatabase.getInstance().getReference("posts").child(post.id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    Toast.makeText(getContext(), getContext().getString(R.string.Post_deleted_successfully), Toast.LENGTH_SHORT).show();
+                                                                    dialog.dismiss();
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                });
+
+                                                alertDialog.show();
+                                                return true;
+                                            default:
+                                                return false;
+                                        }
+                                    }
+                                });
+                                popup.show();
+                            }
+                        }
+                    });
+                }
             }
 
             @Override
@@ -232,6 +342,7 @@ public class PostFragment extends Fragment {
             }
         });
     }
+
     @Override
     public void onPause() {
         super.onPause();

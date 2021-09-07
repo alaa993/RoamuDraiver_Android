@@ -105,7 +105,7 @@ public class RegisterActivity extends ActivityManagePermission implements Google
 
     private static final String TAG = "Register";
     RelativeLayout relative_signin;
-    TextInputEditText input_email, input_password, input_confirmPassword, input_mobile, input_name;
+    TextInputEditText input_email, input_password, input_confirmPassword, input_mobile, input_name, input_last_name;
     AppCompatButton sign_up;
     String token;
 
@@ -172,6 +172,7 @@ public class RegisterActivity extends ActivityManagePermission implements Google
                     String mobile = input_mobile.getText().toString().trim();
                     String password = input_password.getText().toString().trim();
                     String name = input_name.getText().toString().trim();
+                    String lastname = input_last_name.getText().toString().trim();
 
                     Geocoder geocoder;
 
@@ -239,10 +240,10 @@ public class RegisterActivity extends ActivityManagePermission implements Google
                     // utype = "0" means user and "1" = driver
                     // mtype = "0" means iOS  and "1" = Android
 
-                    if (input_name.getText().toString().trim().equals("")) {
+                    if (input_name.getText().toString().trim().equals("") || input_last_name.getText().toString().trim().equals("")) {
                         input_name.setError(getString(R.string.fiels_is_required));
                     } else {
-                        register(email, mobile, password, name, latitude, longitude, country, state, city, "1", token, "1", "");
+                        register(email, mobile, password, name + " " + lastname, latitude, longitude, country, state, city, "1", token, "1", "");
                         saveProfile(name);
                     }
                     //uploadImage2();
@@ -392,7 +393,7 @@ public class RegisterActivity extends ActivityManagePermission implements Google
         String uid = user.getUid();
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("users/profile").child(uid);
         Map<String, Object> userObject = new HashMap<>();
-        userObject.put("username", input_name.getText().toString().trim());
+        userObject.put("username", input_name.getText().toString().trim() + " " + input_last_name.getText().toString().trim().equals(""));
         userObject.put("photoURL", "https://firebasestorage.googleapis.com/v0/b/roamu-f58c1.appspot.com/o/man-avatar-profile-vector-21372076.jpg?alt=media&token=d8d704ce-9ead-457e-af9e-fd9a263604b8");
         databaseRef.setValue(userObject);
     }
@@ -450,6 +451,7 @@ public class RegisterActivity extends ActivityManagePermission implements Google
         relative_signin = (RelativeLayout) findViewById(R.id.relative_signin);
         input_email = (TextInputEditText) findViewById(R.id.input_email);
         input_name = (TextInputEditText) findViewById(R.id.input_name);
+        input_last_name = (TextInputEditText) findViewById(R.id.input_last_name);
         input_password = (TextInputEditText) findViewById(R.id.input_password);
         input_confirmPassword = (TextInputEditText) findViewById(R.id.input_confirmPassword);
         input_mobile = (TextInputEditText) findViewById(R.id.input_mobile);
@@ -462,7 +464,6 @@ public class RegisterActivity extends ActivityManagePermission implements Google
         AskPermission();
         swipeRefreshLayout.setOnRefreshListener(() -> swipeRefreshLayout.setRefreshing(false));
     }
-
 
 
     public Boolean GPSEnable() {

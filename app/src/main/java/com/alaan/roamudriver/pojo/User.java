@@ -25,10 +25,10 @@ public class User implements Serializable {
     String year;
     String vehicle_no;
     String color;
-    String licence;
+    String license;
     String insurance;
     String permit;
-    String registeration;
+    String registration;
     public String photoURL;
     public String getBrand() {
         return brand;
@@ -71,11 +71,11 @@ public class User implements Serializable {
     }
 
     public String getLicence() {
-        return licence;
+        return license;
     }
 
-    public void setLicence(String licence) {
-        this.licence = licence;
+    public void setLicence(String license) {
+        this.license = license;
     }
 
     public String getInsurance() {
@@ -95,11 +95,11 @@ public class User implements Serializable {
     }
 
     public String getRegisteration() {
-        return registeration;
+        return registration;
     }
 
     public void setRegisteration(String registeration) {
-        this.registeration = registeration;
+        this.registration = registeration;
     }
 
     public String getVehicle_info() {

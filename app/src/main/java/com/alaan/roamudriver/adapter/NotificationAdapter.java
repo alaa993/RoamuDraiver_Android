@@ -76,13 +76,23 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
         textViewText.setText(notification.text);
         try {
-            String resourceAppStatusString = "notification_".concat(notification.text);
-            int messageId = getResourceId(resourceAppStatusString, "string", context.getPackageName());
-            String message = context.getString(messageId);
+            Log.i("ibrahim", notification.text);
+            if (notification.text.contains("_5_")) {
+                String currentString = notification.text;
+                String[] separated = currentString.split("_5_");
+                String resourceAppStatusString = "notification_".concat(separated[0].trim());
+                Log.i("ibrahim", separated[0].trim());
+                Log.i("ibrahim", separated[1].trim());
 
-
-//        textViewText.setText(notification.text);
-            textViewText.setText(message);
+                int messageId = getResourceId(resourceAppStatusString, "string", context.getPackageName());
+                String message = context.getString(messageId);
+                textViewText.setText(message + separated[1].trim());
+            } else {
+                String resourceAppStatusString = "notification_".concat(notification.text);
+                int messageId = getResourceId(resourceAppStatusString, "string", context.getPackageName());
+                String message = context.getString(messageId);
+                textViewText.setText(message);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -117,7 +127,9 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
         listViewItem.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                GetRides(String.valueOf(notification.ride_id), notification.id);
+                if (notification.ride_id != "-2") {
+                    GetRides(String.valueOf(notification.ride_id), notification.id);
+                }
             }
         });
         return listViewItem;

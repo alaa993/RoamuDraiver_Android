@@ -24,7 +24,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="/private/var/folders/0h/lbrvg6tn4f52k1rxn542w2r00000gp/T/baseline_notes_24.xml" />
+                                                <entry key="imagePath" value="/private/var/folders/0h/lbrvg6tn4f52k1rxn542w2r00000gp/T/baseline_delete_24.xml" />
                                                 <entry key="opacityPercent" value="60" />
                                               </map>
                                             </option>
@@ -36,7 +36,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/notes/baseline_notes_24.xml" />
+                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/delete/baseline_delete_24.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -68,7 +68,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_notes_button" />
+                                      <entry key="outputName" value="ic_delete" />
                                       <entry key="themeColor" value="ffffff" />
                                     </map>
                                   </option>

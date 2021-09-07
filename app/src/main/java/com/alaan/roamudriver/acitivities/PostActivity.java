@@ -108,8 +108,8 @@ public class PostActivity extends AppCompatActivity {
                 //type = 0 => driver
                 //type = 1 => user
                 userObject.put("type", "0");
-                userObject.put("privacy" , "1");
-                userObject.put("travel_id" , 0);
+                userObject.put("privacy", "1");
+                userObject.put("travel_id", 0);
                 databaseRef.setValue(userObject);
                 inputEditComment.getText().clear();
             }
@@ -133,7 +133,7 @@ public class PostActivity extends AppCompatActivity {
                 TextView textViewName = (TextView) findViewById(R.id.Post_textViewName);
                 TextView textViewText = (TextView) findViewById(R.id.Post_textViewText);
                 TextView textViewDate = (TextView) findViewById(R.id.Post_textViewDate);
-                ImageView PostAvatar  = (ImageView) findViewById(R.id.Post_image);
+                ImageView PostAvatar = (ImageView) findViewById(R.id.Post_image);
                 textViewName.setText(post.author.username);
                 textViewText.setText(post.text);
 
@@ -156,6 +156,7 @@ public class PostActivity extends AppCompatActivity {
                             Glide.with(PostActivity.this).load(photoURL).apply(new RequestOptions().error(R.drawable.images)).into(PostAvatar);
                         }
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         // Getting Post failed, log a message

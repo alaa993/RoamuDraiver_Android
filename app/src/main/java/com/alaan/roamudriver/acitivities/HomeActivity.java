@@ -45,6 +45,7 @@ import android.widget.Toast;
 import com.alaan.roamudriver.BuildConfig;
 import com.alaan.roamudriver.custom.GPSTracker;
 import com.alaan.roamudriver.fragement.Contact_usFragment;
+import com.alaan.roamudriver.fragement.DrawerLocker;
 import com.alaan.roamudriver.fragement.Manage_travels;
 import com.alaan.roamudriver.fragement.MyAcceptedDetailFragment;
 import com.alaan.roamudriver.fragement.MyAcceptedRequestFragment;
@@ -108,9 +109,11 @@ import cz.msebera.android.httpclient.Header;
  * Created by android on 7/3/17.
  */
 
-public class HomeActivity extends ActivityManagePermission implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.ProfileUpdateListener, ProfileFragment.UpdateListener, LocationEngineListener {
+
+public class HomeActivity extends ActivityManagePermission implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.ProfileUpdateListener, ProfileFragment.UpdateListener, LocationEngineListener, DrawerLocker {
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
+    private DrawerLayout drawerLayout;
     public Toolbar toolbar;
     public Button addPost;
     private ImageView avatar;
@@ -143,6 +146,16 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     DatabaseReference databasePosts;
     ValueEventListener listener;
 
+
+    public void setDrawerLocked(boolean enabled) {
+        if (enabled) {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        } else {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,7 +172,6 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                 b.putString("status", action);
                 commonRequestFragment.setArguments(b);
                 changeFragment(commonRequestFragment, getString(R.string.requests));
-
             } else {
                 if (intent != null && intent.hasExtra("go")) {
                     go = intent.getStringExtra("go");
@@ -173,11 +185,11 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                     onNavigationItemSelected(navigationView.getMenu().findItem(R.id.home));
                 }
             }
-
         } else {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
+
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -422,9 +434,9 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                 try {
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.setType("text/plain");
-                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "My application name");
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "roamu Driver");
                     String shareMessage = "\nLet me recommend you this application\n\n";
-                    shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "\n\n";
+                    shareMessage = shareMessage + "http://onelink.to/ayn86m" + "\n\n";
                     shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                     startActivity(Intent.createChooser(shareIntent, "choose one"));
                 } catch (Exception e) {
@@ -484,7 +496,8 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     @Override
     public void onPause() {
         super.onPause();
-        databasePosts.removeEventListener(listener);
+        if (databasePosts != null)
+            databasePosts.removeEventListener(listener);
     }
 
     @Override
@@ -585,6 +598,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
 
     public void initViews() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.app_name));
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -680,6 +694,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                     databaseRef.setValue("1");
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }

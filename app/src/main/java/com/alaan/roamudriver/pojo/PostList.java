@@ -17,6 +17,7 @@ import android.widget.Toast;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+
 import com.alaan.roamudriver.R;
 import com.alaan.roamudriver.Server.Server;
 import com.alaan.roamudriver.acitivities.HomeActivity;
@@ -40,11 +41,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import cz.msebera.android.httpclient.Header;
 
 public class PostList extends ArrayAdapter<Post> {
@@ -153,14 +157,14 @@ public class PostList extends ArrayAdapter<Post> {
                     Gson gson = new GsonBuilder().create();
                     List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                     }.getType());
-                    if (list.size()>0) {
+                    if (list.size() > 0) {
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("data", list.get(0));
                         AcceptRideFragment detailFragment = new AcceptRideFragment();
                         detailFragment.setArguments(bundle);
 
                         ((HomeActivity) getContext()).changeFragment(detailFragment, "Passenger Information");
-                    }else{
+                    } else {
 //                        Toast.makeText(this, context.getString(R.string.sonething_went_wrong), Toast.LENGTH_SHORT).show();
 //                        Toast.makeText(context, getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
                     }

@@ -38,33 +38,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
 
-
-        if(remoteMessage.getData().get("msg") != null){
+        if (remoteMessage.getData().get("msg") != null) {
             String statusCode = remoteMessage.getData().get("msg");
             String resourceAppStatusString = "notification_".concat(statusCode);
             int messageId = getResourceId(resourceAppStatusString, "string", getPackageName());
             String message = getString(messageId);
 
-            Log.i("notifcode by ibrahim",remoteMessage.getData().get("msg").toString());
-            Log.i("notification by ibrahim",message);
+            Log.i("notifcode by ibrahim", remoteMessage.getData().get("msg").toString());
+            Log.i("notification by ibrahim", message);
 
-            if (remoteMessage.getData().get("msg").equals("0") && remoteMessage.getData().get("name") != null)
-            {
+            if (remoteMessage.getData().get("msg").equals("0") && remoteMessage.getData().get("name") != null) {
                 message = remoteMessage.getData().get("name") + " " + message;
-            }else if (remoteMessage.getData().get("msg").equals("2") && remoteMessage.getData().get("name") != null)
-            {
+            } else if (remoteMessage.getData().get("msg").equals("2") && remoteMessage.getData().get("name") != null) {
                 message = remoteMessage.getData().get("name") + " " + message;
-            }else if (remoteMessage.getData().get("msg").equals("3") && remoteMessage.getData().get("name") != null)
-            {
+            } else if (remoteMessage.getData().get("msg").equals("3") && remoteMessage.getData().get("name") != null) {
                 message = remoteMessage.getData().get("name") + " " + message;
-            }else if (remoteMessage.getData().get("msg").equals("5") && remoteMessage.getData().get("name") != null)
-            {
+            } else if (remoteMessage.getData().get("msg").equals("5") && remoteMessage.getData().get("name") != null) {
                 message = remoteMessage.getData().get("name") + " " + message;
-            }else if (remoteMessage.getData().get("msg").equals("6") && remoteMessage.getData().get("name") != null)
-            {
+            } else if (remoteMessage.getData().get("msg").equals("6") && remoteMessage.getData().get("name") != null) {
                 message = remoteMessage.getData().get("name") + " " + message;
-            }else if (remoteMessage.getData().get("msg").equals("7") && remoteMessage.getData().get("name") != null)
-            {
+            } else if (remoteMessage.getData().get("msg").equals("7") && remoteMessage.getData().get("name") != null) {
                 message = remoteMessage.getData().get("name") + " " + message;
             }
             sendNotification(remoteMessage.getData(), message);
@@ -97,7 +90,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,String.valueOf(NOTIFICATION_ID))
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, String.valueOf(NOTIFICATION_ID))
                 .setSmallIcon(R.drawable.taxi)
                 .setContentTitle(msg.getString("title"))
                 .setContentText(message)

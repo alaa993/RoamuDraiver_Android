@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +62,7 @@ public class UsersCommentsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class UsersCommentsFragment extends Fragment {
 
         return view;
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -93,6 +96,7 @@ public class UsersCommentsFragment extends Fragment {
                     //adding artist to the list
                     comments.add(Comment);
                 }
+                Collections.reverse(comments);
                 //creating adapter
                 CommentList commentAdapter = new CommentList(UsersCommentsFragment.this.getActivity(), comments);
                 //attaching adapter to the listview
@@ -144,6 +148,7 @@ public class UsersCommentsFragment extends Fragment {
             }
         });
     }
+
     @Override
     public void onPause() {
         super.onPause();

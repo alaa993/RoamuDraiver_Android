@@ -1,42 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layoutDirection="ltr"
-    >
+    android:orientation="vertical">
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/activity_post_post"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:id="@+id/activity_post_post"
-        >
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/more"
+            app:srcCompat="@drawable/ic_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="15dp"
+            android:visibility="gone" />
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/Post_image"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
-            android:src="@drawable/user_default"
-            android:layout_gravity="center_vertical"
             android:scaleType="centerCrop"
+            android:src="@drawable/user_default"
             app:civ_border_color="@color/black"
-            app:civ_border_width="1dp"/>
+            app:civ_border_width="1dp" />
 
         <TextView
             android:id="@+id/Post_textViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold"
             android:layout_toRightOf="@+id/Post_image"
             android:text="ibrahim Marie"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/Post_textViewDate"
@@ -52,8 +61,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/Post_textViewDate"
-            android:maxLines="5"
             android:layout_toRightOf="@id/Post_image"
+            android:maxLines="5"
             android:text="this is an example of how the text of the post should apear"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:textColor="@color/black" />
@@ -61,18 +70,17 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/common_google_signin_btn_text_light_disabled"
             android:layout_below="@id/Post_textViewText"
-            />
+            android:layout_marginTop="5dp"
+            android:background="@color/common_google_signin_btn_text_light_disabled" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/activity_post_post"
         android:layout_marginTop="5dp"
-        >
+        android:orientation="vertical">
 
         <ListView
             android:id="@+id/Post_listViewComments"
@@ -83,43 +91,43 @@
             android:divider="@null"></ListView>
     </RelativeLayout>
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/bottom"
-        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:orientation="vertical"
         android:padding="5dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image_profile"
             android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/image_profile"/>
+            android:layout_height="40dp" />
 
         <EditText
+            android:id="@+id/input_Comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/image_profile"
-            android:hint="Add a comment..."
-            android:id="@+id/input_Comment"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:layout_toLeftOf="@id/AddCommentBTN"
+            android:layout_toRightOf="@id/image_profile"
             android:background="@android:color/transparent"
-            android:layout_toLeftOf="@id/AddCommentBTN"/>
+            android:hint="Add a comment..." />
 
         <TextView
+            android:id="@+id/AddCommentBTN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/AddCommentBTN"
-            android:text="POST"
-            android:layout_marginEnd="5dp"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
-            android:layout_alignParentRight="true" />
+            android:text="POST"
+            android:textColor="@color/colorPrimaryDark" />
 
     </RelativeLayout>
 

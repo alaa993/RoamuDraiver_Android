@@ -156,17 +156,18 @@ public class LoginActivity extends ActivityManagePermission {
 
                         Gson gson = new Gson();
                         User user = gson.fromJson(response.getJSONObject("data").toString(), User.class);
+                        Log.i("ibrahim", "response.getJSONObject(\"data\").toString()");
+                        Log.i("ibrahim", response.getJSONObject("data").toString());
                         SessionManager.setUser(gson.toJson(user));
                         SessionManager.setIsLogin();
 //                        Log.i("ibrahim", "carType");
 //                        Log.i("ibrahim", SessionManager.getCarType());
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 
-
-                        if (user.getBrand() == null || user.getModel() == null || user.getYear() == null || user.getVehicle_no() == null || user.getColor() == null) {
+                        if (user.getBrand().length() == 0 || user.getModel().length() == 0 || user.getYear().length() == 0 || user.getVehicle_no().length() == 0 || user.getColor().length() == 0) {
                             intent.putExtra("go", "vehicle");
                             startActivity(intent);
-                        } else if (user.getLicence() == null || user.getInsurance() == null || user.getPermit() == null || user.getRegisteration() == null) {
+                        } else if (user.getLicence().length() == 0 || user.getInsurance().length() == 0 || user.getPermit().length() == 0 || user.getRegisteration().length() == 0) {
                             intent.putExtra("go", "doc");
                             startActivity(intent);
                         } else {
@@ -184,18 +185,14 @@ public class LoginActivity extends ActivityManagePermission {
                     }
                 } catch (JSONException e) {
 
-
                 }
             }
-
             @Override
             public void onFinish() {
                 super.onFinish();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-
-
     }
 
 

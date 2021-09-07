@@ -431,7 +431,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
         if (!ride_status.equals("") && ride_status.equalsIgnoreCase("ACCEPTED")) {
             isStarted();
             if (travel_status.equalsIgnoreCase("PENDING")) {
-                approve.setVisibility(View.VISIBLE);
+                approve.setVisibility(View.GONE);
                 approve.setText(getString(R.string.Start_Travel));
                 trackRide.setVisibility(View.GONE);
                 complete.setVisibility(View.GONE);

@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Roamu Driver</string>
-
-
     <!--Do not change this in localization -->
     <string name="google_android_map_api_key" translatable="false">AIzaSyCa3yhDGMZM2xHCc5ieYeyz87SuHYDzozU</string>
     <string name="mapboxkey">pk.eyJ1IjoiaWNhbnN0dWRpb3oiLCJhIjoiY2oyMXQ3dGRpMDAwdDJ3bXpmZHRkdTBtNyJ9.PxslIcrVRj_gVgiv-Y-jog</string>
@@ -10,6 +8,8 @@
     <string name="mobile_number">Mobile Number</string>
     <string name="email">Email</string>
     <string name="name">Name</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="sign_up">Sign Up</string>
@@ -57,7 +57,6 @@
     <string name="direct_requesting">Direction Requesting...</string>
     <string name="profile_updated">Profile Updated</string>
     <string name="tryagian">try again</string>
-
     <string name="profile_uploaded">profile uploaded</string>
     <string name="change">CHANGE</string>
     <string name="newpwd_required">new password is required</string>
@@ -78,14 +77,12 @@
     <string name="ride_completion_msg">Do you want to complete your accepted ride?</string>
     <string name="ride_cancellation_msg">Do you want to cancel your accepted ride?</string>
     <string name="ride_acceptance_msg">Do you want to accpect ride?</string>
-
     <string name="re_login">re-login and try again</string>
     <string name="password_required">password is required</string>
     <string name="format_msg">jpg,png or gif is only accepted</string>
     <string name="doo">do</string>
     <string name="payment_receive_from_customer">Payment Received From Customer</string>
     <string name="customer_number">Customer Number</string>
-
     <string name="Pick_Customer">Pick Customer</string>
     <string name="Start_Ride">Start Ride</string>
     <string name="Start_Travel">Start Travel</string>
@@ -130,8 +127,6 @@
     <string name="ride_cancel_msg">Cancelled</string>
     <string name="ride_accept_msg">Accepted</string>
     <string name="SetTime">Set Time </string>
-
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drivers">Group</string>
@@ -140,7 +135,6 @@
     <string name="lang">Language</string>
     <string name="platform">Social Media Platform</string>
     <string name="userComments">Users Comments</string>
-
     <string name="GOD">Group Management</string>
     <string name="Rides">Your Rides</string>
     <string name="Pending_Requests">Pending Requests</string>
@@ -152,7 +146,7 @@
     <string name="persons">1-4 Persons</string>
     <string name="PickupLocation">Pickup Location       </string>
     <string name="DropLocation">Drop Location       </string>
-    <string name="Name1">Name       </string>
+    <string name="Name1">Name</string>
     <string name="chat">chat</string>
     <string name="No_Data_Found">No Data Found</string>
     <string name="NewYorkNY">NewYork NY 10025</string>
@@ -166,7 +160,6 @@
     <string name="add_Driver">add Driver</string>
     <string name="create_gruop">create_gruop</string>
     <string name="remove_User">remove User</string>
-
     <string name="English">English</string>
     <string name="arabic">Arabic</string>
     <string name="ku">كردي</string>
@@ -200,14 +193,11 @@
     <string name="add_travel">Save</string>
     <string name="find_travel">Find Passenger</string>
     <string name="smoking">smoking</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
     <string name="reseve">Accept Ride</string>
     <string name="Driver_Phone_number">Driver Phone Number</string>
     <string name="delet_driver">Delete Driver</string>
     <string name="country">Country</string>
     <string name="Create_group">Create New Gruop</string>
-
     <string name="btn_advance">Advance (Auth)</string>
     <string name="btn_basic">Basic (No Auth)</string>
     <string name="btn_push">Push</string>
@@ -222,9 +212,7 @@
     <string name="hint_username">Username…</string>
     <string name="menu_chat">Chat</string>
     <string name="menu_logout">Log out</string>
-
     <string name="required">Required</string>
-
     <string name="Post_Empty">please write a comment!</string>
     <string name="Post_success">post added successfully!</string>
     <string name="enter_number_of_passengers_trip_price">Enter number of passengers, trip price</string>
@@ -245,14 +233,12 @@
     <string name="cancel">cancel</string>
     <string name="set_date">Set Date</string>
     <string name="ride_has_been_requested">Ride has been requested</string>
-
     <string name="Travel_is_going_from">Have a nice trip with me</string>
     <string name="Travel_from">From: </string>
     <string name="Travel_to">To: </string>
     <string name="Travel_on">On: </string>
     <string name="the_clock">The Clock: </string>
     <string name="CheckBox">Add To Platform </string>
-
     <string name="notification_0">Choose you to travel with you</string>
     <string name="notification_1">You have a new ride</string>
     <string name="notification_2">Travel Started!</string>
@@ -262,16 +248,13 @@
     <string name="notification_6">Payment completed successfully</string>
     <string name="notification_7">Choose you to travel with you</string>
     <string name="notification_8">The request has been sent and you will receive confirmation as soon as possible</string>
-
     <string name="DRIVERNAME">Driver Name</string>
     <string name="show">Show</string>
     <string name="group_name">Group Name</string>
     <string name="change_group_name">Change Group Name</string>
-    <string name="my_groups">My Groups</string>
+    <string name="my_groups">My Group</string>
     <string name="admin_name">Admin Name</string>
     <string name="group_members">Group Members</string>
-
-
     <string-array name="headings">
         <item>Recent</item>
         <item>My Posts</item>
@@ -314,15 +297,12 @@ But the owner of the car will have to check the car documents before agreeing to
     <string name="sonething_went_wrong">Something Went Wrong, Please Try Again Later</string>
     <string name="paid_but_not_approved">Paid But Not Approved Yet</string>
     <string name="not_paid">Not Paid Yet</string>
-
     <string name="accepted">Accepted</string>
     <string name="pending">Pending</string>
     <string name="cancelled">Cancelled</string>
     <string name="completed">Completed</string>
     <string name="approve_all">Approve all</string>
     <string name="full_travel">Yoru travel is fulled by passengers..!</string>
-
-
     <string name="notification_request">Client wants to travel with you</string>
     <string name="notification_request_approve">Client approved your request!</string>
     <string name="notification_accepted">the client accepted your request!</string>
@@ -331,14 +311,26 @@ But the owner of the car will have to check the car documents before agreeing to
     <string name="notification_started">Travel Started!</string>
     <string name="notification_offline_request">the Client wants to pay cash!</string>
     <string name="notification_offline_approved">the driver Accepted your offline payment</string>
-
+    <string name="notification_add_driver">You have been selected in a group: </string>
+    <string name="notification_del_driver">You have been removed from a group: </string>
 
     <string name="addChangeGroup">Add Group or change Group Name</string>
     <string name="addDeleteDriver">Add Driver or Delete Driver</string>
-
     <string name="notes_bags_weights">Notes, like Number of Bags (Optional)</string>
     <string name="notes">Notes</string>
     <string name="invalid_phone_number">Invalid Phone Number, please try Again!</string>
+    <string name="distance_info">Distance Information</string>
+    <string name="distance1_info">the distance</string>
+    <string name="distance_time_info">Arrival time</string>
 
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="Post_updated_successfully">Post updated successfully!</string>
+    <string name="Post_deleted_successfully">Post deleted successfully!</string>
+    <string name="do_you_want_to_delete">Do you want to delete?</string>
+    <string name="no">NO</string>
+    <string name="yes">Yes</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="thank_uploading_images">Thank you for uploading all your documents, enjoy roamu</string>
 
 </resources>
