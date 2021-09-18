@@ -50,7 +50,7 @@ public class VehicleInformationFragment extends Fragment implements AdapterView.
     TextView NS_car_type;
     Spinner droplist;
     String[] status_arr;
-    String[] status_Content_arr={"car","minibus","bus"};
+    String[] status_Content_arr = {"car", "minibus", "bus"};
     String carType = "car";
 
     private TextInputEditText input_vehicleno;
@@ -70,7 +70,8 @@ public class VehicleInformationFragment extends Fragment implements AdapterView.
                 ((HomeActivity) getActivity()).changeFragment(new UploadDomentFragment(), "Upload Document");
             }
         }
-        ((HomeActivity) getActivity()).fontToTitleBar("Add Vehicle Information");
+        ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.add_vehicleinfo));
+        ((DrawerLocker) getActivity()).setDrawerLocked(true);
         BindView();
         if (Utils.haveNetworkConnection(getActivity())) {
             getVehicleInfo();
@@ -127,7 +128,7 @@ public class VehicleInformationFragment extends Fragment implements AdapterView.
         droplist = (Spinner) view.findViewById(R.id.carTypeSpinner);
         droplist.setOnItemSelectedListener(this);
         status_arr = new String[]{getString(R.string.car_type1), getString(R.string.car_type2), getString(R.string.car_type3)};
-        ArrayAdapter data = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,status_arr);
+        ArrayAdapter data = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, status_arr);
         droplist.setAdapter(data);
 
         overrideFonts(getActivity(), view);
@@ -330,5 +331,11 @@ public class VehicleInformationFragment extends Fragment implements AdapterView.
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((DrawerLocker) getActivity()).setDrawerLocked(false);
     }
 }

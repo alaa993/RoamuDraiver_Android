@@ -501,7 +501,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                         if (response.has("data") && response.getJSONArray("data").length() > 0) {
                             if (list.size() > 0) {
                                 for (int i = 0; i < list.size(); i++) {
-                                    if (status.equalsIgnoreCase("COMPLETED")) {
+                                    if (status.equalsIgnoreCase("COMPLETED") || status.equalsIgnoreCase("CANCELLED")) {
                                         //updateNotificationFirebase(list.get(i).getRide_id(), list.get(i).getTravel_id(), list.get(i).getUser_id(), "offline_approved");
                                         deleteNotificationFirebase(list.get(i).getUser_id());
                                         deleteNotificationFirebase(list.get(i).getDriver_id());
@@ -710,10 +710,8 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                     }
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }

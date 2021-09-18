@@ -57,11 +57,11 @@ public class UploadDomentFragment extends FragmentManagePermission {
     private ImageView imageview_licence;
     private ImageView imageview_insurace;
     private ImageView imageview_permit;
-    private ImageView imageview_registration;
+//    private ImageView imageview_registration;
     String permissionAsk[] = {PermissionUtils.Manifest_CAMERA, PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE, PermissionUtils.Manifest_READ_EXTERNAL_STORAGE};
     private File imageFile;
-    ProgressBar progressBar_licence, progressBar_insurance, progressBar_permit, ProgressBar_registration;
-    ImageView img_licence, img_insurance, img_permit, img_registration;
+    ProgressBar progressBar_licence, progressBar_insurance, progressBar_permit;//, ProgressBar_registration;
+    ImageView img_licence, img_insurance, img_permit;//, img_registration;
     int imageCounter = 0;
 
 
@@ -70,7 +70,7 @@ public class UploadDomentFragment extends FragmentManagePermission {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.upload_document, container, false);
         ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.upload_doc));
-        ((DrawerLocker) getActivity()).setDrawerLocked(true);
+//        ((DrawerLocker) getActivity()).setDrawerLocked(true);
         BindView();
         return view;
     }
@@ -78,7 +78,7 @@ public class UploadDomentFragment extends FragmentManagePermission {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ((DrawerLocker) getActivity()).setDrawerLocked(false);
+//        ((DrawerLocker) getActivity()).setDrawerLocked(false);
     }
 
     @Override
@@ -90,20 +90,20 @@ public class UploadDomentFragment extends FragmentManagePermission {
         imageview_licence = (ImageView) view.findViewById(R.id.imageview_licence);
         imageview_insurace = (ImageView) view.findViewById(R.id.imageview_insurance);
         imageview_permit = (ImageView) view.findViewById(R.id.imageview_permit);
-        imageview_registration = (ImageView) view.findViewById(R.id.imageview_registration);
+//        imageview_registration = (ImageView) view.findViewById(R.id.imageview_registration);
         CardView card_licence = (CardView) view.findViewById(R.id.card_licence);
         CardView card_insurance = (CardView) view.findViewById(R.id.card_insurance);
         CardView card_permit = (CardView) view.findViewById(R.id.card_permit);
-        CardView card_registratiom = (CardView) view.findViewById(R.id.card_registration);
+//        CardView card_registratiom = (CardView) view.findViewById(R.id.card_registration);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         progressBar_licence = (ProgressBar) view.findViewById(R.id.progressbar_licence);
         progressBar_insurance = (ProgressBar) view.findViewById(R.id.progressbar_insurance);
         progressBar_permit = (ProgressBar) view.findViewById(R.id.progressbar_permit);
-        ProgressBar_registration = (ProgressBar) view.findViewById(R.id.progressbar_registration);
+//        ProgressBar_registration = (ProgressBar) view.findViewById(R.id.progressbar_registration);
         img_licence = (ImageView) view.findViewById(R.id.image_licence);
         img_insurance = (ImageView) view.findViewById(R.id.image_insurance);
         img_permit = (ImageView) view.findViewById(R.id.image_permit);
-        img_registration = (ImageView) view.findViewById(R.id.image_registration);
+//        img_registration = (ImageView) view.findViewById(R.id.image_registration);
         overrideFonts(getActivity(), view);
         if (Utils.haveNetworkConnection(getActivity())) {
             getInfo();
@@ -212,7 +212,7 @@ public class UploadDomentFragment extends FragmentManagePermission {
                                             imageFile = new File(uri.getPath());
                                             String format = getMimeType(getActivity(), uri);
                                             if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("png") || format.equalsIgnoreCase("gif")) {
-                                                upload_pic("i", format);
+                                                upload_pic("v", format);
                                             } else {
                                                 Toast.makeText(getActivity(), getString(R.string.format_msg), Toast.LENGTH_LONG).show();
                                             }
@@ -297,57 +297,57 @@ public class UploadDomentFragment extends FragmentManagePermission {
 
             }
         });
-        card_registratiom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Utils.haveNetworkConnection(getActivity())) {
-                    askCompactPermissions(permissionAsk, new PermissionResult() {
-                        @Override
-                        public void permissionGranted() {
-                            TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(getActivity())
-                                    .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
-                                        @Override
-                                        public void onImageSelected(Uri uri) {
-                                            // here is selected uri
-                                            imageFile = new File(uri.getPath());
-                                            //  profile_pic.setImageURI(uri);
-                                            String format = getMimeType(getActivity(), uri);
-                                            if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("png") || format.equalsIgnoreCase("gif")) {
-                                                upload_pic("r", format);
-                                            } else {
-                                                Toast.makeText(getActivity(), getString(R.string.format_msg), Toast.LENGTH_LONG).show();
-                                            }
-
-                                        }
-                                    }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
-                                        @Override
-                                        public void onError(String message) {
-                                            Toast.makeText(getActivity(), getString(R.string.tryagian), Toast.LENGTH_LONG).show();
-                                            Log.d(getTag(), message);
-                                        }
-                                    })
-                                    .create();
-
-                            tedBottomPicker.show(getActivity().getSupportFragmentManager());
-                        }
-
-                        @Override
-                        public void permissionDenied() {
-
-                        }
-
-                        @Override
-                        public void permissionForeverDenied() {
-
-                        }
-                    });
-                } else {
-                    Toast.makeText(getActivity(), getString(R.string.network), Toast.LENGTH_LONG).show();
-
-                }
-
-            }
-        });
+//        card_registratiom.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (Utils.haveNetworkConnection(getActivity())) {
+//                    askCompactPermissions(permissionAsk, new PermissionResult() {
+//                        @Override
+//                        public void permissionGranted() {
+//                            TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(getActivity())
+//                                    .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+//                                        @Override
+//                                        public void onImageSelected(Uri uri) {
+//                                            // here is selected uri
+//                                            imageFile = new File(uri.getPath());
+//                                            //  profile_pic.setImageURI(uri);
+//                                            String format = getMimeType(getActivity(), uri);
+//                                            if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("png") || format.equalsIgnoreCase("gif")) {
+//                                                upload_pic("r", format);
+//                                            } else {
+//                                                Toast.makeText(getActivity(), getString(R.string.format_msg), Toast.LENGTH_LONG).show();
+//                                            }
+//
+//                                        }
+//                                    }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
+//                                        @Override
+//                                        public void onError(String message) {
+//                                            Toast.makeText(getActivity(), getString(R.string.tryagian), Toast.LENGTH_LONG).show();
+//                                            Log.d(getTag(), message);
+//                                        }
+//                                    })
+//                                    .create();
+//
+//                            tedBottomPicker.show(getActivity().getSupportFragmentManager());
+//                        }
+//
+//                        @Override
+//                        public void permissionDenied() {
+//
+//                        }
+//
+//                        @Override
+//                        public void permissionForeverDenied() {
+//
+//                        }
+//                    });
+//                } else {
+//                    Toast.makeText(getActivity(), getString(R.string.network), Toast.LENGTH_LONG).show();
+//
+//                }
+//
+//            }
+//        });
 
     }
 
@@ -357,7 +357,7 @@ public class UploadDomentFragment extends FragmentManagePermission {
 
         if (doc.equalsIgnoreCase("l")) {
             user.setLicence(url);
-        } else if (doc.equalsIgnoreCase("i")) {
+        } else if (doc.equalsIgnoreCase("v")) {
             user.setInsurance(url);
         } else if (doc.equalsIgnoreCase("p")) {
             user.setPermit(url);
@@ -413,13 +413,13 @@ public class UploadDomentFragment extends FragmentManagePermission {
                                 img_licence.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
                             }
                         }
-                        if (user.getInsurance() != null) {
-                            if (user.getInsurance().length() > 0) {
+                        if (user.getVehicle_info() != null) {
+                            if (user.getVehicle_info().length() > 0) {
                                 imageCounter++;
                                 img_insurance.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-                                Log.i("ibrahim", "user.getInsurance()");
-                                Log.i("ibrahim", user.getInsurance());
-                                Glide.with(getActivity()).load(user.getInsurance()).into(imageview_insurace);
+                                Log.i("ibrahim", "user.getVehicle_info()");
+                                Log.i("ibrahim", user.getVehicle_info());
+                                Glide.with(getActivity()).load(user.getVehicle_info()).into(imageview_insurace);
                             } else {
                                 img_insurance.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
                             }
@@ -435,16 +435,20 @@ public class UploadDomentFragment extends FragmentManagePermission {
                                 img_permit.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
                             }
                         }
-                        if (user.getRegisteration() != null) {
-                            if (user.getRegisteration().length() > 0) {
-                                imageCounter++;
-                                img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-                                Log.i("ibrahim", "user.getRegisteration()");
-                                Log.i("ibrahim", user.getRegisteration());
-                                Glide.with(getActivity()).load(user.getRegisteration()).into(imageview_registration);
-                            } else {
-                                img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
-                            }
+//                        if (user.getRegisteration() != null) {
+//                            if (user.getRegisteration().length() > 0) {
+//                                imageCounter++;
+//                                img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
+//                                Log.i("ibrahim", "user.getRegisteration()");
+//                                Log.i("ibrahim", user.getRegisteration());
+//                                Glide.with(getActivity()).load(user.getRegisteration()).into(imageview_registration);
+//                            } else {
+//                                img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
+//                            }
+//                        }
+                        if (imageCounter >= 3) {
+//                            ((DrawerLocker) getActivity()).setDrawerLocked(false);
+                            Toast.makeText(getActivity(), getString(R.string.thank_uploading_images), Toast.LENGTH_LONG).show();
                         }
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
@@ -491,18 +495,18 @@ public class UploadDomentFragment extends FragmentManagePermission {
                     e.printStackTrace();
                 }
             }
-        } else if (DocName.equalsIgnoreCase("i")) {
+        } else if (DocName.equalsIgnoreCase("v")) {
             progressBar_insurance.setVisibility(View.VISIBLE);
             if (imageFile != null) {
                 try {
                     if (type.equals("jpg")) {
-                        params.put("insurance", imageFile, "image/jpeg");
+                        params.put("vehicle_info", imageFile, "image/jpeg");
                     } else if (type.equals("jpeg")) {
-                        params.put("insurance", imageFile, "image/jpeg");
+                        params.put("vehicle_info", imageFile, "image/jpeg");
                     } else if (type.equals("png")) {
-                        params.put("insurance", imageFile, "image/png");
+                        params.put("vehicle_info", imageFile, "image/png");
                     } else {
-                        params.put("insurance", imageFile, "image/gif");
+                        params.put("vehicle_info", imageFile, "image/gif");
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -525,25 +529,26 @@ public class UploadDomentFragment extends FragmentManagePermission {
                     e.printStackTrace();
                 }
             }
-        } else if (DocName.equalsIgnoreCase("r")) {
-            ProgressBar_registration.setVisibility(View.VISIBLE);
-            if (imageFile != null) {
-                try {
-                    if (type.equals("jpg")) {
-                        params.put("registration", imageFile, "image/jpeg");
-                    } else if (type.equals("jpeg")) {
-                        params.put("registration", imageFile, "image/jpeg");
-                    } else if (type.equals("png")) {
-                        params.put("registration", imageFile, "image/png");
-                    } else {
-                        params.put("registration", imageFile, "image/gif");
-                    }
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
         }
+//        else if (DocName.equalsIgnoreCase("r")) {
+//            ProgressBar_registration.setVisibility(View.VISIBLE);
+//            if (imageFile != null) {
+//                try {
+//                    if (type.equals("jpg")) {
+//                        params.put("registration", imageFile, "image/jpeg");
+//                    } else if (type.equals("jpeg")) {
+//                        params.put("registration", imageFile, "image/jpeg");
+//                    } else if (type.equals("png")) {
+//                        params.put("registration", imageFile, "image/png");
+//                    } else {
+//                        params.put("registration", imageFile, "image/gif");
+//                    }
+//
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
 
         Server.setHeader(SessionManager.getKEY());
         params.put("user_id", SessionManager.getUserId());
@@ -556,9 +561,9 @@ public class UploadDomentFragment extends FragmentManagePermission {
                         if (DocName.equalsIgnoreCase("l")) {
                             setofflineDoc(DocName, response.getJSONObject("data").getString("license"));
                             setVisibility(DocName, "success", response.getJSONObject("data").getString("license"));
-                        } else if (DocName.equalsIgnoreCase("i")) {
-                            setofflineDoc(DocName, response.getJSONObject("data").getString("insurance"));
-                            setVisibility(DocName, "success", response.getJSONObject("data").getString("insurance"));
+                        } else if (DocName.equalsIgnoreCase("v")) {
+                            setofflineDoc(DocName, response.getJSONObject("data").getString("vehicle_info"));
+                            setVisibility(DocName, "success", response.getJSONObject("data").getString("vehicle_info"));
                         } else if (DocName.equalsIgnoreCase("p")) {
                             setofflineDoc(DocName, response.getJSONObject("data").getString("permit"));
                             setVisibility(DocName, "success", response.getJSONObject("data").getString("permit"));
@@ -597,7 +602,7 @@ public class UploadDomentFragment extends FragmentManagePermission {
             } else {
                 img_licence.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
             }
-        } else if (DocName.equalsIgnoreCase("i")) {
+        } else if (DocName.equalsIgnoreCase("v")) {
 
             progressBar_insurance.setVisibility(View.GONE);
             if (status.equalsIgnoreCase("success")) {
@@ -618,19 +623,20 @@ public class UploadDomentFragment extends FragmentManagePermission {
             } else {
                 img_permit.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
             }
-        } else if (DocName.equalsIgnoreCase("r")) {
-
-            ProgressBar_registration.setVisibility(View.GONE);
-            if (status.equalsIgnoreCase("success")) {
-                Glide.with(getActivity()).load(url).into(imageview_registration);
-                img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-                imageCounter++;
-            } else {
-                img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
-            }
         }
-        if (imageCounter >= 4) {
-            ((DrawerLocker) getActivity()).setDrawerLocked(false);
+//        else if (DocName.equalsIgnoreCase("r")) {
+//
+//            ProgressBar_registration.setVisibility(View.GONE);
+//            if (status.equalsIgnoreCase("success")) {
+//                Glide.with(getActivity()).load(url).into(imageview_registration);
+//                img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
+//                imageCounter++;
+//            } else {
+//                img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
+//            }
+//        }
+        if (imageCounter >= 3) {
+//            ((DrawerLocker) getActivity()).setDrawerLocked(false);
             Toast.makeText(getActivity(), getString(R.string.thank_uploading_images), Toast.LENGTH_LONG).show();
         }
     }

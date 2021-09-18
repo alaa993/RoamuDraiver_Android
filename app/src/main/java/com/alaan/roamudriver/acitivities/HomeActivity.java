@@ -177,9 +177,11 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                     go = intent.getStringExtra("go");
                     if (!go.equals("") && go.equals("vehicle")) {
                         changeFragment(new VehicleInformationFragment(), getString(R.string.add_vehicleinfo));
-                    } else if (!go.equals("") && go.equals("doc")) {
-                        changeFragment(new UploadDomentFragment(), getString(R.string.upload_doc));
                     }
+                    // to make uploading documents optional, by ibrahim
+//                    else if (!go.equals("") && go.equals("doc")) {
+//                        changeFragment(new UploadDomentFragment(), getString(R.string.upload_doc));
+//                    }
                 } else {
                     navigationView.setCheckedItem(R.id.home);
                     onNavigationItemSelected(navigationView.getMenu().findItem(R.id.home));

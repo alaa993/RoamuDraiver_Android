@@ -110,6 +110,9 @@ public class SplashActivity extends ActivityManagePermission {
                     Intent i = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(i);
                 }
+            }else {
+                Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                startActivity(i);
             }
         } else {
             Intent i = new Intent(SplashActivity.this, LoginActivity.class);
@@ -151,10 +154,13 @@ public class SplashActivity extends ActivityManagePermission {
                             if (user.getBrand().length() == 0 || user.getModel().length() == 0 || user.getYear().length() == 0 || user.getVehicle_no().length() == 0 || user.getColor().length() == 0) {
                                 intent.putExtra("go", "vehicle");
                                 startActivity(intent);
-                            } else if (user.getLicence().length() == 0 || user.getInsurance().length() == 0 || user.getPermit().length() == 0 || user.getRegisteration().length() == 0) {
-                                intent.putExtra("go", "doc");
-                                startActivity(intent);
-                            } else {
+                            }
+                            // to make uploading documents optional, by ibrahim
+//                            else if (user.getLicence().length() == 0 || user.getInsurance().length() == 0 || user.getPermit().length() == 0 || user.getRegisteration().length() == 0) {
+//                                intent.putExtra("go", "doc");
+//                                startActivity(intent);
+//                            }
+                            else {
                                 startActivity(new Intent(SplashActivity.this, HomeActivity.class));
 //                            startActivity(new Intent(SplashActivity.this, HomeActivity.class));
                             }
@@ -165,7 +171,7 @@ public class SplashActivity extends ActivityManagePermission {
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                         finish();
-                        Toast.makeText(SplashActivity.this, response.getString("data"), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(SplashActivity.this, response.getString("data"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
 

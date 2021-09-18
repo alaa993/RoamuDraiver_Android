@@ -222,7 +222,7 @@
                     android:layout_marginTop="@dimen/five"
                     android:background="@drawable/ripple_effect"
                     android:padding="@dimen/five"
-                    android:text="CONTINUE" />
+                    android:text="@string/update" />
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>

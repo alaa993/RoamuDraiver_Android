@@ -99,7 +99,6 @@ public class LoginActivity extends ActivityManagePermission {
                     }
                 });
                 login(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber(), input_password.getText().toString().trim());
-
             }
         }
         login.setOnClickListener(new View.OnClickListener() {
@@ -180,7 +179,7 @@ public class LoginActivity extends ActivityManagePermission {
                     } else {
                         startActivity(new Intent(LoginActivity.this, phoneVerfication.class));
                         finish();
-                        Toast.makeText(LoginActivity.this, response.getString("data"), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(LoginActivity.this, response.getString("data"), Toast.LENGTH_LONG).show();
 
                     }
                 } catch (JSONException e) {

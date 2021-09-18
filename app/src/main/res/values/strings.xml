@@ -170,7 +170,6 @@
     <string name="SetDate">Set Date </string>
     <string name="fareperseat">fare per seat</string>
     <string name="fare_calculating">fare_calculating</string>
-    <string name="confirm">confirm</string>
     <string name="NoHistoryFound">No History Found</string>
     <string name="DT">Date &amp; Time        </string>
     <string name="paid">paid</string>
@@ -193,7 +192,8 @@
     <string name="add_travel">Save</string>
     <string name="find_travel">Find Passenger</string>
     <string name="smoking">smoking</string>
-    <string name="reseve">Accept Ride</string>
+    <string name="reseve">Reserve</string>
+    <string name="confirm">Confirm</string>
     <string name="Driver_Phone_number">Driver Phone Number</string>
     <string name="delet_driver">Delete Driver</string>
     <string name="country">Country</string>
@@ -332,5 +332,10 @@ But the owner of the car will have to check the car documents before agreeing to
     <string name="yes">Yes</string>
     <string name="whatsapp">WhatsApp</string>
     <string name="thank_uploading_images">Thank you for uploading all your documents, enjoy roamu</string>
+    <string name="upload_images">please select an image first!</string>
+    <string name="select_image">Select image</string>
+    <string name="please_upload_your_vehicle_image">please upload your Vehicle image</string>
+    <string name="please_upload_your_vehicle_document">please upload your vehicle Document</string>
+    <string name="please_upload_your_drivinng_licence">please upload your drivinng licence</string>
 
 </resources>

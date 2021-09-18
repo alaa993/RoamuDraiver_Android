@@ -10,8 +10,8 @@
     <string name="mobile_number">"رقم الهاتف المحمول"</string>
     <string name="email">"البريد الإلكتروني"</string>
     <string name="name">الإسم</string>
-    <string name="first_name">الإسم</string>
-    <string name="last_name">الكنية</string>
+    <string name="first_name">الإسم الأول</string>
+    <string name="last_name">الإسم الأخير</string>
     <string name="password">"كلمه السر"</string>
     <string name="confirm_password">"تأكيد كلمة المرور"</string>
     <string name="sign_up">"سجل"</string>
@@ -28,7 +28,7 @@
     <string name="try_again">"حاول مرة اخرى!"</string>
     <string name="error_occurred">"حدث خطأ"</string>
     <string name="network">"الشبكة غير متوفرة"</string>
-    <string name="add_vehicleinfo">"إضافة معلومات السيارة"</string>
+    <string name="add_vehicleinfo">إضافة معلومات السيارة</string>
     <string name="upload_doc">الرجاء رفع اوراق الكابتن وشهاداته</string>
     <string name="home">"الصفحة الرئيسية"</string>
     <string name="requests">"طلبات"</string>
@@ -168,7 +168,6 @@
     <string name="fareperseat">fare per seat</string>
 
     <string name="fare_calculating">حساب التذكرة</string>
-    <string name="confirm">تأكيد</string>
     <string name="NoHistoryFound">لا يوجد تاريخ</string>
     <string name="DT">تاريخ &amp; وقت        </string>
     <string name="paid">دفع</string>
@@ -239,7 +238,8 @@
     <string name="cancel">إلغاء</string>
     <string name="enter_coubbon_number">أدخل رقم الكوبون</string>
     <string name="date_and_time">التاريخ و الوقت</string>
-    <string name="reseve">تأكيد الحجز</string>
+    <string name="reseve">حجز</string>
+    <string name="confirm">تأكيد الحجز</string>
     <string name="empty_seats">عدد المسافرين المتبقيين</string>
     <string name="driver_rate">تقييم الكابتن</string>
     <string name="travels_count">الرحلات المنجزة</string>
@@ -373,6 +373,11 @@
     <string name="yes">نعم</string>
     <string name="whatsapp">رقمنا</string>
     <string name="thank_uploading_images">شكرا لرفع اوراق الكابتن وشهاداته، الآن يمكنك التمتع باستخدام روميو</string>
+    <string name="upload_images">رجاءاً اختر صورة أولاً</string>
+    <string name="select_image">اختر صورة</string>
+    <string name="please_upload_your_vehicle_image">صورة المركبة</string>
+    <string name="please_upload_your_vehicle_document">وثيقة المركبة</string>
+    <string name="please_upload_your_drivinng_licence">قم بتحميل رخصة القيادة الخاصة بك</string>
 
 
 </resources>

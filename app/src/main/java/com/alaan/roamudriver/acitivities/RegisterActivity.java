@@ -3,6 +3,7 @@ package com.alaan.roamudriver.acitivities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -15,22 +16,27 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alaan.roamudriver.pojo.User;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.fxn.stash.Stash;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -69,6 +75,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.thebrownarrow.permissionhelper.ActivityManagePermission;
@@ -78,6 +85,8 @@ import com.thebrownarrow.permissionhelper.PermissionUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -88,6 +97,7 @@ import java.util.UUID;
 
 import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
+import gun0912.tedbottompicker.TedBottomPicker;
 
 import java.util.Calendar;
 
@@ -117,6 +127,11 @@ public class RegisterActivity extends ActivityManagePermission implements Google
     private Uri mImageUri;
     private StorageTask uploadTask;
     private final int PICK_IMAGE_REQUEST = 22;
+
+    private File imageFile;
+    String photoURL = "";
+    String format = "";
+    boolean is_image_selected = false;
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mGoogleApiClient;
@@ -240,8 +255,12 @@ public class RegisterActivity extends ActivityManagePermission implements Google
                     // utype = "0" means user and "1" = driver
                     // mtype = "0" means iOS  and "1" = Android
 
-                    if (input_name.getText().toString().trim().equals("") || input_last_name.getText().toString().trim().equals("")) {
+                    if (input_name.getText().toString().trim().equals("")) {
                         input_name.setError(getString(R.string.fiels_is_required));
+                    } else if (input_last_name.getText().toString().trim().equals("")) {
+                        input_last_name.setError(getString(R.string.fiels_is_required));
+                    } else if (is_image_selected == false) {
+                        Toast.makeText(RegisterActivity.this, getString(R.string.upload_images), Toast.LENGTH_LONG).show();
                     } else {
                         register(email, mobile, password, name + " " + lastname, latitude, longitude, country, state, city, "1", token, "1", "");
                         saveProfile(name);
@@ -253,7 +272,6 @@ public class RegisterActivity extends ActivityManagePermission implements Google
                 }
             }
         });
-        // on pressing btnSelect SelectImage() is called
         changePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,128 +282,219 @@ public class RegisterActivity extends ActivityManagePermission implements Google
 
     // Select Image method
     private void SelectImage() {
+        int MyVersion = Build.VERSION.SDK_INT;
+        if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
+            if (!checkIfAlreadyhavePermission()) {
+                requestForSpecificPermission();
+            } else {
+                TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(RegisterActivity.this)
+                        .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+                            @Override
+                            public void onImageSelected(Uri uri) {
+                                // here is selected uri
+                                imageFile = new File(uri.getPath());
+                                // profile_pic.setImageURI(uri);
+                                format = getMimeType(RegisterActivity.this, uri);
+                                Glide.with(RegisterActivity.this).load(uri.getPath()).apply(new RequestOptions().error(R.drawable.user_default)).into(imageProfile);
+                                is_image_selected = true;
+//                                upload_pic(format);
+                                       /* if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("png") || format.equalsIgnoreCase("gif") || format.equalsIgnoreCase("jpeg")) {
 
-        // Defining Implicit Intent to mobile gallery
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(
-                Intent.createChooser(
-                        intent,
-                        "Select Image from here..."),
-                PICK_IMAGE_REQUEST);
-    }
+                                        } else {
+                                            Toast.makeText(getActivity(), "jpg,png or gif is only accepted", Toast.LENGTH_LONG).show();
+                                        }*/
+                            }
+                        }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
+                            @Override
+                            public void onError(String message) {
+                                Toast.makeText(RegisterActivity.this, getString(R.string.error_occurred), Toast.LENGTH_SHORT).show();
+//                                Log.d(getTag(), message);
+                            }
+                        })
+                        .create();
 
-    private void uploadImage() {
-        if (mImageUri != null) {
+                tedBottomPicker.show(RegisterActivity.this.getSupportFragmentManager());
+            }
 
-//            // Code for showing progressDialog while uploading
-//            ProgressDialog progressDialog
-//                    = new ProgressDialog(this);
-//            progressDialog.setTitle("Uploading...");
-//            progressDialog.show();
 
-            // Defining the child of storageReference
-            StorageReference ref
-                    = storageRef
-                    .child(
-                            "images/"
-                                    + UUID.randomUUID().toString());
-
-            // adding listeners on upload
-            // or failure of image
-            ref.putFile(mImageUri)
-                    .addOnSuccessListener(
-                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
-
-                                @Override
-                                public void onSuccess(
-                                        UploadTask.TaskSnapshot taskSnapshot) {
-
-                                    // Image uploaded successfully
-                                    // Dismiss dialog
-//                                    progressDialog.dismiss();
-                                    Toast
-                                            .makeText(RegisterActivity.this,
-                                                    "Image Uploaded!!",
-                                                    Toast.LENGTH_SHORT)
-                                            .show();
-                                }
-                            })
-
-                    .addOnFailureListener(new OnFailureListener() {
+        } else {
+            TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(RegisterActivity.this)
+                    .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
                         @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            // Error, Image not uploaded
-//                            progressDialog.dismiss();
-                            Toast
-                                    .makeText(RegisterActivity.this,
-                                            "Failed " + e.getMessage(),
-                                            Toast.LENGTH_SHORT)
-                                    .show();
+                        public void onImageSelected(Uri uri) {
+                            // here is selected uri
+                            imageFile = new File(uri.getPath());
+                            //  profile_pic.setImageURI(uri);
+                            format = getMimeType(RegisterActivity.this, uri);
+                            is_image_selected = true;
+//                            upload_pic(format);
+                        }
+                    }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
+                        @Override
+                        public void onError(String message) {
+                            Toast.makeText(RegisterActivity.this, getString(R.string.error_occurred), Toast.LENGTH_SHORT).show();
+//                            Log.d(getTag(), message);
                         }
                     })
-                    .addOnProgressListener(
-                            new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    .create();
 
-                                // Progress Listener for loading
-                                // percentage on the dialog box
-                                @Override
-                                public void onProgress(
-                                        UploadTask.TaskSnapshot taskSnapshot) {
-                                    double progress
-                                            = (100.0
-                                            * taskSnapshot.getBytesTransferred()
-                                            / taskSnapshot.getTotalByteCount());
-//                                    progressDialog.setMessage(
-//                                            "Uploaded "
-//                                                    + (int) progress + "%");
-                                }
-                            });
+            tedBottomPicker.show(RegisterActivity.this.getSupportFragmentManager());
         }
     }
 
-    public void uploadImage2() {
-        if (mImageUri != null) {
-//            pd.show();
-            StorageReference childRef = storageRef.child("image123wqas.jpg");
+    private void requestForSpecificPermission() {
+        ActivityCompat.requestPermissions(RegisterActivity.this, new String[]{Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+    }
 
-//            //uploading the image
-            UploadTask uploadTask = childRef.putFile(mImageUri);
+    private boolean checkIfAlreadyhavePermission() {
+        int fine = ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.CAMERA);
+        int read = ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int write = ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    pd.dismiss();
-                    Toast.makeText(RegisterActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-//                    pd.dismiss();
-                    Toast.makeText(RegisterActivity.this, "Upload Failed -> " + e, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-//            childRef.putFile(mImageUri)
-//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            // Get a URL to the uploaded content
-//                            //Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception exception) {
-//                            // Handle unsuccessful uploads
-//                            // ...
-//                        }
-//                    });
-        } else {
-            Toast.makeText(RegisterActivity.this, "Select an image", Toast.LENGTH_SHORT).show();
+        if (fine == PackageManager.PERMISSION_GRANTED) {
+            return true;
         }
+        if (read == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        if (write == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.e("permisson", "granted");
+                    TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(RegisterActivity.this)
+                            .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+                                @Override
+                                public void onImageSelected(Uri uri) {
+                                    // here is selected uri
+//                                    imageProfile.setImageURI(uri);
+//                                    is_image_selected = true;
+                                    imageFile = new File(uri.getPath());
+                                    //  profile_pic.setImageURI(uri);
+                                    format = getMimeType(RegisterActivity.this, uri);
+                                    is_image_selected = true;
+                                }
+                            }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
+                                @Override
+                                public void onError(String message) {
+                                    Toast.makeText(RegisterActivity.this, getString(R.string.try_again), Toast.LENGTH_LONG).show();
+//                                    Log.d(getTag(), message);
+                                }
+                            })
+                            .create();
+
+                    tedBottomPicker.show(RegisterActivity.this.getSupportFragmentManager());
+
+                } else {
+
+                }
+            }
+        }
+    }
+
+    public void upload_pic(String type) {
+//        progressBar.setVisibility(View.VISIBLE);
+        RequestParams params = new RequestParams();
+        if (imageFile != null) {
+            try {
+
+                if (type.equals("jpg")) {
+                    params.put("avatar", imageFile, "image/jpeg");
+                } else if (type.equals("jpeg")) {
+                    params.put("avatar", imageFile, "image/jpeg");
+                } else if (type.equals("png")) {
+                    params.put("avatar", imageFile, "image/png");
+                } else {
+                    params.put("avatar", imageFile, "image/gif");
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Log.d("catch", e.toString());
+            }
+        }
+        Server.setHeader(SessionManager.getKEY());
+        params.put("user_id", SessionManager.getUserId());
+
+        Server.post(Server.UPDATE, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.e("success", response.toString());
+                try {
+                    if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
+                        String url = response.getJSONObject("data").getString("avatar");
+                        try {
+                            Glide.with(RegisterActivity.this).load(photoURL).apply(new RequestOptions().error(R.drawable.user_default)).into(imageProfile);
+                        } catch (Exception e) {
+                        }
+                        User user = SessionManager.getUser();
+                        user.setAvatar(url);
+                        Gson gson = new Gson();
+                        SessionManager.setUser(gson.toJson(user));
+//                        profileUpdateListener.update(url);
+//                        input_name.setText(user.getName());
+//                        input_email.setText(user.getEmail());
+//                        input_mobile.setText(user.getMobile());
+//                        input_vehicle.setText(user.getVehicle_info());
+
+                        try {
+                            FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+                            String uid = fuser.getUid();
+                            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("users/profile").child(uid);
+                            Map<String, Object> userObject = new HashMap<>();
+                            userObject.put("photoURL", url);
+                            databaseRef.updateChildren(userObject);
+                        } catch (Exception e) {
+                        }
+
+                    } else {
+//                        progressBar.setVisibility(View.GONE);
+                        if (response.has("data")) {
+                            Toast.makeText(RegisterActivity.this, response.getString("data"), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                } catch (JSONException e) {
+//                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(RegisterActivity.this, getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+//                progressBar.setVisibility(View.GONE);
+                Toast.makeText(RegisterActivity.this, getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
+    public static String getMimeType(Context context, Uri uri) {
+        String extension;
+
+        //Check uri format to avoid null
+        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            //If scheme is a content
+            final MimeTypeMap mime = MimeTypeMap.getSingleton();
+            extension = mime.getExtensionFromMimeType(context.getContentResolver().getType(uri));
+        } else {
+            //If scheme is a File
+            //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
+            extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
+
+        }
+
+        return extension;
     }
 
     public void saveProfile(String username) {
@@ -393,7 +502,7 @@ public class RegisterActivity extends ActivityManagePermission implements Google
         String uid = user.getUid();
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("users/profile").child(uid);
         Map<String, Object> userObject = new HashMap<>();
-        userObject.put("username", input_name.getText().toString().trim() + " " + input_last_name.getText().toString().trim().equals(""));
+        userObject.put("username", input_name.getText().toString().trim() + " " + input_last_name.getText().toString().trim());
         userObject.put("photoURL", "https://firebasestorage.googleapis.com/v0/b/roamu-f58c1.appspot.com/o/man-avatar-profile-vector-21372076.jpg?alt=media&token=d8d704ce-9ead-457e-af9e-fd9a263604b8");
         databaseRef.setValue(userObject);
     }
@@ -455,6 +564,7 @@ public class RegisterActivity extends ActivityManagePermission implements Google
         input_password = (TextInputEditText) findViewById(R.id.input_password);
         input_confirmPassword = (TextInputEditText) findViewById(R.id.input_confirmPassword);
         input_mobile = (TextInputEditText) findViewById(R.id.input_mobile);
+        input_mobile.setEnabled(false);
         sign_up = (AppCompatButton) findViewById(R.id.sign_up);
 
         imageProfile = findViewById(R.id.Reg_image_profile);
@@ -464,7 +574,6 @@ public class RegisterActivity extends ActivityManagePermission implements Google
         AskPermission();
         swipeRefreshLayout.setOnRefreshListener(() -> swipeRefreshLayout.setRefreshing(false));
     }
-
 
     public Boolean GPSEnable() {
         GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
@@ -554,16 +663,23 @@ public class RegisterActivity extends ActivityManagePermission implements Google
                             Date currentDate = Calendar.getInstance().getTime();
                             Date currentTime = Calendar.getInstance().getTime();
                             SavePrivatePost("pickup_address", "drop_address", currentDate.toString(), currentTime.toString(), user_id);
-                            //SavePrivatePost(pickup_address, drop_address, date_time, time_value, travel_id);
+                            FirebaseAuth auth = FirebaseAuth.getInstance();
+                            if (auth.getCurrentUser() != null) {
+                                if (!FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().isEmpty()) {
+                                    FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                                        @Override
+                                        public void onSuccess(InstanceIdResult instanceIdResult) {
+                                            token = instanceIdResult.getToken();
+                                            SessionManager.setGcmToken(token);
+                                        }
+                                    });
+                                    login(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber(), input_password.getText().toString().trim());
+
+                                }
+                            }
                         } else {
 //                            Log.i("ibrahim_response", "no travel id");
                         }
-
-                        Toast.makeText(RegisterActivity.this, "success", Toast.LENGTH_LONG).show();
-                        // startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                        // if(SessionManager.getName() != null){
-                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                        //  finish();
                     } else {
 
                         Toast.makeText(RegisterActivity.this, response.getString("data"), Toast.LENGTH_LONG).show();
@@ -584,6 +700,54 @@ public class RegisterActivity extends ActivityManagePermission implements Google
         });
 
 
+    }
+
+    public void login(String email, String password) {
+
+        RequestParams params = new RequestParams();
+        params.put("mobile", email);
+        // params.put("password", password);
+        params.put("utype", "1");
+        params.put("gcm_token", token);
+//        Log.e("TOKEN",token);
+        Server.post(Server.LOGIN, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                swipeRefreshLayout.setRefreshing(true);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+
+                try {
+                    if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
+
+                        Utils utils = new Utils(RegisterActivity.this);
+                        utils.isAnonymouslyLoggedIn();
+
+                        Gson gson = new Gson();
+                        User user = gson.fromJson(response.getJSONObject("data").toString(), User.class);
+                        Log.i("ibrahim", "response.getJSONObject(\"data\").toString()");
+                        Log.i("ibrahim", response.getJSONObject("data").toString());
+                        SessionManager.setUser(gson.toJson(user));
+                        SessionManager.setIsLogin();
+                        upload_pic(format);
+                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                    } else {
+                    }
+                } catch (JSONException e) {
+
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     public void SavePrivatePost(String pickup_address, String Drop_address, String date_time_value, String time_value, int travel_id) {
@@ -801,5 +965,4 @@ public class RegisterActivity extends ActivityManagePermission implements Google
             }
         }
     }
-
 }

@@ -165,6 +165,7 @@ public class ProfileFragment extends FragmentManagePermission {
                 }
             }
         });
+
         return view;
     }
 
