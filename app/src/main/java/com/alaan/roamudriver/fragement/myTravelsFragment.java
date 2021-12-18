@@ -67,7 +67,7 @@ public class myTravelsFragment extends Fragment implements BackFragment, Adapter
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i("ibrahim","onCreate");
+        Log.i("ibrahim", "onCreate");
 
         view = inflater.inflate(R.layout.fragment_my_travels, container, false);
         bindView();
@@ -143,7 +143,7 @@ public class myTravelsFragment extends Fragment implements BackFragment, Adapter
     }
 
     public void getMyTravels(String id, String status, String key) {
-        Log.i("ibrahim","getMyTravels");
+        Log.i("ibrahim", "getMyTravels");
 
         RequestParams params = new RequestParams();
         params.put("id", id);
@@ -161,7 +161,7 @@ public class myTravelsFragment extends Fragment implements BackFragment, Adapter
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
 //                Log.i("ibrahim","travels");
-                Log.i("ibrahim",response.toString());
+                Log.i("ibrahim", response.toString());
                 try {
                     Gson gson = new GsonBuilder().create();
 //                    Log.e("success", response.toString());

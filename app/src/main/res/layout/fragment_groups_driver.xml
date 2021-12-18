@@ -17,11 +17,19 @@
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/user_default"
-        app:civ_border_color="@color/black"
         android:layout_marginTop="50dp"
-        app:civ_border_overlay="false"
-        />
+        android:src="@drawable/user_default"
+        app:civ_border_color="@color/btnRequest"
+        app:civ_border_overlay="false" />
+
+    <ProgressBar
+
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/fourty_five"
+        android:visibility="gone" />
 
     <TableLayout
         android:id="@+id/Group_table"
@@ -43,7 +51,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/group_name"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="30dp" />
 
             <!--        <EditText-->
             <!--            android:id="@+id/group_name_et"-->
@@ -72,6 +81,7 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/ronded_button1"
         android:text="@string/Create_group"
+        android:textSize="20dp"
         android:tint="@color/white"
         android:visibility="gone" />
 
@@ -85,6 +95,7 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/ronded_button1"
         android:text="@string/change_group_name"
+        android:textSize="20dp"
         android:tint="@color/white"
         android:visibility="gone" />
 
@@ -98,6 +109,7 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/ronded_button1"
         android:text="@string/my_groups"
+        android:textSize="20dp"
         android:tint="@color/white"
         android:visibility="gone" />
 
@@ -133,6 +145,7 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/ronded_button1"
         android:text="@string/add_Driver"
+        android:textSize="20dp"
         android:tint="@color/white"
         android:visibility="gone" />
 
@@ -145,6 +158,7 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/ronded_button1"
         android:text="@string/delet_driver"
+        android:textSize="20dp"
         android:tint="@color/white"
         android:visibility="gone" />
 

@@ -433,7 +433,10 @@ public class RegisterActivity extends ActivityManagePermission implements Google
                 try {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         String url = response.getJSONObject("data").getString("avatar");
+
                         try {
+                            Log.i("ibrahim", "url");
+                            Log.i("ibrahim", url);
                             Glide.with(RegisterActivity.this).load(photoURL).apply(new RequestOptions().error(R.drawable.user_default)).into(imageProfile);
                         } catch (Exception e) {
                         }

@@ -85,6 +85,8 @@ import static com.loopj.android.http.AsyncHttpClient.log;
  * Created by android on 14/3/17.
  */
 
+//deleted fragment by ibrahim
+
 public class RequestFragment extends FragmentManagePermission implements OnMapReadyCallback, DirectionCallback {
     View view;
     AppCompatButton confirm, cancel, setTime, setDate;
@@ -421,7 +423,7 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
                 myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 10));
                 calculateDistance(Double.valueOf(direction.getRouteList().get(0).getLegList().get(0).getDistance().getValue()) / 1000);
             } else {
-                distanceAlert(direction.getErrorMessage());
+//                distanceAlert(direction.getErrorMessage());
                 //calculateFare.setVisibility(View.GONE);
                 dismiss();
             }
@@ -429,7 +431,7 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
     }
     @Override
     public void onDirectionFailure(Throwable t) {
-        distanceAlert(t.getMessage() + "\n" + t.getLocalizedMessage() + "\n");
+//        distanceAlert(t.getMessage() + "\n" + t.getLocalizedMessage() + "\n");
         //  calculateFare.setVisibility(View.GONE);
         dismiss();
     }

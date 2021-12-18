@@ -49,6 +49,7 @@
         android:layout_below="@id/textViewDate"
         android:layout_toRightOf="@id/image"
         android:maxLines="5"
+        android:textSize="20sp"
         android:textColor="#303F64"/>
 
 <!--    <View-->

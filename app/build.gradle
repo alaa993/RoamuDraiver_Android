@@ -16,14 +16,14 @@ repositories {
 
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.alaan.roamudriver"
         minSdkVersion 17
         vectorDrawables.useSupportLibrary = true
-        targetSdkVersion 29
-        versionCode 39
-        versionName "2.4.5"
+        targetSdkVersion 30
+        versionCode 45
+        versionName "2.5.1"
         multiDexEnabled true
         testInstrumentationRunner "android.support.home_fragment.runner.AndroidJUnitRunner"
     }
@@ -39,7 +39,6 @@ android {
     }
 
     compileOptions {
-
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -48,10 +47,10 @@ dependencies {
     implementation('com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.16.0') {
         transitive = true
     }
-    implementation 'com.squareup.okhttp3:okhttp:3.13.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.16.0'
     implementation 'com.github.TheBrownArrow:PermissionManager:1.0.0'
-    implementation 'de.hdodenhof:circleimageview:3.0.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'gun0912.ted:tedbottompicker:1.2.6'
     implementation 'net.skoumal.fragmentback:fragment-back:0.2.3'
     implementation 'com.akexorcist:googledirectionlibrary:1.0.5'
@@ -76,7 +75,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.0.3'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.0.3'
     implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.1'
     implementation 'com.google.firebase:firebase-storage:16.0.4'
     implementation 'com.google.firebase:firebase-auth:17.0.0'
     implementation 'com.firebaseui:firebase-ui-auth:5.0.0'

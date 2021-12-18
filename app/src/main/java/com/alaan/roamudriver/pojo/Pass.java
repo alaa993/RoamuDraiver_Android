@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Created by android on 13/10/17.
  */
 
-public class Pass implements Serializable,Parcelable {
+public class Pass implements Serializable, Parcelable {
     private Place fromPlace;
     private Place toPlace;
     private String PickPlace;
@@ -46,16 +46,13 @@ public class Pass implements Serializable,Parcelable {
 
     private String driverName;
     private String fare;
-    public String  setFromAddress;
-
-
-
+    public String setFromAddress;
 
     public static Creator<Pass> getCREATOR() {
         return CREATOR;
     }
 
-    public String  setToAddress;
+    public String setToAddress;
 
     private String vehicleName;
 

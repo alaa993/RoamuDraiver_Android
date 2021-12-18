@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:text="@string/Driver_Phone_number"
-        android:textSize="20sp"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <EditText
@@ -27,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:textSize="20sp"
         android:background="@color/quantum_yellow700"
         android:text="@string/submit"
         android:textColor="@android:color/white" />
@@ -36,6 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:textSize="20sp"
         android:background="@color/quantum_yellow700"
         android:text="@string/cancel"
         android:textColor="@android:color/white" />

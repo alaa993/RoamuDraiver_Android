@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,10 +28,13 @@ import com.alaan.roamudriver.custom.Utils;
 import com.alaan.roamudriver.fragement.AcceptedDetailFragment;
 import com.alaan.roamudriver.fragement.AcceptedRequestFragment;
 import com.alaan.roamudriver.fragement.MyAcceptedDetailFragment;
+import com.alaan.roamudriver.fragement.PostFragment;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
 import com.alaan.roamudriver.pojo.firebaseRide;
 import com.alaan.roamudriver.pojo.firebaseTravel;
 import com.alaan.roamudriver.session.SessionManager;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -91,6 +95,14 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
         holder.from_add.setText(pojo.getPickup_address());
         holder.to_add.setText(pojo.getDrop_address());
         holder.drivername.setText(pojo.getUser_name());
+        holder.txt_drivercode.setText(pojo.getRide_id());
+
+        if (pojo.getUser_avatar() != null) {
+            Log.i("ibrahim_avatar", pojo.getUser_avatar());
+            Glide.with(holder.itemView.getContext()).load(pojo.getUser_avatar()).apply(new RequestOptions().error(R.drawable.images)).into(holder.PostAvatar);
+        }
+
+
         Status = "";
         if (pojo.getStatus().contains("PENDING")) {
             Status = holder.itemView.getContext().getString(R.string.pending);
@@ -293,10 +305,11 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
     public class Holder extends RecyclerView.ViewHolder {
 
 
-        TextView drivername, from_add, to_add, status;
+        TextView drivername, txt_drivercode, from_add, to_add, status;
         TextView f, t, dn;
         AppCompatButton item_Button;
         AppCompatButton item_Button1;
+        ImageView PostAvatar;
 
         public Holder(View itemView) {
             super(itemView);
@@ -304,9 +317,10 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
             f = (TextView) itemView.findViewById(R.id.from);
             t = (TextView) itemView.findViewById(R.id.to);
             dn = (TextView) itemView.findViewById(R.id.drivername);
-
+            PostAvatar = (ImageView) itemView.findViewById(R.id.profile);
 
             drivername = (TextView) itemView.findViewById(R.id.txt_drivername);
+            txt_drivercode = (TextView) itemView.findViewById(R.id.txt_drivercode);
             from_add = (TextView) itemView.findViewById(R.id.txt_from_add);
             to_add = (TextView) itemView.findViewById(R.id.txt_to_add);
             status = (TextView) itemView.findViewById(R.id.Statuss);
@@ -361,6 +375,9 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 try {
+                    Log.i("ibrahim", "response");
+                    Log.i("ibrahim", response.toString());
+
                     AcceptedRequestFragment acceptedRequestFragment = new AcceptedRequestFragment();
                     Bundle bundle;
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
@@ -434,6 +451,8 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
+                Log.i("ibrahim", "response");
+                Log.i("ibrahim", response.toString());
                 updateRideFirebase(travel_status, ride_status, "PAID", payment_mode, pojo);
                 updateNotificationFirebase(context, "offline_approved", pojo);
                 updateTravelCounterFirebase(pojo);

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layoutDirection="ltr"
-
     android:layout_height="match_parent"
+    android:layoutDirection="ltr"
     android:orientation="vertical">
 
     <com.google.android.gms.maps.MapView
@@ -43,11 +42,11 @@
         android:visibility="visible">
 
         <include
-            layout="@layout/header"
             android:id="@+id/header_search"
-            android:visibility="gone"
+            layout="@layout/header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <include
             layout="@layout/fotter"
@@ -72,11 +71,11 @@
         android:visibility="gone">
 
         <include
-            android:visibility="visible"
             android:id="@+id/driver_ern"
             layout="@layout/driver_earning"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="visible" />
 
 
     </RelativeLayout>

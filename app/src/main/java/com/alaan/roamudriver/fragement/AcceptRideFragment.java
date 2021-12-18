@@ -149,11 +149,13 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     SearchForUser pojo1;
     GPSTracker gpsTracker;
     private CheckBox Checkbox;
+    private CheckBox Checkbox2;
     private EditText mPassengers;
     private EditText mPrice;
     private EditText mPickupPoint;
     boolean Checkbox_bool = false;
     private int POINT_PICKER_REQUEST = 12345;
+    String p = "";
 
     @Nullable
     @Override
@@ -202,7 +204,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        SendStatusAccept(ride_id, status, "");
+                        SendStatusAccept(ride_id, status, "", "");
                     }
                 })
                 .setNegativeButton(getString(R.string.ccancel), new DialogInterface.OnClickListener() {
@@ -223,6 +225,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         Button mSubmit = (Button) mView.findViewById(R.id.btnSubmitDialog);
         Button mCancel = (Button) mView.findViewById(R.id.btnCancelDialog);
         Checkbox = (CheckBox) mView.findViewById(R.id.checkBox);
+        Checkbox2 = (CheckBox) mView.findViewById(R.id.checkBox2);
         //checkBox
         mBuilder.setView(mView);
         final android.app.AlertDialog dialog = mBuilder.create();
@@ -251,8 +254,10 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                                 getString(R.string.ConfirmRideVC_AlertDetail),
                                 Toast.LENGTH_SHORT).show();
                     } else {
+                        if (point != null)
+                            p = String.valueOf(point.getLatLng().latitude) + "," + String.valueOf(point.getLatLng().longitude);
                         dialog.dismiss();
-                        SendStatusAccept(ride_id, "WAITED", String.valueOf(etNotes.getText()));
+                        SendStatusAccept(ride_id, "WAITED", String.valueOf(etNotes.getText()), p);
                     }
                 } else {
                     Toast.makeText(AcceptRideFragment.this.getContext(),
@@ -612,7 +617,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         });
     }
 
-    public void SendStatusAccept(String ride_id, final String status, String tr_notes) {
+    public void SendStatusAccept(String ride_id, final String status, String tr_notes, String pickup_point_location) {
         RequestParams params = new RequestParams();
         params.put("ride_id", ride_id);
         params.put("status", status);
@@ -621,6 +626,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         params.put("drop_address", drop_address);
         params.put("pickup_location", s_pic.getLatLng().latitude + "," + s_pic.getLatLng().longitude);
         params.put("drop_location", s_drop.getLatLng().latitude + "," + s_drop.getLatLng().latitude);
+
         params.put("distance", "0");
 
 
@@ -628,16 +634,10 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         Server.setContentType();
         String Url = "";
         if (status == "WAITED") {
-            Log.i("ibrahim_waited", "1");
-            Log.i("ibrahim_waited", mPrice.getText().toString());
-            Log.i("ibrahim_waited", mPrice.getText().toString());
-            Log.i("ibrahim_waited", mPrice.getText().toString());
-            Log.i("ibrahim_waited", pojo.getbooked_set());
-            Log.i("ibrahim_waited", pojo.getDate());
-            Log.i("ibrahim_waited", pojo.getTime());
             params.put("amount", mPrice.getText().toString());
             params.put("available_set", mPassengers.getText().toString());
             params.put("pickup_point", mPickupPoint.getText().toString());
+            params.put("pickup_point_location", pickup_point_location);
             //updated by ibrahim
             //when user accept the request by driver then should the booked set of travel = booked set by user
             //
@@ -647,11 +647,13 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             params.put("travel_time", pojo.getTime());
             params.put("ride_status", status);
             params.put("status", "0");
+            if (Checkbox2.isChecked()) {
+                params.put("travel_type", "1");
+            }
             params.put("smoked", "0");
             if (tr_notes.length() > 0) {
                 params.put("tr_notes", tr_notes);
-            }
-            else{
+            } else {
                 params.put("tr_notes", "");
             }
             Url = Server.CONFIRM_REQUST;

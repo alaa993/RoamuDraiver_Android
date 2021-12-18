@@ -49,6 +49,7 @@ import com.alaan.roamudriver.fragement.DrawerLocker;
 import com.alaan.roamudriver.fragement.Manage_travels;
 import com.alaan.roamudriver.fragement.MyAcceptedDetailFragment;
 import com.alaan.roamudriver.fragement.MyAcceptedRequestFragment;
+import com.alaan.roamudriver.fragement.MyScheduledTravelsFragment;
 import com.alaan.roamudriver.fragement.NominateDriverFragment;
 import com.alaan.roamudriver.fragement.NotificationsFragment;
 import com.alaan.roamudriver.fragement.ProfitFragment;
@@ -313,6 +314,7 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         AcceptedRequestFragment acceptedRequestFragment;
         myTravelsFragment myTravelsFragment;
+        MyScheduledTravelsFragment myScheduledTravelsFragment;
         MyAcceptedRequestFragment myAcceptedRequestFragment;
         Bundle bundle;
         switch (item.getItemId()) {
@@ -415,6 +417,15 @@ public class HomeActivity extends ActivityManagePermission implements Navigation
                 bundle.putString("status", "ACCEPTED");
                 myTravelsFragment.setArguments(bundle);
                 changeFragment(myTravelsFragment, getString(R.string.requests));
+                break;
+
+            case R.id.my_scheduled_travels:
+                addPost.setVisibility(View.GONE);
+                myScheduledTravelsFragment = new MyScheduledTravelsFragment();
+                bundle = new Bundle();
+                bundle.putString("status", "ACCEPTED");
+                myScheduledTravelsFragment.setArguments(bundle);
+                changeFragment(myScheduledTravelsFragment, getString(R.string.requests));
                 break;
 
             case R.id.vehicle_information:

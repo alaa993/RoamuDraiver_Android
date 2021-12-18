@@ -75,9 +75,9 @@ public class LocationService extends Service {
         Log.e(TAG, "onStartCommand");
         super.onStartCommand(intent, flags, startId);
 
-        if (SessionManager.getStatus().equalsIgnoreCase("true")) {
-            sendLocation();
-        }
+//        if (SessionManager.getStatus().equalsIgnoreCase("true")) {
+//            sendLocation();
+//        }
         return START_STICKY;
     }
 

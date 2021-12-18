@@ -80,6 +80,7 @@
                         android:layout_centerInParent="true"
                         android:layout_gravity="center"
                         android:layout_marginBottom="@dimen/margin_5"
+                        android:visibility="invisible"
                         android:src="@drawable/arrow1" />
 
                     <LinearLayout

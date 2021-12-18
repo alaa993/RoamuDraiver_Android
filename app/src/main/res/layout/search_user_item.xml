@@ -90,6 +90,7 @@
                         android:layout_height="@dimen/arrow"
                         android:layout_centerInParent="true"
                         android:layout_gravity="center"
+                        android:visibility="invisible"
                         android:src="@drawable/arrow1" />
 
                     <LinearLayout

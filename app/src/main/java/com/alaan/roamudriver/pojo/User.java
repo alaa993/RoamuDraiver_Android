@@ -30,6 +30,7 @@ public class User implements Serializable {
     String permit;
     String registration;
     public String photoURL;
+
     public String getBrand() {
         return brand;
     }
@@ -130,6 +131,7 @@ public class User implements Serializable {
     public String getUnit() {
         return unit;
     }
+
     public String getCarType() {
         return car_type;
     }
@@ -188,8 +190,6 @@ public class User implements Serializable {
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
-
-
 
 
     public User(String username, String photoURL) {

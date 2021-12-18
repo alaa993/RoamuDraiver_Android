@@ -79,7 +79,8 @@
                         android:layout_centerInParent="true"
                         android:layout_gravity="center"
                         android:layout_marginBottom="@dimen/margin_5"
-                        android:src="@drawable/arrow1" />
+                        android:src="@drawable/arrow1"
+                        android:visibility="invisible" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"

@@ -266,6 +266,7 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
                 startActivityForResult(intent, PLACE_PICKER_REQUEST);
             }
         });
+
         drop_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -287,7 +288,6 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
         });
 
         GetRides();
-
         return rootView;
     }
 
@@ -995,7 +995,6 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
         RequestParams params = new RequestParams();
         params.put("travel_id", "-1");
         params.put("ride_id", "-1");
-//        params.put("date", Date);
         Server.setHeader(SessionManager.getKEY());
         Server.get(Server.GET_SEARCHUSER1, params, new JsonHttpResponseHandler() {
             @Override

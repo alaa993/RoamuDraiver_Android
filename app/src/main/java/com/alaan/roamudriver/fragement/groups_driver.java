@@ -1,14 +1,23 @@
 package com.alaan.roamudriver.fragement;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telecom.PhoneAccount;
@@ -17,10 +26,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +39,7 @@ import com.alaan.roamudriver.acitivities.HomeActivity;
 import com.alaan.roamudriver.acitivities.RegisterActivity;
 import com.alaan.roamudriver.adapter.group_details_member_adapter;
 import com.alaan.roamudriver.pojo.Group_List_membar;
+import com.alaan.roamudriver.pojo.User;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
@@ -35,6 +47,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
@@ -55,12 +68,15 @@ import net.skoumal.fragmentback.BackFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
+import gun0912.tedbottompicker.TedBottomPicker;
 
 import static com.loopj.android.http.AsyncHttpClient.log;
 
@@ -70,12 +86,19 @@ public class groups_driver extends Fragment implements BackFragment {
     TextView group_name_1;
     View rootView;
     ImageView profile_pic;
+    private ProgressBar progressBar;
     String g_name;
     Integer group_id;
     RecyclerView recyclerView;
+    private File imageFile;
+    String photoURL = "";
 
     public groups_driver() {
         // Required empty public constructor
+    }
+
+    public interface groupsUpdateListener {
+        void update(String url);
     }
 
     @Override
@@ -100,7 +123,31 @@ public class groups_driver extends Fragment implements BackFragment {
 
     }
 
+    private void requestForSpecificPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+    }
+
+    private boolean checkIfAlreadyhavePermission() {
+        int fine = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
+        int read = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+        int write = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (fine == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        if (read == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        if (write == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private void BindView(Bundle savedInstanceState) {
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         profile_pic = (ImageView) rootView.findViewById(R.id.profile_pic);
         button_add2 = (Button) rootView.findViewById(R.id.button_add);
         button_remove2 = (Button) rootView.findViewById(R.id.button_remove);
@@ -162,6 +209,85 @@ public class groups_driver extends Fragment implements BackFragment {
 //                }
             }
         });
+
+        profile_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int MyVersion = Build.VERSION.SDK_INT;
+                if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    if (!checkIfAlreadyhavePermission()) {
+                        requestForSpecificPermission();
+                    } else {
+                        TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(getActivity())
+                                .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+                                    @Override
+                                    public void onImageSelected(Uri uri) {
+                                        // here is selected uri
+                                        imageFile = new File(uri.getPath());
+                                        // profile_pic.setImageURI(uri);
+                                        String format = getMimeType(getActivity(), uri);
+                                        upload_pic(format);
+                                       /* if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("png") || format.equalsIgnoreCase("gif") || format.equalsIgnoreCase("jpeg")) {
+
+                                        } else {
+                                            Toast.makeText(getActivity(), "jpg,png or gif is only accepted", Toast.LENGTH_LONG).show();
+                                        }*/
+                                    }
+                                }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
+                                    @Override
+                                    public void onError(String message) {
+                                        Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_SHORT).show();
+                                        Log.d(getTag(), message);
+                                    }
+                                })
+                                .create();
+
+                        tedBottomPicker.show(getActivity().getSupportFragmentManager());
+                    }
+
+
+                } else {
+                    TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(getActivity())
+                            .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+                                @Override
+                                public void onImageSelected(Uri uri) {
+                                    // here is selected uri
+                                    imageFile = new File(uri.getPath());
+                                    //  profile_pic.setImageURI(uri);
+                                    String format = getMimeType(getActivity(), uri);
+                                    upload_pic(format);
+                                }
+                            }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
+                                @Override
+                                public void onError(String message) {
+                                    Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_SHORT).show();
+                                    Log.d(getTag(), message);
+                                }
+                            })
+                            .create();
+
+                    tedBottomPicker.show(getActivity().getSupportFragmentManager());
+                }
+            }
+        });
+    }
+
+    public static String getMimeType(Context context, Uri uri) {
+        String extension;
+
+        //Check uri format to avoid null
+        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            //If scheme is a content
+            final MimeTypeMap mime = MimeTypeMap.getSingleton();
+            extension = mime.getExtensionFromMimeType(context.getContentResolver().getType(uri));
+        } else {
+            //If scheme is a File
+            //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
+            extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
+
+        }
+
+        return extension;
     }
 
     private void getMemberList(int group_id) {
@@ -307,6 +433,84 @@ public class groups_driver extends Fragment implements BackFragment {
         });
     }
 
+    public void upload_pic(String type) {
+        progressBar.setVisibility(View.VISIBLE);
+        RequestParams params = new RequestParams();
+        if (imageFile != null) {
+            try {
+
+                if (type.equals("jpg")) {
+                    params.put("avatar", imageFile, "image/jpeg");
+                } else if (type.equals("jpeg")) {
+                    params.put("avatar", imageFile, "image/jpeg");
+                } else if (type.equals("png")) {
+                    params.put("avatar", imageFile, "image/png");
+                } else {
+                    params.put("avatar", imageFile, "image/gif");
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Log.d("catch", e.toString());
+            }
+        }
+        Server.setHeader(SessionManager.getKEY());
+        params.put("user_id", SessionManager.getUserId());
+
+        Server.post(Server.UPDATE, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.e("success", response.toString());
+                try {
+                    if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
+                        progressBar.setVisibility(View.GONE);
+                        GetDirver();
+                        //        getMemberList(Integer.parseInt(SessionManager.getUserId()));
+                        //        Log.e("Get Data in id", SessionManager.getUserId());
+                        getGroupList(Integer.parseInt(SessionManager.getUserId()));
+                        String url = response.getJSONObject("data").getString("avatar");
+                        try {
+                            Glide.with(getActivity()).load(photoURL).apply(new RequestOptions().error(R.drawable.user_default)).into(profile_pic);
+                        } catch (Exception e) {
+                        }
+                        User user = SessionManager.getUser();
+                        user.setAvatar(url);
+                        Gson gson = new Gson();
+                        SessionManager.setUser(gson.toJson(user));
+
+
+                        try {
+                            FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+                            String uid = fuser.getUid();
+                            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("users/profile").child(uid);
+                            Map<String, Object> userObject = new HashMap<>();
+                            userObject.put("photoURL", url);
+                            databaseRef.updateChildren(userObject);
+                        } catch (Exception e) {
+                        }
+
+                    } else {
+                        progressBar.setVisibility(View.GONE);
+                        if (response.has("data")) {
+                            Toast.makeText(getActivity(), response.getString("data"), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                } catch (JSONException e) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
     public static groups_driver newInstance(String param1, String param2) {
         groups_driver fragment = new groups_driver();
         Bundle args = new Bundle();
@@ -332,26 +536,20 @@ public class groups_driver extends Fragment implements BackFragment {
                 super.onSuccess(statusCode, headers, response);
                 Log.i("ibrahim", "response");
                 Log.i("ibrahim", response.toString());
-//                try {
-//                    Gson gson = new GsonBuilder().create();
-//                    if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
-//                        List<Group_membar> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<Group_membar>>() {
-//                        }.getType());
-//                        if (response.has("data") && response.getJSONArray("data").length() > 0) {
-//                            if (list.size() > 0) {
-//                                addNotificationFirebase(String.valueOf(list.get(0).driver_id), "notification_add_driver_5_" + list.get(0).group_name);
-//                            }
-//                        }
-//                    } else {
-//                        Log.i("ibrahim", "sendStatus");
-//                        Log.i("ibrahim", "success else");
-//                    }
-//                } catch (JSONException e) {
-////                    Toast.makeText(getActivity(), getString(R.string.contact_admin), Toast.LENGTH_LONG).show();
-//                    Log.i("ibrahim", "sendstatus_onSuccess_catch");
-//                    Log.i("ibrahim", e.getMessage());
-//                }
-                Toast.makeText(getContext(), "Successfully Added To Group", Toast.LENGTH_SHORT).show();
+                try {
+                    Gson gson = new GsonBuilder().create();
+                    if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
+                        Toast.makeText(getContext(), "Successfully Added To Group", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (response.has("message")) {
+                            Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (JSONException e) {
+//                    Toast.makeText(getActivity(), getString(R.string.contact_admin), Toast.LENGTH_LONG).show();
+                    Log.i("ibrahim", "sendstatus_onSuccess_catch");
+                    Log.i("ibrahim", e.getMessage());
+                }
 //                getMemberList(Integer.parseInt(SessionManager.getUserId()));
 //                phone_number.setText("");
             }
@@ -499,6 +697,38 @@ public class groups_driver extends Fragment implements BackFragment {
                 // swipeRefreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.e("permisson", "granted");
+                    TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(getActivity())
+                            .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+                                @Override
+                                public void onImageSelected(Uri uri) {
+                                    // here is selected uri
+                                    profile_pic.setImageURI(uri);
+                                }
+                            }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
+                                @Override
+                                public void onError(String message) {
+                                    Toast.makeText(getActivity(), getString(R.string.try_again), Toast.LENGTH_LONG).show();
+                                    Log.d(getTag(), message);
+                                }
+                            })
+                            .create();
+
+                    tedBottomPicker.show(getActivity().getSupportFragmentManager());
+
+                } else {
+
+                }
+            }
+        }
     }
 
     @Override

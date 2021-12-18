@@ -99,6 +99,7 @@ public class SearchUser extends Fragment implements BackFragment {
 
     private String date_time_value;
     private CheckBox Checkbox;
+    private CheckBox Checkbox2;
 
     String date_time = "";
     String time_value = "";
@@ -111,6 +112,7 @@ public class SearchUser extends Fragment implements BackFragment {
     private String drop_address;
     String o = "";
     String d = "";
+    String p = "";
 
 
     private RelativeLayout footer;
@@ -163,6 +165,7 @@ public class SearchUser extends Fragment implements BackFragment {
                 startActivityForResult(intent, PLACE_PICKER_REQUEST);
             }
         });
+
         drop_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -215,6 +218,7 @@ public class SearchUser extends Fragment implements BackFragment {
                         Button mSubmit = (Button) mView.findViewById(R.id.btnSubmitDialog);
                         Button mCancel = (Button) mView.findViewById(R.id.btnCancelDialog);
                         Checkbox = (CheckBox) mView.findViewById(R.id.checkBox);
+                        Checkbox2 = (CheckBox) mView.findViewById(R.id.checkBox2);
                         //checkBox
                         mBuilder.setView(mView);
                         final android.app.AlertDialog dialog = mBuilder.create();
@@ -245,9 +249,11 @@ public class SearchUser extends Fragment implements BackFragment {
                                     drop_address = (String) drop_location.getText();
                                     o = String.valueOf(pickup.getLatLng().latitude) + "," + String.valueOf(pickup.getLatLng().longitude);
                                     d = String.valueOf(drop.getLatLng().latitude) + "," + String.valueOf(drop.getLatLng().longitude);
+                                    if (point != null)
+                                        p = String.valueOf(point.getLatLng().latitude) + "," + String.valueOf(point.getLatLng().longitude);
                                     AddRide(SessionManager.getKEY(), pickup_address, drop_address, o, d,
                                             mPrice.getText().toString(), "0", mPassengers.getText().toString(),
-                                            "", date_time_value, time_value, mPickupPoint.getText().toString(), String.valueOf(etNotes.getText()));
+                                            "", date_time_value, time_value, mPickupPoint.getText().toString(), p, String.valueOf(etNotes.getText()));
                                 } else {
                                     Toast.makeText(SearchUser.this.getContext(),
                                             getString(R.string.Post_Empty),
@@ -451,7 +457,7 @@ public class SearchUser extends Fragment implements BackFragment {
         } else if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 pickup = Autocomplete.getPlaceFromIntent(data);
-                pickup_location.setText(pickup.getAddress());
+                pickup_location.setText(pickup.getName());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Log.e(TAG, status.toString());
@@ -460,7 +466,7 @@ public class SearchUser extends Fragment implements BackFragment {
         } else if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 drop = Autocomplete.getPlaceFromIntent(data);
-                drop_location.setText(drop.getAddress());
+                drop_location.setText(drop.getName());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Toast.makeText(getActivity(), status.getStatusMessage(), Toast.LENGTH_LONG).show();
@@ -468,7 +474,7 @@ public class SearchUser extends Fragment implements BackFragment {
         } else if (requestCode == POINT_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 point = Autocomplete.getPlaceFromIntent(data);
-                mPickupPoint.setText(point.getAddress());
+                mPickupPoint.setText(point.getName());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Toast.makeText(getActivity(), status.getStatusMessage(), Toast.LENGTH_LONG).show();
@@ -477,7 +483,7 @@ public class SearchUser extends Fragment implements BackFragment {
     }
 
     public void AddRide(String key, String pickup_address, String drop_address, String pickup_location, String drop_location, String amount,
-                        String distance, String a_set, String u_set, String s_date, String s_time, String PickupPoint, String tr_notes) {
+                        String distance, String a_set, String u_set, String s_date, String s_time, String PickupPoint, String pickup_point_location, String tr_notes) {
         final RequestParams params = new RequestParams();
         params.put("driver_id", SessionManager.getUserId());
         params.put("pickup_address", pickup_address);
@@ -485,6 +491,7 @@ public class SearchUser extends Fragment implements BackFragment {
         params.put("pickup_location", pickup_location);
         params.put("drop_location", drop_location);
         params.put("pickup_point", PickupPoint);
+        params.put("pickup_point_location", pickup_point_location);
         params.put("distance", distance);
         params.put("amount", amount);
         params.put("available_set", a_set);
@@ -495,8 +502,13 @@ public class SearchUser extends Fragment implements BackFragment {
         params.put("status", "0");
         params.put("tr_notes", tr_notes);
 
+        String server_post = "";
+        if (Checkbox2.isChecked()) {
+            params.put("travel_type", "1");
+        }
+
         Server.setHeader(key);
-        Server.post("https://roamu.net/api/user/addTravel2/format/json", params, new JsonHttpResponseHandler() {
+        Server.post(server_post = "https://roamu.net/api/user/addTravel2/format/json", params, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -517,7 +529,6 @@ public class SearchUser extends Fragment implements BackFragment {
                             if (Checkbox.isChecked()) {
                                 SavePost(pickup_address, drop_address, date_time, time_value, travel_id);
                                 ((HomeActivity) getActivity()).changeFragment(new SearchUser(), "fragment_search_user");
-                            } else {
                             }
                         } else {
                         }

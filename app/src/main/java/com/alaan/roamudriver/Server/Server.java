@@ -48,6 +48,8 @@ public class Server {
 
     public static final String CONFIRM_REQUST = BASE_URL + "api/user/confirm_requested_rides" + FORMAT;
     public static final String UPDATE = BASE_URL + "api/user/update" + FORMAT;
+    public static final String travel_type_change = BASE_URL + "api/user/travel_type_change" + FORMAT;
+    public static final String scheduled_travel_type_change = BASE_URL + "api/user/scheduled_travel_type_change" + FORMAT;
     public static final String FORGOT_PASSWORD = BASE_URL + "user/forgot_password" + FORMAT;
 
     public static final String EARN = BASE_URL + "api/driver/earn" + FORMAT;
@@ -60,6 +62,9 @@ public class Server {
     public static final String GET_REQUEST = BASE_URL + "api/user/rides" + FORMAT;
     public static final String GET_REQUEST1 = BASE_URL + "api/user/rides2" + FORMAT;
     public static final String GET_Travels = BASE_URL + "api/user/driver_travels" + FORMAT;
+    public static final String Update_schduled_Travels = BASE_URL + "api/user/update_scheduled_travels" + FORMAT;
+    public static final String Delete_schduled_Travels = BASE_URL + "api/user/delete_scheduled_travels" + FORMAT;
+    public static final String GET_Scheduled_Travels = BASE_URL + "api/user/driver_scheduled_travels" + FORMAT;
     public static final String GET_MyTravel = BASE_URL + "api/user/driver_mytravel" + FORMAT;
     public static final String driver_specific_travel = BASE_URL + "api/user/driver_specific_travel" + FORMAT;
     public static final String GET_SPECIFIC_RIDE = BASE_URL + "api/user/ride_specific" + FORMAT;

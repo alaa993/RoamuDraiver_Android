@@ -67,6 +67,38 @@
             </TableRow>
 
             <TableRow
+                android:id="@+id/MyADF_pickup_point_row"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp">
+
+                <TextView
+                    android:id="@+id/MyADF_pickup_point"
+                    android:text="@string/pickup_point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#286556"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/MyADF_txt_PickupPoint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:maxLines="1"
+                    android:padding="1dp"
+                    android:text=""
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#286556"
+                    android:textStyle="bold"/>
+
+            </TableRow>
+
+            <TableRow
                 android:id="@+id/MyADF_mobilenumber_row"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -164,35 +196,6 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
 
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:maxLines="2"
-                    android:scrollHorizontally="true"
-                    android:text=""
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:padding="10dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/MyADF_textView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pickup_point"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                <TextView
-                    android:id="@+id/MyADF_txt_PickupPoint"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:maxLines="2"
                     android:scrollHorizontally="true"

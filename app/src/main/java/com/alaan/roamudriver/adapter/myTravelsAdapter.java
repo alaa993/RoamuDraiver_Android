@@ -58,14 +58,8 @@ public class myTravelsAdapter extends RecyclerView.Adapter<myTravelsAdapter.Hold
         Utils utils = new Utils();
         holder.status.setText(pojo.getStatus());
 //        holder.date.setText(utils.getCurrentDateInSpecificFormat(pojo.getTime()));
-        Log.i("ibrahim", "AcceptedRequestAdapter");
-        Log.i("ibrahim", pojo.getTime());
-        Log.i("ibrahim", utils.getCurrentDateInSpecificFormat(pojo.getTime()));
-        Log.i("ibrahim", "AcceptedRequestAdapter");
-        Log.i("ibrahim", utils.getCurrentDateInSpecificFormat(pojo.getTime()));
-        Log.i("ibrahim", Utils.getformattedTime(pojo.getTime()));
-
-        holder.date.setText(utils.getCurrentDateInSpecificFormat(pojo.getTime()));
+//        holder.date.setText(utils.getCurrentDateInSpecificFormat(pojo.getTime()));
+        holder.date.setText(pojo.getDate());
         holder.time.setText(pojo.getTime());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

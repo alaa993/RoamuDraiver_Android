@@ -79,7 +79,8 @@
                         android:layout_centerInParent="true"
                         android:layout_gravity="center"
                         android:layout_marginBottom="@dimen/margin_5"
-                        android:src="@drawable/arrow1" />
+                        android:src="@drawable/arrow1"
+                        android:visibility="invisible" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -235,12 +236,12 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="5dp"
-                        android:padding="10dp"
                         android:background="@drawable/ronded_button1"
+                        android:padding="10dp"
                         android:text="@string/Pick_Customer"
+                        android:textColor="@color/text_color"
                         android:textSize="12sp"
-                        android:visibility="visible"
-                        android:textColor="@color/text_color" />
+                        android:visibility="visible" />
 
 
                     <android.support.v7.widget.AppCompatButton
@@ -253,12 +254,12 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="5dp"
-                        android:padding="10dp"
                         android:background="@drawable/ronded_button1"
+                        android:padding="10dp"
                         android:text="@string/approve_payment_offline"
+                        android:textColor="@color/text_color"
                         android:textSize="12sp"
-                        android:visibility="visible"
-                        android:textColor="@color/text_color" />
+                        android:visibility="visible" />
 
 
                 </LinearLayout>
@@ -284,14 +285,15 @@
                 app:civ_border_color="@color/black"
                 app:civ_border_width="2dp" />
 
-<!--            <View-->
-<!--                android:id="@+id/view2"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="1dp"-->
-<!--                android:layout_below="@+id/profile"-->
-<!--                android:background="@android:color/darker_gray" />-->
+            <!--            <View-->
+            <!--                android:id="@+id/view2"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="1dp"-->
+            <!--                android:layout_below="@+id/profile"-->
+            <!--                android:background="@android:color/darker_gray" />-->
 
             <LinearLayout
+                android:id="@+id/linear_drivername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/profile"
@@ -303,9 +305,8 @@
                     android:id="@+id/drivername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left|start"
-                    android:text="@string/customer_name"
-                    tools:gravity="left|start" />
+                    android:gravity="center"
+                    android:text="@string/customer_name" />
 
                 <TextView
                     android:id="@+id/txt_drivername"
@@ -314,10 +315,38 @@
                     android:layout_alignParentLeft="true"
                     android:layout_weight="1"
                     android:gravity="left|start"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:padding="1dp"
                     android:text="ibrahim marie"
-                    tools:gravity="left|start" />
+                    tools:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linear_drivername"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/five"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/drivercode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/customer_code" />
+
+                <TextView
+                    android:id="@+id/txt_drivercode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:padding="1dp"
+                    android:text="A76" />
             </LinearLayout>
         </RelativeLayout>
 

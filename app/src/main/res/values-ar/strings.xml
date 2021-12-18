@@ -153,7 +153,7 @@
     <string name="ratekm">قيمكم</string>
     <string name="Color_White">اللون الابيض</string>
     <string name="Add_Ride">أضف رحلة</string>
-    <string name="add_Driver">إضافة سائق</string>
+    <string name="add_Driver">إضافة كابتن</string>
     <string name="create_gruop">إنشاء مجموعة</string>
     <string name="remove_User">حذف مستخدم</string>
     <string name="English">انكليزية</string>
@@ -173,7 +173,7 @@
     <string name="paid">دفع</string>
     <string name="DropAddress">إلى</string>
     <string name="PickupAddress">من</string>
-    <string name="ELITEDRIVER">سائق النخبة</string>
+    <string name="ELITEDRIVER">كابتن النخبة</string>
     <string name="ride_complete_msg">اكتمال</string>
     <string name="ride_cancel_msg">إلغاء</string>
     <string name="ride_accept_msg">هل تريد قبول طلب المسافر</string>
@@ -193,7 +193,7 @@
 يسعى التنقل التشاركي إلى تحقيق هدف رئيسي يرتبط بتوفير وسائط تنقل مريحة و متميزة ،  ليقلل الناس من استخدام مركباتهم الخاصة ، ما يسهم في خدمة البيئة و ذلك بالتقليل من التلوث ، و توفير وسائط تنقل جماعية بأسعار تنافسية ، و يسهم في التقليل من استهلاك المحروقات .
 أن اشاعة التنقل التشاركي وفق الاهداف التي ذكرناها أعلاه ، تدفع بجميع اطراف هذه الخدمة للحرص على التعاون و الارتقاء بالتنقل إلى درجات متميزة  "</string>
     <string name="about_us"><![CDATA["عن التطبيق
-يعمل التطبيق في مجال التنقل التشاركي ، مع ميزة رائدة في هذا النوع من التنقل ، إذ منحنا كلا من صاحب وسيلة النقل و المستخدم فرصة الحجز لدى الآخر بحرية تامة   و عندما يرغب المسافر الذهاب إلى منطقة داخل مدينته أو إلى مدينة اخرى يبحث عن وسائل النقل المتاحة في الوقت المناسب له ، و يختار ما يرى أنها مناسبة لرحلته من بين السيارات المتاحة ، و للسائق حرية الموافقة أو الاعتذار بعد مشاهدة ملف المسافر.
+يعمل التطبيق في مجال التنقل التشاركي ، مع ميزة رائدة في هذا النوع من التنقل ، إذ منحنا كلا من صاحب وسيلة النقل و المستخدم فرصة الحجز لدى الآخر بحرية تامة   و عندما يرغب المسافر الذهاب إلى منطقة داخل مدينته أو إلى مدينة اخرى يبحث عن وسائل النقل المتاحة في الوقت المناسب له ، و يختار ما يرى أنها مناسبة لرحلته من بين السيارات المتاحة ، و للكابتن حرية الموافقة أو الاعتذار بعد مشاهدة ملف المسافر.
 و يبحث الكابتن عن الراغبين بالسفر في التوقيت الذي يغادر به و الوجهة المقررة ، و يختار المسافرين المناسبين للسفر معه ، و تكون الموافقة النهائية  للمسافر نفسه بعد الاطلاع على ملف الكابتن و تقييمه من قبل الآخرين.
 التقييم في التطبيق لا يقتصر على  المركبة  واداء الكابتن فقط ، بل اضفنا تقييما للأجرة التي يحددها صاحب السيارة ، و هدفنا  من ذلك تقديم افضل الأسعار و خدمة متميزة للمسافرين مع التطبيق.
 يكون المسافر على اطلاع قبل الحجز على مواصفات المركبة و عدد الحقائب المسموح بها ، و فيما إذا كان مسموحا بالتدخين خلال الرحلة من عدمه."]]></string>
@@ -230,9 +230,9 @@
 
     <!--    by ibrahim-->
 
-    <string name="enter_number_of_passengers_trip_price">أدخل عدد الركاب وسعر الرحلة</string>
+    <string name="enter_number_of_passengers_trip_price">أدخل عدد الركاب وسعر المقعد الواحد</string>
     <string name="number_of_passengers_1">عدد الركاب، 1</string>
-    <string name="trip_price">سعر الرحلة</string>
+    <string name="trip_price">سعر المقعد الواحد</string>
     <string name="submit">إرسال</string>
     <string name="tryAgain">حاول مرة اخرى</string>
     <string name="cancel">إلغاء</string>
@@ -302,7 +302,7 @@
     <string name="about_user">عن المسافر</string>
     <string name="profit">نجاح و أرباح</string>
     <string name="contact_us">اتصل بنا</string>
-    <string name="nominate_a_driver">ترشيح سائق</string>
+    <string name="nominate_a_driver">ترشيح كابتن</string>
     <string name="notifications">الإشعارات</string>
     <string name="profit_str">
         لن يكون النجاح بعيدا عنك، الذي يعني تحقيق المزيد من الأرباح، وسندون هنا مجموعة نقاط التي تمثل مفتاح النجاح والطريق المؤدي إلى جني الأرباح.\n
@@ -354,7 +354,7 @@
     <string name="notification_del_driver">تم إخراجك من مجموعة: </string>
 
     <string name="addChangeGroup">إضافة مجموعة أو تغيير اسم المجموعة</string>
-    <string name="addDeleteDriver">إضافة أو حذف سائق</string>
+    <string name="addDeleteDriver">إضافة أو حذف كابتن</string>
 
     <string name="notes_bags_weights">ملاحظات، مثل عدد الحقائب ووزنها (اختياري)</string>
     <string name="notes">الملاحظات</string>
@@ -378,6 +378,10 @@
     <string name="please_upload_your_vehicle_image">صورة المركبة</string>
     <string name="please_upload_your_vehicle_document">وثيقة المركبة</string>
     <string name="please_upload_your_drivinng_licence">قم بتحميل رخصة القيادة الخاصة بك</string>
+    <string name="facebook">الفيسبوك</string>
+    <string name="customer_code">كود المسافر</string>
+    <string name="scheduled_travel">رحلة مجدولة</string>
+    <string name="my_sechduled_travels">رحلاتي المجدولة</string>
 
 
 </resources>

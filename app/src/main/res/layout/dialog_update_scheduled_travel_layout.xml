@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/textViewUpdatePost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="30dp"
+        android:text="@string/edit"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/pickup_search_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/rounded_view"
+        android:drawablePadding="@dimen/QIBus_softui_margin_32dp"
+        android:hint="@string/PickupAddress"
+        android:lines="1"
+        android:maxLines="1"
+        android:padding="@dimen/QIBus_softui_spacing_large"
+        android:textColor="@color/hint"
+        android:textColorHint="@color/md_grey_200"
+        android:textSize="@dimen/QIBus_softui_font_large"
+        tools:ignore="RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/search_drop_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/rounded_view"
+        android:drawablePadding="@dimen/QIBus_softui_margin_32dp"
+        android:hint="@string/DropAddress"
+        android:lines="1"
+        android:maxLines="1"
+        android:padding="@dimen/QIBus_softui_spacing_large"
+        android:textColor="@color/hint"
+        android:textColorHint="@color/md_grey_200"
+        android:textSize="@dimen/QIBus_softui_font_large" />
+
+    <TextView
+        android:id="@+id/Time_date_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/rounded_view"
+        android:drawablePadding="@dimen/QIBus_softui_margin_32dp"
+        android:hint="@string/travel_time"
+        android:layoutDirection="ltr"
+        android:lines="1"
+        android:maxLines="1"
+        android:padding="@dimen/QIBus_softui_spacing_large"
+        android:textColor="@color/hint"
+        android:textColorHint="@color/md_grey_200"
+        android:textSize="@dimen/QIBus_softui_font_large"
+        tools:ignore="RtlHardcoded" />
+
+
+    <TableLayout
+        android:id="@+id/MTD_table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="15dp"
+                android:text="@string/pickup_point"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#286556"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etPickupPoint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:ems="10"
+                android:hint="@string/pickup_point"
+                android:inputType="text" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="15dp"
+                android:text="@string/customer_count"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#286556"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etPassengers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ems="10"
+                android:hint="@string/number_of_passengers_1"
+                android:inputType="numberDecimal" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="15dp"
+                android:text="@string/trip_price"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#286556"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:ems="10"
+                android:hint="@string/trip_price"
+                android:inputType="numberDecimal" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="15dp"
+                android:text="@string/notes"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#286556"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ems="10"
+                android:hint="@string/notes"
+                android:inputType="text" />
+
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/btnSubmit_DUOL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ronded_button1"
+        android:text="@string/update"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/btnCancel_DUOL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/ronded_button1"
+        android:text="@string/cancel"
+        android:textColor="@android:color/black" />
+
+</LinearLayout>

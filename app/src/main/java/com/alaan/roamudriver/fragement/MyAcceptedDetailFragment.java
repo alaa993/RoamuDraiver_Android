@@ -124,7 +124,7 @@ public class MyAcceptedDetailFragment extends FragmentManagePermission implement
         GoogleApiClient.OnConnectionFailedListener, BackFragment, LocationListener {
 
     AppCompatButton trackRide, complete, cancel, approve, accept;
-    TextView title, drivername, mobilenumber, pickup_location, drop_location, payment_status_TV, PickupPoint, MyADF_date, MyADF_TimeVal;
+    TextView title, drivername, mobilenumber, pickup_location, drop_location, payment_status_TV, PickupPoint, MyADF_date, MyADF_TimeVal, MyADF_txt_pickup_point;
 
 
     String permissions[] = {PermissionUtils.Manifest_ACCESS_FINE_LOCATION, PermissionUtils.Manifest_ACCESS_COARSE_LOCATION};

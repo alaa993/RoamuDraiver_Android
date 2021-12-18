@@ -22,6 +22,7 @@ public class PendingRequestPojo implements Serializable {
     private String distance;
     private String status;
     private String travel_status;
+    public String travel_type;
     private String payment_status;
     private String amount;
     private String time;
@@ -34,6 +35,7 @@ public class PendingRequestPojo implements Serializable {
     private String driver_name;
     private String booked_set;
     private String empty_set;
+    public String available_set;
     private String Ride_smoked;
     public String ride_notes;
     public String tr_notes;

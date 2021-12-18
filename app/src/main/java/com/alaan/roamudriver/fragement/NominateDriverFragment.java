@@ -73,7 +73,7 @@ public class NominateDriverFragment extends Fragment {
                 + "Description: " + description.getText().toString();
 
         emailIntent.setType("message/rfc822");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL  , "info@roamu.net");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL  , new String[]{"info@roamu.net"});
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Nominate a Driver");
         emailIntent.putExtra(Intent.EXTRA_TEXT   , text);
         try {

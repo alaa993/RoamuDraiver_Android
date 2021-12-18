@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -30,8 +31,10 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,10 +47,12 @@ import com.alaan.roamudriver.R;
 import com.alaan.roamudriver.Server.GoogMatrixRequest;
 import com.alaan.roamudriver.Server.Server;
 import com.alaan.roamudriver.acitivities.HomeActivity;
+import com.alaan.roamudriver.acitivities.LoginActivity;
 import com.alaan.roamudriver.adapter.AcceptedRequestAdapter;
 import com.alaan.roamudriver.adapter.MyAcceptedRequestAdapter;
 import com.alaan.roamudriver.adapter.myTravelsAdapter;
 import com.alaan.roamudriver.custom.GPSTracker;
+import com.alaan.roamudriver.custom.Utils;
 import com.alaan.roamudriver.pojo.Notification;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
 import com.alaan.roamudriver.pojo.Post;
@@ -55,6 +60,7 @@ import com.alaan.roamudriver.pojo.PostList;
 import com.alaan.roamudriver.pojo.firebaseClients;
 import com.alaan.roamudriver.pojo.firebaseRide;
 import com.alaan.roamudriver.pojo.firebaseTravel;
+import com.alaan.roamudriver.pojo.firebaseTravelCounters;
 import com.alaan.roamudriver.session.SessionManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -128,6 +134,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     private RelativeLayout distancematrix_informations;
     Animation animFadeIn, animFadeOut;
     TextView txt_distance, txt_timedistance;
+    Switch switchCompat;
 
     RecyclerView recyclerView;
     Button my_acc_d_f_home_button, my_notes_button;
@@ -148,6 +155,16 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     private LatLng destination;
     private boolean checkPayments = false;
     int list_size = 0;
+
+    int[][] states = new int[][]{
+            new int[]{-android.R.attr.state_checked},
+            new int[]{android.R.attr.state_checked},
+    };
+
+    int[] thumbColors = new int[]{
+            Color.RED,
+            Color.GREEN,
+    };
 
 //    ValueEventListener listener;
 //    DatabaseReference databaseRide;
@@ -300,6 +317,10 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
         txt_Available_Seats = (TextView) view.findViewById(R.id.txt_Available_Seats);
         txt_Empty_Seats = (TextView) view.findViewById(R.id.txt_Empty_Seats);
 
+        switchCompat = (Switch) view.findViewById(R.id.travel_schedule);
+        switchCompat.setChecked(false);
+        DrawableCompat.setTintList(DrawableCompat.wrap(switchCompat.getThumbDrawable()), new ColorStateList(states, thumbColors));
+
         if (bundle != null) {
 
             travel_id = rideJson.getTravel_id();
@@ -325,6 +346,11 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             }
             if (rideJson.getempty_set() != null) {
                 txt_Empty_Seats.setText(rideJson.getempty_set());
+            }
+
+            if (rideJson.travel_type.equalsIgnoreCase("1")) {
+                switchCompat.setChecked(true);
+                DrawableCompat.setTintList(DrawableCompat.wrap(switchCompat.getThumbDrawable()), new ColorStateList(states, thumbColors));
             }
 
         }
@@ -376,6 +402,29 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             @Override
             public void onClick(View v) {
                 approvePayment();
+            }
+        });
+
+        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (Utils.haveNetworkConnection(getContext())) {
+                    DrawableCompat.setTintList(DrawableCompat.wrap(switchCompat.getThumbDrawable()), new ColorStateList(states, thumbColors));
+
+                    if (isChecked) {
+                        Log.i("ibrhim", "switchCompat");
+                        Log.i("ibrhim", "1");
+                        travel_type_change(rideJson.getTravel_id(), "1", false);
+                    } else {
+                        Log.i("ibrhim", "switchCompat");
+                        Log.i("ibrhim", "0");
+                        travel_type_change(rideJson.getTravel_id(), "0", false);
+                    }
+
+                } else {
+                    Toast.makeText(getContext(), getString(R.string.network_not_available), Toast.LENGTH_LONG).show();
+
+                }
             }
         });
     }
@@ -552,6 +601,14 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 //                                cancel.setVisibility(View.GONE);
 //                            }
                         }
+                        if (status.equalsIgnoreCase("CANCELLED") || status.equalsIgnoreCase("COMPLETED")) {
+                            if (response.has("travel_id")) {
+                                String travel_id = response.getString("travel_id");
+                                if (travel_id != null && !travel_id.contains("null")) {
+                                    addTravelToFireBase(travel_id);
+                                }
+                            }
+                        }
 
                         getMySpecificTravel(rideJson.getDriver_id(), rideJson.getTravel_id(), "All", SessionManager.getKEY());
                     } else {
@@ -569,6 +626,15 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             }
 
         });
+    }
+
+    public void addTravelToFireBase(String travel_id) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(travel_id);
+        firebaseTravelCounters counters = new firebaseTravelCounters();
+        Map<String, Object> travelObject = new HashMap<>();
+        travelObject.put("driver_id", String.valueOf(SessionManager.getUserId()));
+        travelObject.put("Counters", counters);
+        databaseRef.setValue(travelObject);
     }
 
     public boolean checkPayments() {
@@ -626,9 +692,6 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     }
 
     private void approvePayment() {
-        Log.i("ibrahim", "approvePayment");
-        Log.i("ibrahim", "approvePayment");
-
         RequestParams params = new RequestParams();
         params.put("travel_id", travel_id);
         Server.setHeader(SessionManager.getKEY());
@@ -680,6 +743,67 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
         });
     }
 
+    public void travel_type_change(String user_id, String status, Boolean what) {
+        RequestParams params = new RequestParams();
+        params.put("travel_id", user_id);
+        params.put("travel_type", status);
+        Server.setHeader(SessionManager.getKEY());
+        Server.post(Server.travel_type_change, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+
+                try {
+                    if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
+                        String status = response.getJSONObject("data").getString("is_online");
+
+                        if (what) {
+                            startActivity(new Intent(getActivity(), LoginActivity.class));
+                            SessionManager.logoutUser(getActivity());
+                        } else {
+                            if (status.equals("1")) {
+                                switchCompat.setChecked(true);
+                            } else {
+                                switchCompat.setChecked(false);
+                            }
+                        }
+
+                    } else {
+                        Toast.makeText(getContext(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+
+                Log.e("FAIl", throwable.toString() + ".." + errorResponse);
+            }
+
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("FAIl", throwable.toString() + ".." + errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Log.e("FAIl", throwable.toString() + ".." + responseString);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+            }
+        });
+    }
+
     public void updateRideFirebase(String ride_id, String travel_status, String ride_status, String payment_status, String payment_mode) {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("rides").child(ride_id);
         Map<String, Object> rideObject = new HashMap<>();
@@ -710,6 +834,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                     }
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }

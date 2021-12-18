@@ -217,7 +217,7 @@
     <string name="Post_success">post added successfully!</string>
     <string name="enter_number_of_passengers_trip_price">Enter number of passengers, trip price</string>
     <string name="number_of_passengers_1">Number of Passengers, 1</string>
-    <string name="trip_price">Trip Price</string>
+    <string name="trip_price">Seat Price</string>
     <string name="submit">Submit</string>
     <string name="tryAgain">Please try Again</string>
     <string name="enter_coubbon_number">Enter Coubbon number</string>
@@ -337,5 +337,9 @@ But the owner of the car will have to check the car documents before agreeing to
     <string name="please_upload_your_vehicle_image">please upload your Vehicle image</string>
     <string name="please_upload_your_vehicle_document">please upload your vehicle Document</string>
     <string name="please_upload_your_drivinng_licence">please upload your drivinng licence</string>
+    <string name="facebook">Facebook</string>
+    <string name="customer_code">Customer Code</string>
+    <string name="scheduled_travel">Scheduled Travel</string>
+    <string name="my_sechduled_travels">My Sechduled Travels</string>
 
 </resources>
