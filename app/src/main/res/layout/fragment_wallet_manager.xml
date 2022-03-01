@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragement.WalletManagerFragment"
+    tools:ignore="Orientation">
+
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/LinearLayout_1"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="?actionBarSize"-->
+    <!--        android:background="@android:color/black"-->
+    <!--        android:layout_marginBottom="@dimen/_5sdp"-->
+    <!--        android:elevation="@dimen/_10sdp">-->
+
+    <!--        <ImageView-->
+    <!--            android:id="@+id/backArrow"-->
+    <!--            android:layout_width="30dp"-->
+    <!--            android:layout_height="25dp"-->
+    <!--            android:layout_gravity="center_vertical"-->
+    <!--            android:layout_margin="10dp"-->
+    <!--            app:srcCompat="@drawable/ic_arraw_back_white" />-->
+
+    <!--        <TextView-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:gravity="center_vertical"-->
+    <!--            android:text="@string/WalletVC_Title"-->
+    <!--            android:textColor="@android:color/white"-->
+    <!--            android:textSize="18sp" />-->
+
+    <!--    </LinearLayout>-->
+
+    <LinearLayout
+        android:id="@+id/linear_child1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear"
+        android:layout_marginTop="5dp"
+
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TableRow
+                android:id="@+id/pickupaddress_row"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/wallet_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="@string/wallet_id"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="@dimen/margin_20" />
+
+                <TextView
+                    android:id="@+id/txt_wallet_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+
+                    android:maxLines="2"
+                    android:scrollHorizontally="true"
+                    android:text="123"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="@dimen/margin_20" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/dropaddressrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="@string/balance"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="@dimen/margin_20" />
+
+                <TextView
+                    android:id="@+id/txt_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:maxLines="2"
+                    android:scrollHorizontally="true"
+
+                    android:text="0.0"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="@dimen/margin_20" />
+            </TableRow>
+        </TableLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDE4E8" />
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_child1"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="1dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="1dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/accountsChargeCell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:padding="@dimen/five"
+                android:text="@string/WalletItem0"
+                android:textSize="@dimen/margin_20" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/arrow"
+            android:layout_height="@dimen/arrow"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="left|start"
+            app:srcCompat="@drawable/ic_credit_card_black_24dp" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardview_1"
+        android:layout_margin="1dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="1dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sendMoneyCell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:padding="@dimen/five"
+                android:text="@string/WalletItem1"
+                android:textSize="@dimen/margin_20" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/arrow"
+            android:layout_height="@dimen/arrow"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="left|start"
+            app:srcCompat="@drawable/ic_send_black_24dp" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardview_2"
+        android:layout_margin="1dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="1dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sendMoneyRequestCell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:padding="@dimen/five"
+                android:text="@string/WalletItem2"
+                android:textSize="@dimen/margin_20" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/arrow"
+            android:layout_height="@dimen/arrow"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="left|start"
+            app:srcCompat="@drawable/ic_move_to_inbox_black_24dp" />
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardview_3"
+        android:layout_margin="1dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="1dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/transactionCell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:padding="@dimen/five"
+                android:text="@string/WalletItem3"
+                android:textSize="@dimen/margin_20" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/arrow"
+            android:layout_height="@dimen/arrow"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="left|start"
+            app:srcCompat="@drawable/ic_playlist_add_check_black_24dp" />
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

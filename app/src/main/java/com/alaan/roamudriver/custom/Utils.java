@@ -111,7 +111,9 @@ public class Utils {
                 ((TextView) v).setTypeface(Typeface.createFromAsset(context.getAssets(), "font/AvenirLTStd_Book.otf"));
             }
 
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
     }

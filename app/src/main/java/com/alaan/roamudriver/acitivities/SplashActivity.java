@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.view.GravityCompat;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -38,14 +40,14 @@ import static com.alaan.roamudriver.fragement.lang.setLocale;
  */
 
 public class SplashActivity extends ActivityManagePermission {
-    private final static int SPLASH_TIME_OUT = 2000;
+    private final static int SPLASH_TIME_OUT = 500;
     String token;
+    public static final int OPEN_NEW_ACTIVITY = 123;
     String permissionAsk[] = {PermissionUtils.Manifest_CAMERA, PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE, PermissionUtils.Manifest_READ_EXTERNAL_STORAGE, PermissionUtils.Manifest_ACCESS_FINE_LOCATION, PermissionUtils.Manifest_ACCESS_COARSE_LOCATION};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //get languge form sharedPrefrence
         Stash.init(this);
         if (Stash.getString("TAG_LANG") != null) {
             setLocale(Stash.getString("TAG_LANG"), this);
@@ -55,22 +57,19 @@ public class SplashActivity extends ActivityManagePermission {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //Remove notification bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         //set content view AFTER ABOVE sequence (to avoid crash)
         setContentView(R.layout.splash_activity);
         new Handler().postDelayed(new Runnable() {
-            /*
-             * Showing splash screen with a timer. This will be useful when you
-             * want to show case your app logo / company
-             */
             @Override
             public void run() {
                 Askpermission();
-                // This method will be executed once the timer is over
-                // Start your app main activity
-                // close this activity
             }
         }, SPLASH_TIME_OUT);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     public void Askpermission() {
@@ -108,15 +107,15 @@ public class SplashActivity extends ActivityManagePermission {
                     });
                 } else {
                     Intent i = new Intent(SplashActivity.this, LoginActivity.class);
-                    startActivity(i);
+                    startActivityForResult(i, OPEN_NEW_ACTIVITY);
                 }
-            }else {
+            } else {
                 Intent i = new Intent(SplashActivity.this, LoginActivity.class);
-                startActivity(i);
+                startActivityForResult(i, OPEN_NEW_ACTIVITY);
             }
         } else {
             Intent i = new Intent(SplashActivity.this, LoginActivity.class);
-            startActivity(i);
+            startActivityForResult(i, OPEN_NEW_ACTIVITY);
         }
 //        finish();
     }
@@ -133,11 +132,9 @@ public class SplashActivity extends ActivityManagePermission {
                 super.onStart();
 //                swipeRefreshLayout.setRefreshing(true);
             }
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-
                 try {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
 
@@ -146,32 +143,19 @@ public class SplashActivity extends ActivityManagePermission {
                         if (response.has("data")) {
                             Gson gson = new Gson();
                             User user = gson.fromJson(response.getJSONObject("data").toString(), User.class);
-                            Log.i("ibrahim", "response.getJSONObject(\"data\").toString()");
-                            Log.i("ibrahim", response.getJSONObject("data").toString());
-
+                            //log.i("ibrahim", "response.getJSONObject(\"data\").toString()");
+                            //log.i("ibrahim", response.getJSONObject("data").toString());
                             Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-
                             if (user.getBrand().length() == 0 || user.getModel().length() == 0 || user.getYear().length() == 0 || user.getVehicle_no().length() == 0 || user.getColor().length() == 0) {
                                 intent.putExtra("go", "vehicle");
-                                startActivity(intent);
+                                startActivityForResult(intent, OPEN_NEW_ACTIVITY);
+                            } else {
+                                startActivityForResult(new Intent(SplashActivity.this, HomeActivity.class), OPEN_NEW_ACTIVITY);
                             }
-                            // to make uploading documents optional, by ibrahim
-//                            else if (user.getLicence().length() == 0 || user.getInsurance().length() == 0 || user.getPermit().length() == 0 || user.getRegisteration().length() == 0) {
-//                                intent.putExtra("go", "doc");
-//                                startActivity(intent);
-//                            }
-                            else {
-                                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
-//                            startActivity(new Intent(SplashActivity.this, HomeActivity.class));
-                            }
-//                        Toast.makeText(SplashActivity.this, getString(R.string.success), Toast.LENGTH_LONG).show();
-//                        finish();
                         }
                     } else {
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                        finish();
-//                        Toast.makeText(SplashActivity.this, response.getString("data"), Toast.LENGTH_LONG).show();
+                        startActivityForResult(new Intent(SplashActivity.this, LoginActivity.class), OPEN_NEW_ACTIVITY);
                     }
                 } catch (JSONException e) {
 
@@ -184,5 +168,17 @@ public class SplashActivity extends ActivityManagePermission {
 //                swipeRefreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == OPEN_NEW_ACTIVITY) {
+            finish();
+        }
     }
 }

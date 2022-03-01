@@ -32,11 +32,13 @@ public class GoogMatrixRequest {
             String url_request = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + origins + "&destinations=" + destinations + "&mode=driving&language=en-EN&key=" + API_KEY;
 
             response = request.run(url_request);
-            Log.i("ibrahim", "getGoogMatrixRequest");
-            Log.i("ibrahim", response);
+            //log.i("ibrahim", "getGoogMatrixRequest");
+            //log.i("ibrahim", response);
             System.out.println(response);
             return response;
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
             e.printStackTrace();
         }
         return response;

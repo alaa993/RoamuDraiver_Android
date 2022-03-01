@@ -1,5 +1,6 @@
 package com.alaan.roamudriver.fragement;
 
+//should be deleted by ibrahim
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -80,12 +81,6 @@ import cz.msebera.android.httpclient.Header;
 import static android.app.Activity.RESULT_OK;
 import static com.alaan.roamudriver.fragement.lang.setLocale;
 import static com.loopj.android.http.AsyncHttpClient.log;
-
-/**
- * Created by android on 14/3/17.
- */
-
-//deleted fragment by ibrahim
 
 public class RequestFragment extends FragmentManagePermission implements OnMapReadyCallback, DirectionCallback {
     View view;
@@ -178,9 +173,9 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
                             if (!mPassengers.getText().toString().isEmpty() && !mPrice.getText().toString().isEmpty()) {
 
                                 dialog.dismiss();
-                                log.i("tag", "success by ibrahim");
-                                log.i("tag", mPassengers.getText().toString());
-                                log.i("tag", mPrice.getText().toString());
+                                //log.i("tag", "success by ibrahim");
+                                //log.i("tag", mPassengers.getText().toString());
+                                //log.i("tag", mPrice.getText().toString());
                                 //    origin.latitude + "," + origin.longitude;
                                 // destination.latitude + "," + destination.longitude;
 
@@ -275,8 +270,8 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
 
                         val_date = date_time + " " + hourOfDay + ":" + minute + ":00";
 //                        Toast.makeText(getContext(), "show time" + val_date, Toast.LENGTH_SHORT).show();
-                        log.i("tag", "success by ibrahim");
-                        log.i("tag", val_date);
+                        //log.i("tag", "success by ibrahim");
+                        //log.i("tag", val_date);
                         setDate.setText(val_date);
 
                     }
@@ -471,7 +466,9 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
             } else if (v instanceof TextView) {
                 ((TextView) v).setTypeface(Typeface.createFromAsset(context.getAssets(), "font/AvenirLTStd_Medium.otf"));
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
         }
     }
 
@@ -562,7 +559,9 @@ public class RequestFragment extends FragmentManagePermission implements OnMapRe
                     }
                     dismiss();
 
-                } catch (Exception e) {
+                } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
                 }
 

@@ -40,9 +40,9 @@ public class Server {
 
     public static final String REGISTER = BASE_URL + "user/register" + FORMAT;
     public static final String LOGIN = BASE_URL + "user/loginByMobile" + FORMAT;
-    public static final String APPROVE_PAYMENT = BASE_URL + "api/user/rides" + FORMAT;
+    public static final String APPROVE_PAYMENT = BASE_URL + "api/user/rides_driver" + FORMAT;
     public static final String APPROVE_PAYMENT_ALL = BASE_URL + "api/user/approve_payments" + FORMAT;
-    public static final String STATUS_CHANGE = BASE_URL + "api/user/rides" + FORMAT;
+    public static final String STATUS_CHANGE = BASE_URL + "api/user/rides_driver" + FORMAT;
     public static final String RIDES_STATUS_CHANGE = BASE_URL + "api/user/rides_update" + FORMAT;
     public static final String checkAllPayments = BASE_URL + "api/user/checkallpayments" + FORMAT;
 
@@ -73,11 +73,20 @@ public class Server {
     public static final String PASSWORD_RESET = BASE_URL + "api/user/change_password" + FORMAT;
     public static final String PAYMENT_HISTORY = BASE_URL + "api/driver/rides" + FORMAT;
 
+    public static final String addBalanceUserToWallets = BASE_URL + "api/user/addBalanceUserToWallets" + FORMAT;
+    public static final String getTransactionsList = BASE_URL + "api/user/getTransactionsList" + FORMAT;
+    public static final String getInfoTransactions = BASE_URL + "api/user/getInfoTransactions" + FORMAT;
+    public static final String addBalanceUserToWalletsFromPromoCode = BASE_URL + "api/user/addBalanceUserToWalletsFromPromoCode" + FORMAT;
+    public static final String ApplyPromoCode = BASE_URL + "api/user/applyPromoCode" + FORMAT;
+    public static final String getPersonalWallet = BASE_URL + "api/user/getPersonalWallet" + FORMAT;
+    public static final String getPomoCodes = BASE_URL + "api/user/promo" + FORMAT;
+    public static final String updateLanguage = BASE_URL + "api/user/updateLang" + FORMAT;
+
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.setTimeout(3000);
         client.get(getAbsoluteUrl(url), params, responseHandler);
 
-        Log.e(TAG, getAbsoluteUrl(url));
+        //log.e(TAG, getAbsoluteUrl(url));
     }
 
     public static void postSync(String url, RequestParams params, JsonHttpResponseHandler jsonHttpResponseHandler) {
@@ -85,7 +94,9 @@ public class Server {
             SyncHttpClient client = new SyncHttpClient();
             client.post(getAbsoluteUrl(url), params, jsonHttpResponseHandler);
             Log.d(TAG, getAbsoluteUrl(url));
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
 
         }
@@ -94,7 +105,7 @@ public class Server {
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.setTimeout(AsyncHttpClient.DEFAULT_MAX_CONNECTIONS);
         client.post(getAbsoluteUrl(url), params, responseHandler);
-        Log.e(TAG, getAbsoluteUrl(url) + params.toString());
+        //log.e(TAG, getAbsoluteUrl(url) + params.toString());
     }
 
     public static String getAbsoluteUrl(String relativeUrl) {

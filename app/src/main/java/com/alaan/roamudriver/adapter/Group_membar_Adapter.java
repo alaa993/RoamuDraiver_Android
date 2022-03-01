@@ -70,7 +70,7 @@ public class Group_membar_Adapter extends RecyclerView.Adapter<Group_membar_Adap
                 pass.setDriver_email(pojo.getDriver_email());
                 pass.setDriver_country(pojo.getDriver_country());
                 pass.setGroup_name(pojo.getGroup_name());
-                Log.i("ibrahim was here onlin", pojo.getDriver_is_online());
+                //log.i("ibrahim was here onlin", pojo.getDriver_is_online());
                 pass.setDriver_is_online(pojo.getDriver_is_online());
                 pass.setDriver_vehicle_no(pojo.getDriver_vehicle_no());
                 AcceptRideFragment fragobj = new AcceptRideFragment();
@@ -83,7 +83,7 @@ public class Group_membar_Adapter extends RecyclerView.Adapter<Group_membar_Adap
 
             }
         });
-        log.e("ss", "" + list.size());
+        //log.e("ss", "" + list.size());
     }
 
     @Override

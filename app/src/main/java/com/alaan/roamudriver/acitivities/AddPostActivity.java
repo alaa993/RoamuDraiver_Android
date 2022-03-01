@@ -61,8 +61,8 @@ public class AddPostActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String UserName = dataSnapshot.child("username").getValue(String.class);
                 String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
-//                log.i("tag","success by ibrahim");
-//                log.i("tag", UserName);
+//                //log.i("tag","success by ibrahim");
+//                //log.i("tag", UserName);
                 // Firebase code here
                 DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("posts").push();
                 Map<String,Object> author = new HashMap<>();

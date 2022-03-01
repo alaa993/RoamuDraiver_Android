@@ -60,7 +60,7 @@ public class LoginActivity extends ActivityManagePermission {
     String token;
     SwipeRefreshLayout swipeRefreshLayout;
 
-    Button b1, b2;
+    Button b1, b2, b3;
     public static String LANGUAGE = "ar";
 
     @Override
@@ -135,7 +135,7 @@ public class LoginActivity extends ActivityManagePermission {
         // params.put("password", password);
         params.put("utype", "1");
         params.put("gcm_token", token);
-//        Log.e("TOKEN",token);
+//        //log.e("TOKEN",token);
         Server.post(Server.LOGIN, params, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -155,12 +155,12 @@ public class LoginActivity extends ActivityManagePermission {
 
                         Gson gson = new Gson();
                         User user = gson.fromJson(response.getJSONObject("data").toString(), User.class);
-                        Log.i("ibrahim", "response.getJSONObject(\"data\").toString()");
-                        Log.i("ibrahim", response.getJSONObject("data").toString());
+                        //log.i("ibrahim", "response.getJSONObject(\"data\").toString()");
+                        //log.i("ibrahim", response.getJSONObject("data").toString());
                         SessionManager.setUser(gson.toJson(user));
                         SessionManager.setIsLogin();
-//                        Log.i("ibrahim", "carType");
-//                        Log.i("ibrahim", SessionManager.getCarType());
+//                        //log.i("ibrahim", "carType");
+//                        //log.i("ibrahim", SessionManager.getCarType());
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 
                         if (user.getBrand().length() == 0 || user.getModel().length() == 0 || user.getYear().length() == 0 || user.getVehicle_no().length() == 0 || user.getColor().length() == 0) {
@@ -223,6 +223,7 @@ public class LoginActivity extends ActivityManagePermission {
 
         b1 = findViewById(R.id.b1en);
         b2 = findViewById(R.id.b2ar);
+        b3 = findViewById(R.id.b3ku);
 
 
         b1.setOnClickListener(new View.OnClickListener() {
@@ -244,7 +245,16 @@ public class LoginActivity extends ActivityManagePermission {
 
             }
         });
+        b3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setLocale("ku", LoginActivity.this);
+                LoginActivity.this.recreate();
+                Stash.put("TAG_LANG", "ku");
 
+
+            }
+        });
     }
 
     @SuppressLint("NewApi")

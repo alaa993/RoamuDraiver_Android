@@ -32,7 +32,9 @@ public class SetCustomFont {
             } else if (v instanceof TextView) {
                 ((TextView) v).setTypeface(Typeface.createFromAsset(context.getAssets(), "font/AvenirLTStd_Medium.otf"));
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
             Log.d("catch","font   "+e.toString());
         }
     }

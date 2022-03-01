@@ -47,14 +47,14 @@ public class myTravelsAdapter extends RecyclerView.Adapter<myTravelsAdapter.Hold
     @Override
     public void onBindViewHolder(final myTravelsAdapter.Holder holder, int position) {
         final PendingRequestPojo pojo = list.get(position);
-        Log.i("ibrahim_pojo", pojo.toString());
-//        Log.i("ibrahim_pojo", pojo.getTravel_status());
+        //log.i("ibrahim_pojo", pojo.toString());
+//        //log.i("ibrahim_pojo", pojo.getTravel_status());
 
         holder.from_add.setText(pojo.getPickup_address());
         holder.to_add.setText(pojo.getDrop_address());
         holder.customers_count.setText(pojo.getbooked_set());
-        Log.i("ibrahim", "pojo.getbooked_set()");
-        Log.i("ibrahim", pojo.getbooked_set());
+        //log.i("ibrahim", "pojo.getbooked_set()");
+        //log.i("ibrahim", pojo.getbooked_set());
         Utils utils = new Utils();
         holder.status.setText(pojo.getStatus());
 //        holder.date.setText(utils.getCurrentDateInSpecificFormat(pojo.getTime()));

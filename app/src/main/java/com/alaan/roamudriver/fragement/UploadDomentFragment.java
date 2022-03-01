@@ -393,21 +393,21 @@ public class UploadDomentFragment extends FragmentManagePermission {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 try {
-                    Log.i("ibrahim", "getInfo");
-                    Log.i("ibrahim", "response");
-                    Log.i("ibrahim", response.toString());
+                    //log.i("ibrahim", "getInfo");
+                    //log.i("ibrahim", "response");
+                    //log.i("ibrahim", response.toString());
 
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         Gson gson = new Gson();
                         User user = gson.fromJson(response.getJSONObject("data").toString(), User.class);
-                        Log.i("ibrahim", "user");
-                        Log.i("ibrahim", user.toString());
+                        //log.i("ibrahim", "user");
+                        //log.i("ibrahim", user.toString());
                         if (user.getLicence() != null) {
                             if (user.getLicence().length() > 0) {
                                 imageCounter++;
                                 img_licence.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-                                Log.i("ibrahim", "user.getLicence()");
-                                Log.i("ibrahim", user.getLicence());
+                                //log.i("ibrahim", "user.getLicence()");
+                                //log.i("ibrahim", user.getLicence());
                                 Glide.with(UploadDomentFragment.this).load(user.getLicence()).into(imageview_licence);
                             } else {
                                 img_licence.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
@@ -417,8 +417,8 @@ public class UploadDomentFragment extends FragmentManagePermission {
                             if (user.getVehicle_info().length() > 0) {
                                 imageCounter++;
                                 img_insurance.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-                                Log.i("ibrahim", "user.getVehicle_info()");
-                                Log.i("ibrahim", user.getVehicle_info());
+                                //log.i("ibrahim", "user.getVehicle_info()");
+                                //log.i("ibrahim", user.getVehicle_info());
                                 Glide.with(getActivity()).load(user.getVehicle_info()).into(imageview_insurace);
                             } else {
                                 img_insurance.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
@@ -428,8 +428,8 @@ public class UploadDomentFragment extends FragmentManagePermission {
                             if (user.getPermit().length() > 0) {
                                 imageCounter++;
                                 img_permit.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-                                Log.i("ibrahim", "user.getPermit()");
-                                Log.i("ibrahim", user.getPermit());
+                                //log.i("ibrahim", "user.getPermit()");
+                                //log.i("ibrahim", user.getPermit());
                                 Glide.with(getActivity()).load(user.getPermit()).into(imageview_permit);
                             } else {
                                 img_permit.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
@@ -439,8 +439,8 @@ public class UploadDomentFragment extends FragmentManagePermission {
 //                            if (user.getRegisteration().length() > 0) {
 //                                imageCounter++;
 //                                img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
-//                                Log.i("ibrahim", "user.getRegisteration()");
-//                                Log.i("ibrahim", user.getRegisteration());
+//                                //log.i("ibrahim", "user.getRegisteration()");
+//                                //log.i("ibrahim", user.getRegisteration());
 //                                Glide.with(getActivity()).load(user.getRegisteration()).into(imageview_registration);
 //                            } else {
 //                                img_registration.setColorFilter(ContextCompat.getColor(getActivity(), R.color.red));
@@ -656,7 +656,9 @@ public class UploadDomentFragment extends FragmentManagePermission {
             } else if (v instanceof TextView) {
                 ((TextView) v).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "font/AvenirLTStd_Book.otf"));
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
         }
     }
 

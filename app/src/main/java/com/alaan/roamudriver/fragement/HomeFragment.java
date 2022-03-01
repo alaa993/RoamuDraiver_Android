@@ -215,9 +215,11 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
                     getCurrentlOcation();
                 }
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
-            Log.e("tag", "Inflate exception   " + e.toString());
+            //log.e("tag", "Inflate exception   " + e.toString());
         }
 
         linear_request.setOnClickListener(new View.OnClickListener() {
@@ -318,7 +320,7 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
                 pickup_location.setText(pickup.getAddress());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(data);
-                Log.e(TAG, status.toString());
+                //log.e(TAG, status.toString());
                 Toast.makeText(getActivity(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
@@ -348,7 +350,9 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
 //                    mGoogleApiClient.disconnect();
 //                }
 //            }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
     }
@@ -360,7 +364,9 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
             if (mMapView != null) {
                 mMapView.onDestroy();
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -373,7 +379,9 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
             if (mMapView != null) {
                 mMapView.onSaveInstanceState(outState);
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
     }
@@ -385,7 +393,9 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
             if (mMapView != null) {
                 mMapView.onLowMemory();
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -400,7 +410,9 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
             if (mGoogleApiClient != null) {
                 mGoogleApiClient.disconnect();
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
     }
@@ -415,7 +427,9 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
             if (mGoogleApiClient != null) {
                 mGoogleApiClient.connect();
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
     }
@@ -490,7 +504,9 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
 //        }
         try {
 //            Snackbar.make(rootView, getString(R.string.direct_requesting), Snackbar.LENGTH_SHORT).show();
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
         GoogleDirection.withServerKey(getString(R.string.google_android_map_api_key))
@@ -553,7 +569,7 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
         footer2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("ibrahim", "insideFooter2");
+                //log.i("ibrahim", "insideFooter2");
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("data", list.get(ride_number));
                 AcceptRideFragment detailFragment = new AcceptRideFragment();
@@ -683,7 +699,9 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
                                     }
                                     likelyPlaces.release();
                                 }
-                            } catch (Exception e) {
+                            } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
                             }
 
@@ -705,7 +723,7 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
                             if (task.isSuccessful()) {
                                 FindCurrentPlaceResponse response = task.getResult();
                                 /*for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
-                                    Log.i(TAG, String.format("Place '%s' has likelihood: %f",
+                                    //log.i(TAG, String.format("Place '%s' has likelihood: %f",
                                             placeLikelihood.getPlace().getName(),
                                             placeLikelihood.getLikelihood()));
                                     pickup = placeLikelihood.getPlace();
@@ -717,8 +735,8 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
                                 if (response != null && response.getPlaceLikelihoods() != null) {
                                     PlaceLikelihood placeLikelihood = response.getPlaceLikelihoods().get(0);
                                     pickup = placeLikelihood.getPlace();
-                                    Log.i("ibrahim", "gps");
-                                    Log.i("ibrahim", placeLikelihood.getPlace().getLatLng().toString());
+                                    //log.i("ibrahim", "gps");
+                                    //log.i("ibrahim", placeLikelihood.getPlace().getLatLng().toString());
 
                                     pickup_location.setText(placeLikelihood.getPlace().getAddress());
                                     current_location.setColorFilter(ContextCompat.getColor(getActivity(), R.color.current_lolcation));
@@ -728,12 +746,14 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
                                 Exception exception = task.getException();
                                 if (exception instanceof ApiException) {
                                     ApiException apiException = (ApiException) exception;
-                                    Log.e(TAG, "Place not found: " + apiException.getStatusCode());
+                                    //log.e(TAG, "Place not found: " + apiException.getStatusCode());
                                 }
                             }
                         });
                     }
-                } catch (Exception e) {
+                } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
                 }
 
@@ -756,7 +776,7 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e("earn", response.toString());
+                //log.e("earn", response.toString());
                 try {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         if (response.getJSONObject("data").getJSONObject("request").length() != 0) {
@@ -841,7 +861,9 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
                 }
                 setCurrentLocation(currentLatitude, currentLongitude);
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
 
@@ -864,7 +886,9 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
                 }
 
             });
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
     }
@@ -1000,14 +1024,16 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e("success", response.toString());
+                //log.e("success", response.toString());
                 try {
                     Gson gson = new GsonBuilder().create();
                     list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                     }.getType());
                     try {
                         Snackbar.make(rootView, getString(R.string.direct_requesting), Snackbar.LENGTH_SHORT).show();
-                    } catch (Exception e) {
+                    } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
                     }
 
                     for (int i = 0; i < list.size(); i++) {
@@ -1028,7 +1054,7 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
                     }
 
                 } catch (JSONException e) {
-                    Log.e("Get Data", e.getMessage());
+                    //log.e("Get Data", e.getMessage());
                 }
             }
         });
@@ -1036,7 +1062,7 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Log.i("ibrahim", "insideMarker");
+        //log.i("ibrahim", "insideMarker");
 //        if (footer2.getVisibility() == View.GONE) {
 //            footer2.setVisibility(View.VISIBLE);
 //        } else {
@@ -1045,14 +1071,14 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
         textView_totalride.setText("");
         textView_today.setText("");
         textView_overall.setText("");
-        Log.i("ibrahim", String.valueOf(markers.size()));
+        //log.i("ibrahim", String.valueOf(markers.size()));
         for (int i = 0; i < markers.size(); i++) {
-            Log.i("ibrahim", "beforeloop");
-            Log.i("ibrahim", markers.get(i).getTitle().toString());
+            //log.i("ibrahim", "beforeloop");
+            //log.i("ibrahim", markers.get(i).getTitle().toString());
 
             if (marker.equals(markers.get(i))) {
-                Log.i("ibrahim", "insideMarker");
-                Log.i("ibrahim", "" + i);
+                //log.i("ibrahim", "insideMarker");
+                //log.i("ibrahim", "" + i);
 
                 textView_totalride.setText(list.get(i).getUser_name());
                 textView_today.setText(list.get(i).getPickup_address());
@@ -1067,8 +1093,8 @@ public class HomeFragment extends FragmentManagePermission implements OnMapReady
 //            @Override
 //            public boolean onMarkerClick(Marker marker) {
 //                String locAddress = marker.getTitle();
-//                Log.i("ibrahim", "insideMarker");
-//                Log.i("ibrahim", locAddress);
+//                //log.i("ibrahim", "insideMarker");
+//                //log.i("ibrahim", locAddress);
 //                if (footer2.getVisibility() == View.GONE) {
 //                    footer2.setVisibility(View.VISIBLE);
 //                } else {

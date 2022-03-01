@@ -2,7 +2,7 @@ package com.alaan.roamudriver.pojo;
 
 import java.io.Serializable;
 
-public class Post implements Serializable{
+public class Post implements Serializable {
     public String id;
     public UserProfile author;
     public String text;
@@ -12,12 +12,16 @@ public class Post implements Serializable{
 
     public Long timestamp;
 
-    public Post()
-    {
+    public Post() {
+        this.id = "";
+        this.author = new UserProfile();
+        this.text = "";
+        this.type = "";
+        this.privacy = "";
+        this.travel_id = 0;
     }
 
-    public Post(String id, UserProfile author, String Text, Long timestamp,String type, String privacy, int travel_id)
-    {
+    public Post(String id, UserProfile author, String Text, Long timestamp, String type, String privacy, int travel_id) {
         this.id = id;
         this.author = author;
         this.text = text;

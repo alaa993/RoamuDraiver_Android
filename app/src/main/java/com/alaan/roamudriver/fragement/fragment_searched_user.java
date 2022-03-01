@@ -79,15 +79,15 @@ public class fragment_searched_user extends Fragment {
         params.put("smoke", smoke);
         params.put("passn", passn);
         params.put("date", Date);
-        Log.i("ibrahim","car_type");
-        Log.i("ibrahim",SessionManager.getCarType());
+        //log.i("ibrahim","car_type");
+        //log.i("ibrahim",SessionManager.getCarType());
         params.put("car_type", SessionManager.getCarType());
         Server.setHeader(SessionManager.getKEY());
         Server.get(Server.GET_SEARCHUSER, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e("success", response.toString());
+                //log.e("success", response.toString());
                 try {
                     Gson gson = new GsonBuilder().create();
                     List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
@@ -100,7 +100,7 @@ public class fragment_searched_user extends Fragment {
                     searchUserAdapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
-                    Log.e("Get Data", e.getMessage());
+                    //log.e("Get Data", e.getMessage());
 
                 }
             }

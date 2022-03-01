@@ -125,7 +125,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             payment_status = rideJson.getPayment_status();
             payment_mode = rideJson.getPayment_mode();
 
-//            Log.i("ibrahim", rideJson.getRide_id());
+//            //log.i("ibrahim", rideJson.getRide_id());
             databaseRides = FirebaseDatabase.getInstance().getReference("rides").child(rideJson.getRide_id());
         }
         view = inflater.inflate(R.layout.accepted_detail_fragmnet, container, false);
@@ -143,7 +143,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 firebaseRide fbRide = dataSnapshot.getValue(firebaseRide.class);
-                Log.i("ibrahim ride", "----------");
+                //log.i("ibrahim ride", "----------");
                 travel_status = fbRide.travel_status;
                 ride_status = fbRide.ride_status;
                 payment_status = fbRide.payment_status;
@@ -354,7 +354,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
         mobilenumber_row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("ibrahim", "mobile call function");
+                //log.i("ibrahim", "mobile call function");
                 askCompactPermission(PermissionUtils.Manifest_CALL_PHONE, new PermissionResult() {
                     @Override
                     public void permissionGranted() {
@@ -439,9 +439,12 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
             public void onDataChange(DataSnapshot dataSnapshot) {
                 firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
                 if (fbTravel != null) {
-                    Log.i("ibrahim", "fbTravel");
-                    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("PAID");
-                    databaseRef.setValue(fbTravel.Counters.PAID + 1);
+                    try {
+                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("PAID");
+                        databaseRef.setValue(fbTravel.Counters.PAID + 1);
+                    } catch (NullPointerException e) {
+                        System.err.println("Null pointer exception");
+                    }
                 }
             }
 
@@ -505,16 +508,22 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
                 firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
                 if (fbTravel != null) {
                     if (status.contains("ACCEPTED")) {
-                        Log.i("ibrahim", "fbTravel");
-                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("ACCEPTED");
-                        databaseRef.setValue(fbTravel.Counters.ACCEPTED + 1);
+                        try {
+                            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("ACCEPTED");
+                            databaseRef.setValue(fbTravel.Counters.ACCEPTED + 1);
+                        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        }
                     } else if (status.contains("COMPLETED")) {
-                        Log.i("ibrahim", "fbTravel");
-                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("COMPLETED");
-                        databaseRef.setValue(fbTravel.Counters.COMPLETED + 1);
+                        try {
+                            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("COMPLETED");
+                            databaseRef.setValue(fbTravel.Counters.COMPLETED + 1);
 
-                        DatabaseReference databaseRef1 = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("ACCEPTED");
-                        databaseRef1.setValue(fbTravel.Counters.ACCEPTED - 1);
+                            DatabaseReference databaseRef1 = FirebaseDatabase.getInstance().getReference("Travels").child(rideJson.getTravel_id()).child("Counters").child("ACCEPTED");
+                            databaseRef1.setValue(fbTravel.Counters.ACCEPTED - 1);
+                        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        }
                     }
                 }
             }
@@ -645,7 +654,7 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
     }
 
     void isStarted() {
-        Log.i("ibrahim", "isStarted");
+        //log.i("ibrahim", "isStarted");
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Tracking/" + rideJson.getRide_id());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -735,7 +744,9 @@ public class AcceptedDetailFragment extends FragmentManagePermission implements 
                 Point destination = Point.fromLngLat(longitude1, latitude1);
 
                 fetchRoute(origin, destination);
-            } catch (Exception e) {
+            } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
                 Toast.makeText(getActivity(), e.toString() + " ", Toast.LENGTH_SHORT).show();
             }
         } else {

@@ -12,12 +12,17 @@ public class Notification implements Serializable {
     public Long timestamp;
 
 
-    public Notification()
-    {
+    public Notification() {
+        this.id = "";
+        this.text = "";
+        this.uid = "";
+        this.ride_id = "";
+        this.travel_id = "";
+        this.readStatus = "";
+        this.timestamp = Long.valueOf(0);
     }
 
-    public Notification(String id, String text, String uid, String ride_id, String travel_id, String readStatus, Long timestamp)
-    {
+    public Notification(String id, String text, String uid, String ride_id, String travel_id, String readStatus, Long timestamp) {
         this.id = id;
         this.text = text;
         this.uid = uid;

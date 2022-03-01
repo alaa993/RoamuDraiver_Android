@@ -10,6 +10,12 @@ public class firebaseRide {
 
     public firebaseRide()
     {
+        this.id = "";
+        this.payment_mode = "";
+        this.payment_status = "";
+        this.ride_status = "";
+        this.travel_status = "";
+        this.timestamp = Long.valueOf(0);
     }
 
     public firebaseRide(String id, String payment_mode,

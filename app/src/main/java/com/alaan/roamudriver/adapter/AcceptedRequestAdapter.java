@@ -32,8 +32,8 @@ public class AcceptedRequestAdapter extends RecyclerView.Adapter<AcceptedRequest
     @Override
     public void onBindViewHolder(final Holder holder, int position) {
         final PendingRequestPojo pojo = list.get(position);
-        Log.i("ibrahim_pojo", pojo.toString());
-//        Log.i("ibrahim_pojo", pojo.getTravel_status());
+        //log.i("ibrahim_pojo", pojo.toString());
+//        //log.i("ibrahim_pojo", pojo.getTravel_status());
 
         holder.from_add.setText(pojo.getPickup_address());
         holder.to_add.setText(pojo.getDrop_address());
@@ -42,9 +42,9 @@ public class AcceptedRequestAdapter extends RecyclerView.Adapter<AcceptedRequest
         Utils utils = new Utils();
         holder.status.setText(pojo.getStatus());
 //        holder.date.setText(utils.getCurrentDateInSpecificFormat(pojo.getTime()));
-        Log.i("ibrahim", "AcceptedRequestAdapter");
-        Log.i("ibrahim", pojo.getTime());
-        Log.i("ibrahim", utils.getCurrentDateInSpecificFormat(pojo.getTime()));
+        //log.i("ibrahim", "AcceptedRequestAdapter");
+        //log.i("ibrahim", pojo.getTime());
+        //log.i("ibrahim", utils.getCurrentDateInSpecificFormat(pojo.getTime()));
         holder.date.setText(utils.getCurrentDateInSpecificFormat(pojo.getTime()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

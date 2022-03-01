@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.alaan.roamudriver.R;
 import com.alaan.roamudriver.pojo.Comment;
-import com.alaan.roamudriver.pojo.CommentList;
+import com.alaan.roamudriver.adapter.CommentAdapter;
 import com.alaan.roamudriver.pojo.Post;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -72,10 +72,10 @@ public class PostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i("ibrahim from post1", "-----------------");
+        //log.i("ibrahim from post1", "-----------------");
 
         view = inflater.inflate(R.layout.fragment_post, container, false);
-        Log.i("ibrahim from post2", "-----------------");
+        //log.i("ibrahim from post2", "-----------------");
 
         view.setBackgroundColor(Color.WHITE);
         PostRL = (RelativeLayout) view.findViewById(R.id.activity_post_post);
@@ -96,9 +96,9 @@ public class PostFragment extends Fragment {
 
         comments = new ArrayList<>();
         listViewPosts = (ListView) view.findViewById(R.id.Post_listViewComments);
-        log.i("tag", "success by ibrahim");
-        log.i("tag", Post_id_bundle);
-        //log.i("tag",databaseComments.child("Comment1").child("username"));
+        //log.i("tag", "success by ibrahim");
+        //log.i("tag", Post_id_bundle);
+        ////log.i("tag",databaseComments.child("Comment1").child("username"));
 
         inputEditComment = view.findViewById(R.id.input_Comment);
         AddCommentBTN = view.findViewById(R.id.AddCommentBTN);
@@ -127,8 +127,8 @@ public class PostFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String UserName = dataSnapshot.child("username").getValue(String.class);
                 String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
-                log.i("tag", "success by ibrahim");
-                log.i("tag", UserName);
+                //log.i("tag", "success by ibrahim");
+                //log.i("tag", UserName);
                 // Firebase code here
                 if (bundle.getString("request_type").contains("private")) {
                     DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("private_posts").child(bundle.getString("Post_id")).child("Comments").push();
@@ -184,7 +184,7 @@ public class PostFragment extends Fragment {
                 TextView textViewText = (TextView) view.findViewById(R.id.Post_textViewText);
                 TextView textViewDate = (TextView) view.findViewById(R.id.Post_textViewDate);
                 ImageView PostAvatar = (ImageView) view.findViewById(R.id.Post_image);
-                textViewName.setText(post.author.username);
+//                textViewName.setText(post.author.username);
                 textViewText.setText(post.text);
 
                 if (post.timestamp != null) {
@@ -201,8 +201,10 @@ public class PostFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
+                        String UserName = dataSnapshot.child("username").getValue(String.class);
+                        textViewName.setText(UserName);
                         if (photoURL != null) {
-//                    Glide.with(PostList.this.getContext()).load(post.author.photoURL).apply(new RequestOptions().error(R.drawable.images)).into(PostAvatar);
+//                    Glide.with(PostAdapter.this.getContext()).load(post.author.photoURL).apply(new RequestOptions().error(R.drawable.images)).into(PostAvatar);
                             Glide.with(PostFragment.this).load(photoURL).apply(new RequestOptions().error(R.drawable.images)).into(PostAvatar);
                         }
                     }
@@ -241,10 +243,10 @@ public class PostFragment extends Fragment {
                                                 btnSubmit_DUOL.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View view) {
-                                                        Log.i("ibrahim", ET_DUOL.getText().toString());
+                                                        //log.i("ibrahim", ET_DUOL.getText().toString());
                                                         HashMap<String, Object> map = new HashMap<>();
                                                         map.put("text", ET_DUOL.getText().toString());
-                                                        Log.i("ibrahim_post_id", post.id);
+                                                        //log.i("ibrahim_post_id", post.id);
                                                         FirebaseDatabase.getInstance().getReference("posts").child(post.id).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
@@ -282,7 +284,7 @@ public class PostFragment extends Fragment {
                                                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getContext().getString(R.string.yes), new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(final DialogInterface dialog, int which) {
-                                                        Log.i("ibrahim_post_id", post.id);
+                                                        //log.i("ibrahim_post_id", post.id);
                                                         FirebaseDatabase.getInstance().getReference("posts").child(post.id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
@@ -331,7 +333,7 @@ public class PostFragment extends Fragment {
                 }
 
                 //creating adapter
-                CommentList commentAdapter = new CommentList(getActivity(), comments);
+                CommentAdapter commentAdapter = new CommentAdapter(getActivity(), comments);
                 //attaching adapter to the listview
                 listViewPosts.setAdapter(commentAdapter);
             }

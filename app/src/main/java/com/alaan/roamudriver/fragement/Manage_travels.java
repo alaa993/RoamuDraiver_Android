@@ -87,7 +87,7 @@ public class Manage_travels extends Fragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e("success", response.toString());
+                //log.e("success", response.toString());
                 try {
 
                        Gson gson = new GsonBuilder().create();
@@ -105,7 +105,7 @@ public class Manage_travels extends Fragment {
 
 
                 } catch (JSONException e) {
-                    Log.e("Get Data", e.getMessage());
+                    //log.e("Get Data", e.getMessage());
 
                 }
             }

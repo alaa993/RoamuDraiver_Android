@@ -93,14 +93,14 @@ public class MyScheduledTravelAdapter extends RecyclerView.Adapter<MyScheduledTr
     @Override
     public void onBindViewHolder(final MyScheduledTravelAdapter.Holder holder, int position) {
         final PendingRequestPojo pojo = list.get(position);
-        Log.i("ibrahim_pojo", pojo.toString());
-//        Log.i("ibrahim_pojo", pojo.getTravel_status());
+        //log.i("ibrahim_pojo", pojo.toString());
+//        //log.i("ibrahim_pojo", pojo.getTravel_status());
 
         holder.from_add.setText(pojo.getPickup_address());
         holder.to_add.setText(pojo.getDrop_address());
         holder.customers_count.setText(pojo.getbooked_set());
-        Log.i("ibrahim", "pojo.getbooked_set()");
-        Log.i("ibrahim", pojo.getbooked_set());
+        //log.i("ibrahim", "pojo.getbooked_set()");
+        //log.i("ibrahim", pojo.getbooked_set());
         Utils utils = new Utils();
 //        holder.date.setText(utils.getCurrentDateInSpecificFormat(pojo.getTime()));
 //        holder.date.setText(utils.getCurrentDateInSpecificFormat(pojo.getTime()));
@@ -295,12 +295,12 @@ public class MyScheduledTravelAdapter extends RecyclerView.Adapter<MyScheduledTr
                     DrawableCompat.setTintList(DrawableCompat.wrap(holder.switchCompat.getThumbDrawable()), new ColorStateList(holder.states, holder.thumbColors));
 
                     if (isChecked) {
-                        Log.i("ibrhim", "switchCompat");
-                        Log.i("ibrhim", "1");
+                        //log.i("ibrhim", "switchCompat");
+                        //log.i("ibrhim", "1");
                         travel_type_change(holder, pojo.getTravel_id(), "1", false);
                     } else {
-                        Log.i("ibrhim", "switchCompat");
-                        Log.i("ibrhim", "0");
+                        //log.i("ibrhim", "switchCompat");
+                        //log.i("ibrhim", "0");
                         travel_type_change(holder, pojo.getTravel_id(), "0", false);
                     }
 
@@ -361,20 +361,20 @@ public class MyScheduledTravelAdapter extends RecyclerView.Adapter<MyScheduledTr
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
 
-                Log.e("FAIl", throwable.toString() + ".." + errorResponse);
+                //log.e("FAIl", throwable.toString() + ".." + errorResponse);
             }
 
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.e("FAIl", throwable.toString() + ".." + errorResponse);
+                //log.e("FAIl", throwable.toString() + ".." + errorResponse);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                Log.e("FAIl", throwable.toString() + ".." + responseString);
+                //log.e("FAIl", throwable.toString() + ".." + responseString);
             }
 
             @Override
@@ -411,8 +411,8 @@ public class MyScheduledTravelAdapter extends RecyclerView.Adapter<MyScheduledTr
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.i("ibrahim", "response.toString()");
-                Log.i("ibrahim", response.toString());
+                //log.i("ibrahim", "response.toString()");
+                //log.i("ibrahim", response.toString());
                 try {
                     Gson gson = new GsonBuilder().create();
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
@@ -489,7 +489,7 @@ public class MyScheduledTravelAdapter extends RecyclerView.Adapter<MyScheduledTr
 
 //                        date_time = String.format("%04d-%02d-%02d", year, 1 + monthOfYear, dayOfMonth);
                         date_time = formatDateWithPattern1(String.format("%04d-%02d-%02d", year, 1 + monthOfYear, dayOfMonth));
-                        Log.i("ibrahim", date_time);
+                        //log.i("ibrahim", date_time);
                         //date_time = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                         tiemPicker(view);
                     }

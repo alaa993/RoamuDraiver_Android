@@ -1,11 +1,9 @@
-package com.alaan.roamudriver.pojo;
+package com.alaan.roamudriver.adapter;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,22 +11,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 
 import com.alaan.roamudriver.R;
 import com.alaan.roamudriver.Server.Server;
 import com.alaan.roamudriver.acitivities.HomeActivity;
-import com.alaan.roamudriver.acitivities.PostActivity;
-import com.alaan.roamudriver.adapter.SearchUserAdapter;
 import com.alaan.roamudriver.fragement.AcceptRideFragment;
-import com.alaan.roamudriver.fragement.Search_list_acticity;
+import com.alaan.roamudriver.pojo.PendingRequestPojo;
+import com.alaan.roamudriver.pojo.Post;
 import com.alaan.roamudriver.session.SessionManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.fxn.stash.Stash;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -51,13 +43,13 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class PostList extends ArrayAdapter<Post> {
+public class PostAdapter extends ArrayAdapter<Post> {
     private Activity context;
     List<Post> posts;
     DatabaseReference databaseComments;
 
-    public PostList(Activity context, List<Post> posts) {
-        super(context, R.layout.layout_artist_list, posts);
+    public PostAdapter(Activity context, List<Post> posts) {
+        super(context, R.layout.post_item, posts);
         this.context = context;
         this.posts = posts;
     }
@@ -65,7 +57,7 @@ public class PostList extends ArrayAdapter<Post> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View listViewItem = inflater.inflate(R.layout.layout_artist_list, null, true);
+        View listViewItem = inflater.inflate(R.layout.post_item, null, true);
 
         TextView textViewName = (TextView) listViewItem.findViewById(R.id.textViewName);
         TextView textViewText = (TextView) listViewItem.findViewById(R.id.textViewText);
@@ -84,7 +76,7 @@ public class PostList extends ArrayAdapter<Post> {
             listViewItem.setBackgroundColor(Color.WHITE);
             //listViewItem.setBackgroundResource(R.drawable.listview_item_border);
         }
-        textViewName.setText(post.author.username);
+//        textViewName.setText(post.author.username);
         textViewText.setText(post.text);
 
         //type = 0 => driver
@@ -100,7 +92,7 @@ public class PostList extends ArrayAdapter<Post> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 textViewCommentsNo.setText(context.getResources().getString(R.string.CommentsNoSt) + " (" + dataSnapshot.getChildrenCount() + ")");
-                Log.i("ibrahim was here", String.valueOf(context.getResources().getString(R.string.CommentsNoSt)));
+                //log.i("ibrahim was here", String.valueOf(context.getResources().getString(R.string.CommentsNoSt)));
             }
 
             @Override
@@ -122,9 +114,11 @@ public class PostList extends ArrayAdapter<Post> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
+                String UserName = dataSnapshot.child("username").getValue(String.class);
+                textViewName.setText(UserName);
                 if (photoURL != null) {
-//                    Glide.with(PostList.this.getContext()).load(post.author.photoURL).apply(new RequestOptions().error(R.drawable.images)).into(PostAvatar);
-                    Glide.with(PostList.this.getContext()).load(photoURL).apply(new RequestOptions().error(R.drawable.images)).into(PostAvatar);
+//                    Glide.with(PostAdapter.this.getContext()).load(post.author.photoURL).apply(new RequestOptions().error(R.drawable.images)).into(PostAvatar);
+                    Glide.with(PostAdapter.this.getContext()).load(photoURL).apply(new RequestOptions().error(R.drawable.images)).into(PostAvatar);
                 }
             }
 
@@ -136,7 +130,7 @@ public class PostList extends ArrayAdapter<Post> {
 
         TripDetail.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.i("success", String.valueOf(post.travel_id));
+                //log.i("success", String.valueOf(post.travel_id));
                 GetRides(String.valueOf(post.travel_id));
             }
         });
@@ -144,7 +138,7 @@ public class PostList extends ArrayAdapter<Post> {
     }
 
     private void GetRides(String ride_id) {
-        Log.i("success", ride_id);
+        //log.i("success", ride_id);
         RequestParams params = new RequestParams();
         params.put("ride_id", ride_id);
         Server.setHeader(SessionManager.getKEY());
@@ -152,7 +146,6 @@ public class PostList extends ArrayAdapter<Post> {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e("success", response.toString());
                 try {
                     Gson gson = new GsonBuilder().create();
                     List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
@@ -162,14 +155,13 @@ public class PostList extends ArrayAdapter<Post> {
                         bundle.putSerializable("data", list.get(0));
                         AcceptRideFragment detailFragment = new AcceptRideFragment();
                         detailFragment.setArguments(bundle);
-
                         ((HomeActivity) getContext()).changeFragment(detailFragment, "Passenger Information");
                     } else {
 //                        Toast.makeText(this, context.getString(R.string.sonething_went_wrong), Toast.LENGTH_SHORT).show();
 //                        Toast.makeText(context, getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    Log.e("Get Data", e.getMessage());
+                    //log.e("Get Data", e.getMessage());
                 }
             }
         });

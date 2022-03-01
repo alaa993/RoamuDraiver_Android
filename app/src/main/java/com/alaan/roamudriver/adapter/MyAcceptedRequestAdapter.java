@@ -63,7 +63,6 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
     DatabaseReference databaseRides;
     String Status;
     private String ride_id = "";
-
     private String travel_status;
     private String ride_status;
     private String payment_status;
@@ -81,9 +80,9 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
     @Override
     public void onBindViewHolder(final Holder holder, int position) {
         PendingRequestPojo pojo = list.get(position);
-        Log.i("ibrahim_pojo", pojo.toString());
-        Log.i("ibrahim_pojo", pojo.getTravel_status());
-        Log.i("ibrahim_POSITION", String.valueOf(position));
+        //log.i("ibrahim_pojo", pojo.toString());
+        //log.i("ibrahim_pojo", pojo.getTravel_status());
+        //log.i("ibrahim_POSITION", String.valueOf(position));
         ride_id = pojo.getRide_id();
 
         travel_status = pojo.getTravel_status();
@@ -98,7 +97,7 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
         holder.txt_drivercode.setText(pojo.getRide_id());
 
         if (pojo.getUser_avatar() != null) {
-            Log.i("ibrahim_avatar", pojo.getUser_avatar());
+            //log.i("ibrahim_avatar", pojo.getUser_avatar());
             Glide.with(holder.itemView.getContext()).load(pojo.getUser_avatar()).apply(new RequestOptions().error(R.drawable.images)).into(holder.PostAvatar);
         }
 
@@ -130,61 +129,65 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 firebaseRide fbRide = dataSnapshot.getValue(firebaseRide.class);
-                Log.i("ibrahim ride", "----------");
+                //log.i("ibrahim ride", "----------");
+                try {
+                    if (fbRide != null) {
+                        travel_status = fbRide.travel_status;
+                        ride_status = fbRide.ride_status;
+                        payment_status = fbRide.payment_status;
+                        payment_mode = fbRide.payment_mode;
+                        Status = "";
+                        if (fbRide.ride_status.contains("PENDING")) {
+                            Status = holder.itemView.getContext().getString(R.string.pending);
+                        } else if (fbRide.ride_status.contains("ACCEPTED")) {
+                            Status = holder.itemView.getContext().getString(R.string.accepted);
+                        } else if (fbRide.ride_status.contains("COMPLETED")) {
+                            Status = holder.itemView.getContext().getString(R.string.completed);
+                        } else if (fbRide.ride_status.contains("CANCELLED")) {
+                            Status = holder.itemView.getContext().getString(R.string.cancelled);
+                        }
 
-                if (fbRide != null) {
-                    travel_status = fbRide.travel_status;
-                    ride_status = fbRide.ride_status;
-                    payment_status = fbRide.payment_status;
-                    payment_mode = fbRide.payment_mode;
-                    Status = "";
-                    if (fbRide.ride_status.contains("PENDING")) {
-                        Status = holder.itemView.getContext().getString(R.string.pending);
-                    } else if (fbRide.ride_status.contains("ACCEPTED")) {
-                        Status = holder.itemView.getContext().getString(R.string.accepted);
-                    } else if (fbRide.ride_status.contains("COMPLETED")) {
-                        Status = holder.itemView.getContext().getString(R.string.completed);
-                    } else if (fbRide.ride_status.contains("CANCELLED")) {
-                        Status = holder.itemView.getContext().getString(R.string.cancelled);
-                    }
-
-                    if (fbRide.payment_status.length() > 0 && fbRide.payment_mode.length() > 0) {
-                        Status += ", " + holder.itemView.getContext().getString(R.string.approve_payment_offline);
-                    } else if (fbRide.payment_status.length() == 0 && fbRide.payment_mode.length() > 0) {
-                        Status += ", " + holder.itemView.getContext().getString(R.string.paid_but_not_approved);
-                    } else {
-                        Status += ", " + holder.itemView.getContext().getString(R.string.not_paid);
-                    }
-                    holder.status.setText(Status);
+                        if (fbRide.payment_status.length() > 0 && fbRide.payment_mode.length() > 0) {
+                            Status += ", " + holder.itemView.getContext().getString(R.string.approve_payment_offline);
+                        } else if (fbRide.payment_status.length() == 0 && fbRide.payment_mode.length() > 0) {
+                            Status += ", " + holder.itemView.getContext().getString(R.string.paid_but_not_approved);
+                        } else {
+                            Status += ", " + holder.itemView.getContext().getString(R.string.not_paid);
+                        }
+                        holder.status.setText(Status);
 //                    setupData(holder, pojo);
 
-                    Log.i("ibrahim_status", String.valueOf(ride_status));
+                        //log.i("ibrahim_status", String.valueOf(ride_status));
 
-                    if (!ride_status.equals("") && ride_status.equalsIgnoreCase("PENDING")) {
-                        holder.item_Button.setVisibility(View.VISIBLE);
-                        holder.item_Button1.setVisibility(View.GONE);
+                        if (!ride_status.equals("") && ride_status.equalsIgnoreCase("PENDING")) {
+                            holder.item_Button.setVisibility(View.VISIBLE);
+                            holder.item_Button1.setVisibility(View.GONE);
 //                        holder.item_Button.setText(holder.itemView.getContext().getString(R.string.Pick_Customer));
-                    }
-                    if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("CANCELLED")) {
-                        holder.item_Button.setVisibility(View.GONE);
-                        holder.item_Button1.setVisibility(View.GONE);
-                    }
-                    if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("COMPLETED")) {
-                        holder.item_Button.setVisibility(View.GONE);
-                        holder.item_Button1.setVisibility(View.GONE);
-                    }
-                    if (!ride_status.equals("") && ride_status.equalsIgnoreCase("ACCEPTED")) {
-                        {
-                            if (payment_mode.equals("OFFLINE") && !payment_status.equals("PAID") && travel_status.equals("STARTED")) {
-                                holder.item_Button.setVisibility(View.GONE);
-                                holder.item_Button1.setVisibility(View.VISIBLE);
+                        }
+                        if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("CANCELLED")) {
+                            holder.item_Button.setVisibility(View.GONE);
+                            holder.item_Button1.setVisibility(View.GONE);
+                        }
+                        if (ride_status != null && !ride_status.equals("") && ride_status.equalsIgnoreCase("COMPLETED")) {
+                            holder.item_Button.setVisibility(View.GONE);
+                            holder.item_Button1.setVisibility(View.GONE);
+                        }
+                        if (!ride_status.equals("") && ride_status.equalsIgnoreCase("ACCEPTED")) {
+                            {
+                                if (payment_mode.equals("OFFLINE") && !payment_status.equals("PAID") && travel_status.equals("STARTED")) {
+                                    holder.item_Button.setVisibility(View.GONE);
+                                    holder.item_Button1.setVisibility(View.VISIBLE);
 //                                holder.item_Button.setText(holder.itemView.getContext().getString(R.string.approve_payment_offline));
-                            } else {
-                                holder.item_Button.setVisibility(View.GONE);
-                                holder.item_Button1.setVisibility(View.GONE);
+                                } else {
+                                    holder.item_Button.setVisibility(View.GONE);
+                                    holder.item_Button1.setVisibility(View.GONE);
+                                }
                             }
                         }
                     }
+                } catch (NullPointerException e) {
+                    System.err.println("Null pointer exception");
+                } catch (Exception e) {
                 }
             }
 
@@ -208,10 +211,10 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
 //            @Override
 //            public void onClick(View v) {
 //                if (pojo != null) {
-//                    Log.i("ibrahim_status", "item_Button");
-//                    Log.i("ibrahim_status", String.valueOf(ride_status));
-//                    Log.i("ibrahim_status", String.valueOf(payment_mode));
-//                    Log.i("ibrahim_status", String.valueOf(payment_status));
+//                    //log.i("ibrahim_status", "item_Button");
+//                    //log.i("ibrahim_status", String.valueOf(ride_status));
+//                    //log.i("ibrahim_status", String.valueOf(payment_mode));
+//                    //log.i("ibrahim_status", String.valueOf(payment_status));
 //                    if (!ride_status.equals("") && ride_status.equalsIgnoreCase("PENDING")) {
 //                        AlertDialogCreate(pojo, holder.itemView.getContext(), holder.itemView.getContext().getString(R.string.ride_acceptance), holder.itemView.getContext().getString(R.string.ride_accept_msg), "ACCEPTED");
 //                    }
@@ -236,10 +239,10 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
             @Override
             public void onClick(View v) {
                 if (pojo != null) {
-                    Log.i("ibrahim_status", "item_Button");
-                    Log.i("ibrahim_status", String.valueOf(ride_status));
-                    Log.i("ibrahim_status", String.valueOf(payment_mode));
-                    Log.i("ibrahim_status", String.valueOf(payment_status));
+                    //log.i("ibrahim_status", "item_Button");
+                    //log.i("ibrahim_status", String.valueOf(ride_status));
+                    //log.i("ibrahim_status", String.valueOf(payment_mode));
+                    //log.i("ibrahim_status", String.valueOf(payment_status));
                     AlertDialogCreate(pojo, holder.itemView.getContext(), holder.itemView.getContext().getString(R.string.ride_acceptance), holder.itemView.getContext().getString(R.string.ride_accept_msg), "ACCEPTED");
                 }
             }
@@ -249,10 +252,10 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
             @Override
             public void onClick(View v) {
                 if (pojo != null) {
-                    Log.i("ibrahim_status", "item_Button");
-                    Log.i("ibrahim_status", String.valueOf(ride_status));
-                    Log.i("ibrahim_status", String.valueOf(payment_mode));
-                    Log.i("ibrahim_status", String.valueOf(payment_status));
+                    //log.i("ibrahim_status", "item_Button");
+                    //log.i("ibrahim_status", String.valueOf(ride_status));
+                    //log.i("ibrahim_status", String.valueOf(payment_mode));
+                    //log.i("ibrahim_status", String.valueOf(payment_status));
 
                     approvePaymet(pojo, holder.itemView.getContext());
                 }
@@ -330,7 +333,7 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
     }
 
     public void AlertDialogCreate(PendingRequestPojo pojo, Context context, String title, String message, final String status) {
-        Log.i("ibrahim_Alert", pojo.getRide_id());
+        //log.i("ibrahim_Alert", pojo.getRide_id());
         Drawable drawable = ContextCompat.getDrawable(context, R.mipmap.ic_warning_white_24dp);
         drawable = DrawableCompat.wrap(drawable);
         DrawableCompat.setTint(drawable, Color.RED);
@@ -355,8 +358,8 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
     }
 
     public void SendStatus(PendingRequestPojo pojo, Context context, String ride_id, final String status) {
-        Log.i("ibrahim_SendStatus", pojo.getRide_id());
-        Log.i("ibrahim_SendStatus", ride_id);
+        //log.i("ibrahim_SendStatus", pojo.getRide_id());
+        //log.i("ibrahim_SendStatus", ride_id);
 
         RequestParams params = new RequestParams();
         params.put("ride_id", pojo.getRide_id());
@@ -375,8 +378,8 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 try {
-                    Log.i("ibrahim", "response");
-                    Log.i("ibrahim", response.toString());
+                    //log.i("ibrahim", "response");
+                    //log.i("ibrahim", response.toString());
 
                     AcceptedRequestFragment acceptedRequestFragment = new AcceptedRequestFragment();
                     Bundle bundle;
@@ -413,16 +416,22 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
                 firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
                 if (fbTravel != null) {
                     if (status.contains("ACCEPTED")) {
-                        Log.i("ibrahim", "fbTravel");
-                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("ACCEPTED");
-                        databaseRef.setValue(fbTravel.Counters.ACCEPTED + 1);
+                        try {
+                            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("ACCEPTED");
+                            databaseRef.setValue(fbTravel.Counters.ACCEPTED + 1);
+                        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        }
                     } else if (status.contains("COMPLETED")) {
-                        Log.i("ibrahim", "fbTravel");
-                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("COMPLETED");
-                        databaseRef.setValue(fbTravel.Counters.COMPLETED + 1);
+                        try {
+                            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("COMPLETED");
+                            databaseRef.setValue(fbTravel.Counters.COMPLETED + 1);
 
-                        DatabaseReference databaseRef1 = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("ACCEPTED");
-                        databaseRef.setValue(fbTravel.Counters.ACCEPTED - 1);
+                            DatabaseReference databaseRef1 = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("ACCEPTED");
+                            databaseRef.setValue(fbTravel.Counters.ACCEPTED - 1);
+                        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        }
                     }
                 }
             }
@@ -451,8 +460,8 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.i("ibrahim", "response");
-                Log.i("ibrahim", response.toString());
+                //log.i("ibrahim", "response");
+                //log.i("ibrahim", response.toString());
                 updateRideFirebase(travel_status, ride_status, "PAID", payment_mode, pojo);
                 updateNotificationFirebase(context, "offline_approved", pojo);
                 updateTravelCounterFirebase(pojo);
@@ -473,9 +482,13 @@ public class MyAcceptedRequestAdapter extends RecyclerView.Adapter<MyAcceptedReq
             public void onDataChange(DataSnapshot dataSnapshot) {
                 firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
                 if (fbTravel != null) {
-                    Log.i("ibrahim", "fbTravel");
-                    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("PAID");
-                    databaseRef.setValue(fbTravel.Counters.PAID + 1);
+                    //log.i("ibrahim", "fbTravel");
+                    try {
+                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("PAID");
+                        databaseRef.setValue(fbTravel.Counters.PAID + 1);
+                    } catch (NullPointerException e) {
+                        System.err.println("Null pointer exception");
+                    }
                 }
             }
 

@@ -157,6 +157,15 @@
                             android:layout_below="@+id/b1en"
                             android:layout_marginTop="10dp"
                             android:text="@string/arabic" />
+
+                        <Button
+                            android:id="@+id/b3ku"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@+id/b2ar"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/Kurdish" />
                     </RelativeLayout>
 
 

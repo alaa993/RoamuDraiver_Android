@@ -67,7 +67,7 @@ public class myTravelsFragment extends Fragment implements BackFragment, Adapter
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i("ibrahim", "onCreate");
+        //log.i("ibrahim", "onCreate");
 
         view = inflater.inflate(R.layout.fragment_my_travels, container, false);
         bindView();
@@ -143,7 +143,7 @@ public class myTravelsFragment extends Fragment implements BackFragment, Adapter
     }
 
     public void getMyTravels(String id, String status, String key) {
-        Log.i("ibrahim", "getMyTravels");
+        //log.i("ibrahim", "getMyTravels");
 
         RequestParams params = new RequestParams();
         params.put("id", id);
@@ -160,16 +160,16 @@ public class myTravelsFragment extends Fragment implements BackFragment, Adapter
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-//                Log.i("ibrahim","travels");
-                Log.i("ibrahim", response.toString());
+//                //log.i("ibrahim","travels");
+                //log.i("ibrahim", response.toString());
                 try {
                     Gson gson = new GsonBuilder().create();
-//                    Log.e("success", response.toString());
+//                    //log.e("success", response.toString());
 
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                         }.getType());
-//                        Log.e("success", response.toString());
+//                        //log.e("success", response.toString());
                         if (response.has("data") && response.getJSONArray("data").length() == 0) {
                             txt_error.setVisibility(View.VISIBLE);
                             myTravelsAdapter myTravelsAdapter = new myTravelsAdapter(list);

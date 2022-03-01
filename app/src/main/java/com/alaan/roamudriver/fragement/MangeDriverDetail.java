@@ -196,7 +196,7 @@ public class MangeDriverDetail extends FragmentManagePermission {
         mobilenumber_row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("ibrahim", "mobile call function");
+                //log.i("ibrahim", "mobile call function");
                 askCompactPermission(PermissionUtils.Manifest_CALL_PHONE, new PermissionResult() {
                     @Override
                     public void permissionGranted() {
@@ -228,9 +228,13 @@ public class MangeDriverDetail extends FragmentManagePermission {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
                 if (fbTravel != null) {
-                    Log.i("ibrahim", "fbTravel");
-                    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("PAID");
-                    databaseRef.setValue(fbTravel.Counters.PAID + 1);
+                    try {
+                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("PAID");
+                        databaseRef.setValue(fbTravel.Counters.PAID + 1);
+                    } catch (NullPointerException e) {
+                        System.err.println("Null pointer exception");
+                    }
+
                 }
             }
 
@@ -312,7 +316,9 @@ public class MangeDriverDetail extends FragmentManagePermission {
                                         null, false);*//*
                 NavigationLauncher.startNavigation(getActivity(), navigationLauncherOptions.build());
            */
-            } catch (Exception e) {
+            } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
                 Toast.makeText(getActivity(), e.toString() + " ", Toast.LENGTH_SHORT).show();
             }
         } else {

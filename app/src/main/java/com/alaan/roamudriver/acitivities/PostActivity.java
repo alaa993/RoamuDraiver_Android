@@ -1,11 +1,9 @@
 package com.alaan.roamudriver.acitivities;
 
 import android.content.Intent;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -24,12 +22,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
-import com.alaan.roamudriver.acitivities.AddPostActivity;
-import com.alaan.roamudriver.acitivities.HomeActivity;
 import com.alaan.roamudriver.pojo.Comment;
-import com.alaan.roamudriver.pojo.CommentList;
+import com.alaan.roamudriver.adapter.CommentAdapter;
 import com.alaan.roamudriver.pojo.Post;
-import com.alaan.roamudriver.pojo.PostList;
 
 
 import java.text.SimpleDateFormat;
@@ -64,9 +59,9 @@ public class PostActivity extends AppCompatActivity {
         databasePost = FirebaseDatabase.getInstance().getReference("posts").child(intent.getStringExtra("Post_id"));
         databaseComments = FirebaseDatabase.getInstance().getReference("posts").child(intent.getStringExtra("Post_id")).child("Comments");
         listViewPosts = (ListView) findViewById(R.id.Post_listViewComments);
-        log.i("tag", "success by ibrahim");
-        log.i("tag", intent.getStringExtra("Post_id"));
-        //log.i("tag",databaseComments.child("Comment1").child("username"));
+        //log.i("tag", "success by ibrahim");
+        //log.i("tag", intent.getStringExtra("Post_id"));
+        ////log.i("tag",databaseComments.child("Comment1").child("username"));
 
         inputEditComment = findViewById(R.id.input_Comment);
         AddCommentBTN = findViewById(R.id.AddCommentBTN);
@@ -92,8 +87,8 @@ public class PostActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String UserName = dataSnapshot.child("username").getValue(String.class);
                 String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
-                log.i("tag", "success by ibrahim");
-                log.i("tag", UserName);
+                //log.i("tag", "success by ibrahim");
+                //log.i("tag", UserName);
                 // Firebase code here
                 DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("posts").child(intent.getStringExtra("Post_id")).child("Comments").push();
                 Map<String, Object> author = new HashMap<>();
@@ -152,7 +147,7 @@ public class PostActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
                         if (photoURL != null) {
-//                    Glide.with(PostList.this.getContext()).load(post.author.photoURL).apply(new RequestOptions().error(R.drawable.images)).into(PostAvatar);
+//                    Glide.with(PostAdapter.this.getContext()).load(post.author.photoURL).apply(new RequestOptions().error(R.drawable.images)).into(PostAvatar);
                             Glide.with(PostActivity.this).load(photoURL).apply(new RequestOptions().error(R.drawable.images)).into(PostAvatar);
                         }
                     }
@@ -186,7 +181,7 @@ public class PostActivity extends AppCompatActivity {
                 }
 
                 //creating adapter
-                CommentList commentAdapter = new CommentList(PostActivity.this, comments);
+                CommentAdapter commentAdapter = new CommentAdapter(PostActivity.this, comments);
                 //attaching adapter to the listview
                 listViewPosts.setAdapter(commentAdapter);
             }

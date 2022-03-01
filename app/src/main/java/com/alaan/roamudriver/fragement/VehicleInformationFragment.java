@@ -71,7 +71,7 @@ public class VehicleInformationFragment extends Fragment implements AdapterView.
             }
         }
         ((HomeActivity) getActivity()).fontToTitleBar(getString(R.string.add_vehicleinfo));
-        ((DrawerLocker) getActivity()).setDrawerLocked(true);
+//        ((DrawerLocker) getActivity()).setDrawerLocked(true);
         BindView();
         if (Utils.haveNetworkConnection(getActivity())) {
             getVehicleInfo();
@@ -85,8 +85,10 @@ public class VehicleInformationFragment extends Fragment implements AdapterView.
                 input_vehicleno.setText(user.getVehicle_no());
 
 
-            } catch (Exception e) {
-                Log.e("catch", e.toString());
+            } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
+                //log.e("catch", e.toString());
 
             }
 
@@ -161,7 +163,7 @@ public class VehicleInformationFragment extends Fragment implements AdapterView.
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
 
-                Log.e("info", response.toString());
+                //log.e("info", response.toString());
 
                 try {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
@@ -256,7 +258,7 @@ public class VehicleInformationFragment extends Fragment implements AdapterView.
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e("info-updated", response.toString());
+                //log.e("info-updated", response.toString());
                 try {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         User user = SessionManager.getUser();
@@ -312,13 +314,15 @@ public class VehicleInformationFragment extends Fragment implements AdapterView.
             } else if (v instanceof AppCompatButton) {
                 ((TextView) v).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "font/AvenirLTStd_Book.otf"));
             } else if (v instanceof EditText) {
-                Log.e("edittext", "called");
+                //log.e("edittext", "called");
                 ((TextView) v).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "font/AvenirLTStd_Medium.otf"));
             } else if (v instanceof TextView) {
                 ((TextView) v).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "font/AvenirLTStd_Book.otf"));
             }
 
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
             Log.d("catch", "font settting error  " + e.toString());
         }
     }
@@ -336,6 +340,6 @@ public class VehicleInformationFragment extends Fragment implements AdapterView.
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ((DrawerLocker) getActivity()).setDrawerLocked(false);
+//        ((DrawerLocker) getActivity()).setDrawerLocked(false);
     }
 }

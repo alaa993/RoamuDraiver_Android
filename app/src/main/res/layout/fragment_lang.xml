@@ -12,34 +12,36 @@
         android:id="@+id/label1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:text="@string/lang" />
 
     <Button
         android:id="@+id/b1en"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="@dimen/QIBus_softui_bg_decrease10dp"
         android:layout_below="@+id/label1"
+        android:layout_marginTop="@dimen/QIBus_softui_bg_decrease10dp"
+        android:gravity="center_horizontal"
         android:text="@string/English" />
 
     <Button
         android:id="@+id/b2ar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="@dimen/QIBus_softui_bg_decrease10dp"
         android:layout_below="@+id/b1en"
+        android:layout_marginTop="@dimen/QIBus_softui_bg_decrease10dp"
+        android:gravity="center_horizontal"
         android:text="@string/arabic" />
+
 
     <Button
         android:id="@+id/b3ka"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/b2ar"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="10dp"
         android:text="@string/ku"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 </RelativeLayout>

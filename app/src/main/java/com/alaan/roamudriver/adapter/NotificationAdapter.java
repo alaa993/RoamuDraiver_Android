@@ -76,13 +76,13 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
         textViewText.setText(notification.text);
         try {
-            Log.i("ibrahim", notification.text);
+            //log.i("ibrahim", notification.text);
             if (notification.text.contains("_5_")) {
                 String currentString = notification.text;
                 String[] separated = currentString.split("_5_");
                 String resourceAppStatusString = "notification_".concat(separated[0].trim());
-                Log.i("ibrahim", separated[0].trim());
-                Log.i("ibrahim", separated[1].trim());
+                //log.i("ibrahim", separated[0].trim());
+                //log.i("ibrahim", separated[1].trim());
 
                 int messageId = getResourceId(resourceAppStatusString, "string", context.getPackageName());
                 String message = context.getString(messageId);
@@ -93,6 +93,8 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
                 String message = context.getString(messageId);
                 textViewText.setText(message);
             }
+        } catch (NullPointerException e) {
+            System.err.println("Null pointer exception");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -127,9 +129,14 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
         listViewItem.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (notification.ride_id != "-2") {
-                    GetRides(String.valueOf(notification.ride_id), notification.id);
+                try {
+                    if (notification.ride_id != "-2") {
+                        GetRides(String.valueOf(notification.ride_id), notification.id);
+                    }
+                } catch (NullPointerException e) {
+                    System.err.println("Null pointer exception");
                 }
+
             }
         });
         return listViewItem;
@@ -165,7 +172,7 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e("success", response.toString());
+                //log.e("success", response.toString());
                 try {
                     Gson gson = new GsonBuilder().create();
                     List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
@@ -178,8 +185,12 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
                     detailFragment.setArguments(bundle);
                     ((HomeActivity) getContext()).changeFragment(detailFragment, "Passenger Information");
 
+                } catch (NullPointerException e) {
+                    System.err.println("Null pointer exception");
+                } catch (IndexOutOfBoundsException e) {
+                    System.err.println("IndexOutOfBoundsException: " + e.getMessage());
                 } catch (JSONException e) {
-                    Log.e("Get Data", e.getMessage());
+                    //log.e("Get Data", e.getMessage());
                 }
             }
         });
@@ -188,6 +199,9 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
     private int getResourceId(String pVariableName, String pResourceName, String pPackageName) {
         try {
             return context.getResources().getIdentifier(pVariableName, pResourceName, pPackageName);
+        } catch (NullPointerException e) {
+            System.err.println("Null pointer exception");
+            return -1;
         } catch (Exception e) {
             e.printStackTrace();
             return -1;

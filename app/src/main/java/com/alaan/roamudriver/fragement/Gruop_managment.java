@@ -102,7 +102,7 @@ public class Gruop_managment extends Fragment implements AdapterView.OnItemSelec
                     txt_status.setTextColor(getResources().getColor(R.color.red));
                 }
                 txt_vehicle.setText(pojo.getDriver_vehicle_no());
-                log.e("ss",""+pojo.getDriver_mobile());
+                //log.e("ss",""+pojo.getDriver_mobile());
 
             }
         }

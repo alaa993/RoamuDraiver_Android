@@ -45,7 +45,7 @@ public class DriverRidesAdapter extends RecyclerView.Adapter<DriverRidesAdapter.
         holder.name.setText(pojo.getPickup_address());
         holder.date.setText(pojo.getTravel_date());
 
-        log.e("ss",""+list.size());
+        //log.e("ss",""+list.size());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

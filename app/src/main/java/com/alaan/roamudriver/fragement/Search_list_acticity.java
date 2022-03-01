@@ -63,22 +63,22 @@ public class Search_list_acticity extends AppCompatActivity {
         params.put("pickup_address", pick);
         params.put("drop_address", drop);
         params.put("date", Date);
-        Log.i("ibrahim","car_type");
-        Log.i("ibrahim",SessionManager.getCarType());
+        //log.i("ibrahim","car_type");
+        //log.i("ibrahim",SessionManager.getCarType());
         params.put("car_type", SessionManager.getCarType());
         Server.setHeader(SessionManager.getKEY());
         Server.get(Server.GET_SEARCHUSER1, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e("success", response.toString());
+                //log.e("success", response.toString());
                 try {
                     Gson gson = new GsonBuilder().create();
                     List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                     }.getType());
 
-                    Log.i("ibrahim_list","list");
-                    Log.i("ibrahim_list",list.toString());
+                    //log.i("ibrahim_list","list");
+                    //log.i("ibrahim_list",list.toString());
 
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplication(), LinearLayoutManager.VERTICAL, false);
                     recyclerView.setLayoutManager(linearLayoutManager);
@@ -87,9 +87,9 @@ public class Search_list_acticity extends AppCompatActivity {
                     searchUserAdapter.notifyDataSetChanged();
                     unit = response.getJSONObject("fair").getString("unit");
                     Stash.put("UNIT_TAG", unit);
-                    Log.e("Get Data", unit);
+                    //log.e("Get Data", unit);
                 } catch (JSONException e) {
-                    Log.e("Get Data", e.getMessage());
+                    //log.e("Get Data", e.getMessage());
                 }
             }
         });
@@ -106,7 +106,9 @@ public class Search_list_acticity extends AppCompatActivity {
                     fragmentTransaction.commit();
                 }
             }, 50);
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
         }
     }
 
@@ -138,7 +140,9 @@ public class Search_list_acticity extends AppCompatActivity {
                     }
                 }
             }, 50);
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
 

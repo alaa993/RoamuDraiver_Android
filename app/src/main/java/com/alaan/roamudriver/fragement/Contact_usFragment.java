@@ -88,7 +88,7 @@ public class Contact_usFragment extends Fragment {
                     String text = "Name: " + Name.getText().toString() + "\n"
 //                + "Email: " + email.getText().toString() + "\n"
                             + "Description: " + description.getText().toString();
-                    openWhatsAppConversationUsingUri(getContext(), "00905315859877", text);
+                    openWhatsAppConversationUsingUri(getContext(), "+905315859877", text);
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.network), Toast.LENGTH_LONG).show();
                 }

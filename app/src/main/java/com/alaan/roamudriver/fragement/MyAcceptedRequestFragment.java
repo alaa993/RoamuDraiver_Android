@@ -119,7 +119,7 @@ public class MyAcceptedRequestFragment extends Fragment implements BackFragment 
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                         }.getType());
-                        Log.e("success", response.toString());
+                        //log.e("success", response.toString());
                         if (response.has("data") && response.getJSONArray("data").length() == 0) {
                             txt_error.setVisibility(View.VISIBLE);
                             MyAcceptedRequestAdapter myAceptedRequestAdapter = new MyAcceptedRequestAdapter(list);

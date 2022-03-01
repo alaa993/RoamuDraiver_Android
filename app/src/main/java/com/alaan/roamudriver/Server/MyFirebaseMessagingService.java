@@ -5,23 +5,32 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 
+import com.alaan.roamudriver.adapter.Group_membar_Adapter;
+import com.alaan.roamudriver.pojo.Group_membar;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.alaan.roamudriver.R;
 import com.alaan.roamudriver.acitivities.HomeActivity;
 import com.alaan.roamudriver.session.SessionManager;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
@@ -36,31 +45,35 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        try {
+            if (remoteMessage.getData().get("msg") != null) {
+                String statusCode = remoteMessage.getData().get("msg");
+                String resourceAppStatusString = "notification_".concat(statusCode);
+                int messageId = getResourceId(resourceAppStatusString, "string", getPackageName());
+                String message = getString(messageId);
 
-
-        if (remoteMessage.getData().get("msg") != null) {
-            String statusCode = remoteMessage.getData().get("msg");
-            String resourceAppStatusString = "notification_".concat(statusCode);
-            int messageId = getResourceId(resourceAppStatusString, "string", getPackageName());
-            String message = getString(messageId);
-
-            Log.i("notifcode by ibrahim", remoteMessage.getData().get("msg").toString());
-            Log.i("notification by ibrahim", message);
-
-            if (remoteMessage.getData().get("msg").equals("0") && remoteMessage.getData().get("name") != null) {
-                message = remoteMessage.getData().get("name") + " " + message;
-            } else if (remoteMessage.getData().get("msg").equals("2") && remoteMessage.getData().get("name") != null) {
-                message = remoteMessage.getData().get("name") + " " + message;
-            } else if (remoteMessage.getData().get("msg").equals("3") && remoteMessage.getData().get("name") != null) {
-                message = remoteMessage.getData().get("name") + " " + message;
-            } else if (remoteMessage.getData().get("msg").equals("5") && remoteMessage.getData().get("name") != null) {
-                message = remoteMessage.getData().get("name") + " " + message;
-            } else if (remoteMessage.getData().get("msg").equals("6") && remoteMessage.getData().get("name") != null) {
-                message = remoteMessage.getData().get("name") + " " + message;
-            } else if (remoteMessage.getData().get("msg").equals("7") && remoteMessage.getData().get("name") != null) {
-                message = remoteMessage.getData().get("name") + " " + message;
+                if (remoteMessage.getData().get("msg").equals("0") && remoteMessage.getData().get("name") != null) {
+                    message = remoteMessage.getData().get("name") + " " + message;
+                } else if (remoteMessage.getData().get("msg").equals("2") && remoteMessage.getData().get("name") != null) {
+                    message = remoteMessage.getData().get("name") + " " + message;
+                } else if (remoteMessage.getData().get("msg").equals("3") && remoteMessage.getData().get("name") != null) {
+                    message = remoteMessage.getData().get("name") + " " + message;
+                } else if (remoteMessage.getData().get("msg").equals("5") && remoteMessage.getData().get("name") != null) {
+                    message = remoteMessage.getData().get("name") + " " + message;
+                } else if (remoteMessage.getData().get("msg").equals("6") && remoteMessage.getData().get("name") != null) {
+                    message = remoteMessage.getData().get("name") + " " + message;
+                } else if (remoteMessage.getData().get("msg").equals("7") && remoteMessage.getData().get("name") != null) {
+                    message = remoteMessage.getData().get("name") + " " + message;
+                }
+                sendNotification(remoteMessage.getData(), message);
             }
-            sendNotification(remoteMessage.getData(), message);
+        } catch (Resources.NotFoundException e) {
+            System.err.println("Resources NotFoundException exception");
+            try {
+                sendNotification(remoteMessage.getData(), remoteMessage.getData().get("msg"));
+            } catch (Resources.NotFoundException f) {
+                System.err.println("Resources NotFoundException exception");
+            }
         }
     }
 
@@ -75,7 +88,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         int num = ++NOTIFICATION_ID;
         Bundle msg = new Bundle();
         for (String key : data.keySet()) {
-            Log.e(key, data.get(key));
+            //log.e(key, data.get(key));
             msg.putString(key, data.get(key));
         }
 
@@ -135,6 +148,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private int getResourceId(String pVariableName, String pResourceName, String pPackageName) {
         try {
             return getResources().getIdentifier(pVariableName, pResourceName, pPackageName);
+        } catch (NullPointerException e) {
+            System.err.println("Null pointer exception");
+            return -1;
         } catch (Exception e) {
             e.printStackTrace();
             return -1;

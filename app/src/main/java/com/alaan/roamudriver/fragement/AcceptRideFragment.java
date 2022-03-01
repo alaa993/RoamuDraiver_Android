@@ -25,6 +25,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -44,6 +45,7 @@ import com.akexorcist.googledirection.model.Direction;
 import com.akexorcist.googledirection.util.DirectionConverter;
 import com.alaan.roamudriver.R;
 import com.alaan.roamudriver.Server.Server;
+import com.alaan.roamudriver.acitivities.GoogleMapsActivity;
 import com.alaan.roamudriver.acitivities.HomeActivity;
 import com.alaan.roamudriver.custom.GPSTracker;
 import com.alaan.roamudriver.custom.LocationService;
@@ -152,7 +154,8 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     private CheckBox Checkbox2;
     private EditText mPassengers;
     private EditText mPrice;
-    private EditText mPickupPoint;
+    EditText mPickupPoint, mPickupPointLocation;
+    private int POINTLocation_PICKER_REQUEST = 54321;
     boolean Checkbox_bool = false;
     private int POINT_PICKER_REQUEST = 12345;
     String p = "";
@@ -222,6 +225,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         mPassengers = (EditText) mView.findViewById(R.id.etPassengers);
         mPrice = (EditText) mView.findViewById(R.id.etPrice);
         mPickupPoint = (EditText) mView.findViewById(R.id.etPickupPoint);
+        mPickupPointLocation = (EditText) mView.findViewById(R.id.etPickupPointLocation);
         Button mSubmit = (Button) mView.findViewById(R.id.btnSubmitDialog);
         Button mCancel = (Button) mView.findViewById(R.id.btnCancelDialog);
         Checkbox = (CheckBox) mView.findViewById(R.id.checkBox);
@@ -230,21 +234,40 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         mBuilder.setView(mView);
         final android.app.AlertDialog dialog = mBuilder.create();
         dialog.show();
-        mPickupPoint.setOnClickListener(new View.OnClickListener() {
+        mPickupPoint.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                Places.initialize(getActivity(), getString(R.string.google_android_map_api_key));
-                List<com.google.android.libraries.places.api.model.Place.Field> fields =
-                        Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID,
-                                com.google.android.libraries.places.api.model.Place.Field.NAME,
-                                com.google.android.libraries.places.api.model.Place.Field.ADDRESS,
-                                com.google.android.libraries.places.api.model.Place.Field.LAT_LNG);
-                Intent intent = new Autocomplete.IntentBuilder(
-                        AutocompleteActivityMode.FULLSCREEN, fields)
-                        .build(getActivity());
-                startActivityForResult(intent, POINT_PICKER_REQUEST);
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int action = motionEvent.getAction() & MotionEvent.ACTION_MASK;
+
+                if (action == MotionEvent.ACTION_DOWN) {
+                    Places.initialize(getActivity(), getString(R.string.google_android_map_api_key));
+                    List<com.google.android.libraries.places.api.model.Place.Field> fields =
+                            Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID,
+                                    com.google.android.libraries.places.api.model.Place.Field.NAME,
+                                    com.google.android.libraries.places.api.model.Place.Field.ADDRESS,
+                                    com.google.android.libraries.places.api.model.Place.Field.LAT_LNG);
+                    Intent intent = new Autocomplete.IntentBuilder(
+                            AutocompleteActivityMode.FULLSCREEN, fields)
+                            .build(getActivity());
+                    startActivityForResult(intent, POINT_PICKER_REQUEST);
+                }
+                return false;
             }
         });
+
+        mPickupPointLocation.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int action = motionEvent.getAction() & MotionEvent.ACTION_MASK;
+
+                if (action == MotionEvent.ACTION_DOWN) {
+                    Intent intent = new Intent(getActivity(), GoogleMapsActivity.class);
+                    startActivityForResult(intent, POINTLocation_PICKER_REQUEST);
+                }
+                return false;
+            }
+        });
+
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -290,10 +313,25 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         if (requestCode == POINT_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 point = Autocomplete.getPlaceFromIntent(data);
-                mPickupPoint.setText(point.getAddress());
+                mPickupPoint.setText(point.getName());
+                mPickupPointLocation.setText(point.getLatLng().toString());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Toast.makeText(getActivity(), status.getStatusMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+        if (requestCode == POINTLocation_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                try {
+                    String placeName = data.getStringExtra("placeName");
+                    String placeLatLong = data.getStringExtra("placeLatLong");
+                    p = placeLatLong;
+                    mPickupPoint.setText(placeName);
+                    mPickupPointLocation.setText(placeLatLong.toString());
+                } catch (NullPointerException e) {
+                    System.err.println("Null pointer exception");
+                }
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
             }
         }
     }
@@ -363,7 +401,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             ride_id = pojo.getRide_id();
             user_id = pojo.getUser_id();
             mobile = pojo.getUser_mobile();
-            log.e("booked", pojo.getUser_mobile());
+            //log.e("booked", pojo.getUser_mobile());
             bag.setText(pojo.getbooked_set());
             paymnt_mode = pojo.getRide_smoked();
             txt_dateandtime.setText(pojo.getTime() + " " + pojo.getDate());
@@ -454,7 +492,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         mobilenumber_row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("ibrahim", "mobile call function");
+                //log.i("ibrahim", "mobile call function");
                 askCompactPermission(PermissionUtils.Manifest_CALL_PHONE, new PermissionResult() {
                     @Override
                     public void permissionGranted() {
@@ -514,9 +552,12 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             public void onDataChange(DataSnapshot dataSnapshot) {
                 firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
                 if (fbTravel != null) {
-                    Log.i("ibrahim", "fbTravel");
-                    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("PAID");
-                    databaseRef.setValue(fbTravel.Counters.PAID + 1);
+                    try {
+                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("PAID");
+                        databaseRef.setValue(fbTravel.Counters.PAID + 1);
+                    } catch (NullPointerException e) {
+                        System.err.println("Null pointer exception");
+                    }
                 }
             }
 
@@ -596,16 +637,22 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
                 if (fbTravel != null) {
                     if (status.contains("ACCEPTED")) {
-                        Log.i("ibrahim", "fbTravel");
-                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("ACCEPTED");
-                        databaseRef.setValue(fbTravel.Counters.ACCEPTED + 1);
+                        try {
+                            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("ACCEPTED");
+                            databaseRef.setValue(fbTravel.Counters.ACCEPTED + 1);
+                        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        }
                     } else if (status.contains("COMPLETED")) {
-                        Log.i("ibrahim", "fbTravel");
-                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("COMPLETED");
-                        databaseRef.setValue(fbTravel.Counters.COMPLETED + 1);
+                        try {
+                            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("COMPLETED");
+                            databaseRef.setValue(fbTravel.Counters.COMPLETED + 1);
 
-                        DatabaseReference databaseRef1 = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("ACCEPTED");
-                        databaseRef1.setValue(fbTravel.Counters.ACCEPTED - 1);
+                            DatabaseReference databaseRef1 = FirebaseDatabase.getInstance().getReference("Travels").child(pojo.getTravel_id()).child("Counters").child("ACCEPTED");
+                            databaseRef1.setValue(fbTravel.Counters.ACCEPTED - 1);
+                        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        }
                     }
                 }
             }
@@ -626,9 +673,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
         params.put("drop_address", drop_address);
         params.put("pickup_location", s_pic.getLatLng().latitude + "," + s_pic.getLatLng().longitude);
         params.put("drop_location", s_drop.getLatLng().latitude + "," + s_drop.getLatLng().latitude);
-
         params.put("distance", "0");
-
 
         Server.setHeader(SessionManager.getKEY());
         Server.setContentType();
@@ -694,19 +739,18 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                             if (response.has("data")) {
                                 JSONObject data = response.getJSONObject("data");
                                 int travel_id = Integer.parseInt(data.getString("travel_id"));
-                                Log.i("ibrahim travel_id", String.valueOf(travel_id));
+                                //log.i("ibrahim travel_id", String.valueOf(travel_id));
+                                updateRideFirebase("PENDING", status, pojo.getPayment_status(), pojo.getPayment_mode());
+                                updateNotificationFirebase(travel_id);
+                                addTravelToFireBase(travel_id);
                                 if (Checkbox.isChecked()) {
-                                    Log.i("ibrahim check box", "is checked");
+                                    //log.i("ibrahim check box", "is checked");
                                     SavePost(pickup_address, drop_address, pojo.getDate(), pojo.getTime(), travel_id, status, "PENDING");
-                                    addTravelToFireBase(travel_id);
-                                    //
-                                    //
-                                    //
                                 } else {
-                                    Log.i("ibrahim check box", "is not checked");
+                                    //log.i("ibrahim check box", "is not checked");
                                 }
                             } else {
-                                Log.i("ibrahim_response", "no travel id");
+                                //log.i("ibrahim_response", "no travel id");
                             }
 //                            ((HomeActivity) getActivity()).changeFragment(new SearchUser(), "fragment_search_user");
 //                            bundle = new Bundle();
@@ -793,11 +837,11 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                     @Override
                     public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                         if (databaseError != null) {
-                            Log.i("ibrahim", "Data could not be saved. " + databaseError.getMessage());
+                            //log.i("ibrahim", "Data could not be saved. " + databaseError.getMessage());
                         } else {
-//                            Log.i("ibrahim","Data saved successfully." + databaseError.getMessage());
+//                            //log.i("ibrahim","Data saved successfully." + databaseError.getMessage());
                             updateRideFirebase(travel_status, status, pojo.getPayment_status(), pojo.getPayment_mode());
-                            updateNotificationFirebase(travel_id);
+//                            updateNotificationFirebase(travel_id);
                         }
                     }
                 });
@@ -831,9 +875,9 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if (databaseError != null) {
-                    Log.i("ibrahim", "Data could not be saved. " + databaseError.getMessage());
+                    //log.i("ibrahim", "Data could not be saved. " + databaseError.getMessage());
                 } else {
-//                    Log.i("ibrahim","Data saved successfully." + databaseError.getMessage());
+//                    //log.i("ibrahim","Data saved successfully." + databaseError.getMessage());
 //                    updateNotificationFirebase();
                 }
             }
@@ -854,10 +898,10 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if (databaseError != null) {
-                    Log.i("ibrahim", "Data could not be saved. " + databaseError.getMessage());
+                    //log.i("ibrahim", "Data could not be saved. " + databaseError.getMessage());
                 } else {
 //                    changeFragment(new SearchUser(), "fragment_search_user");
-//                    Log.i("ibrahim","Data saved successfully." + databaseError.getMessage());
+//                    //log.i("ibrahim","Data saved successfully." + databaseError.getMessage());
                     startActivity(new Intent(getContext(), HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 }
             }
@@ -870,6 +914,8 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().addToBackStack(null);
             fragmentTransaction.replace(R.id.frame, fragment, fragmenttag);
             fragmentTransaction.commit();
+        } catch (NullPointerException e) {
+            System.err.println("Null pointer exception");
         } catch (Exception e) {
         }
     }
@@ -885,7 +931,7 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
     }
 
     void isStarted() {
-        Log.i("ibrahim", "isStarted");
+        //log.i("ibrahim", "isStarted");
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Tracking/" + pojo.getRide_id());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -963,6 +1009,8 @@ public class AcceptRideFragment extends FragmentManagePermission implements OnMa
                 Point origin = Point.fromLngLat(longitude, latitude);
                 Point destination = Point.fromLngLat(longitude1, latitude1);
                 fetchRoute(origin, destination);
+            } catch (NullPointerException e) {
+                System.err.println("Null pointer exception");
             } catch (Exception e) {
                 Toast.makeText(getActivity(), e.toString() + " ", Toast.LENGTH_SHORT).show();
             }

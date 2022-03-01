@@ -146,7 +146,9 @@ public class MapView extends FragmentManagePermission implements OnMapReadyCallb
                 ArrayList<LatLng> directionPositionList = direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
                 myMap.addPolyline(DirectionConverter.createPolyline(getActivity(), directionPositionList, 5, Color.RED));
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
         myMap.addMarker(new MarkerOptions().position(origin).snippet(pickup).title(getString(R.string.pick_up_location)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
@@ -176,7 +178,9 @@ public class MapView extends FragmentManagePermission implements OnMapReadyCallb
 
         try {
             Snackbar.make(view, getString(R.string.direct_requesting), Snackbar.LENGTH_SHORT).show();
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
         GoogleDirection.withServerKey(getString(R.string.google_android_map_api_key))
@@ -349,7 +353,9 @@ public class MapView extends FragmentManagePermission implements OnMapReadyCallb
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(lat, log), 15);
             myMap.animateCamera(cameraUpdate);
             marker.showInfoWindow();
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
     }
@@ -379,7 +385,9 @@ public class MapView extends FragmentManagePermission implements OnMapReadyCallb
                 }
             }
 
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
 
@@ -387,7 +395,7 @@ public class MapView extends FragmentManagePermission implements OnMapReadyCallb
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.e("SUSPEND", String.valueOf(i));
+        //log.e("SUSPEND", String.valueOf(i));
     }
 
     @Override
@@ -542,7 +550,9 @@ public class MapView extends FragmentManagePermission implements OnMapReadyCallb
                                         null, false);*//*
                                     NavigationLauncher.startNavigation(getActivity(), navigationLauncherOptions.build());
                                */
-                                } catch (Exception e) {
+                                } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
                                     Toast.makeText(getActivity(), e.toString() + " ", Toast.LENGTH_SHORT).show();
                                 }
                             } else {

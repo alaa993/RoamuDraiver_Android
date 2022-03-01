@@ -1,13 +1,11 @@
 package com.alaan.roamudriver.fragement;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +14,9 @@ import android.widget.ListView;
 
 import com.alaan.roamudriver.R;
 import com.alaan.roamudriver.acitivities.HomeActivity;
-import com.alaan.roamudriver.acitivities.PostActivity;
 import com.alaan.roamudriver.pojo.Post;
 
-import com.alaan.roamudriver.pojo.PostList;
+import com.alaan.roamudriver.adapter.PostAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -87,7 +84,9 @@ public class platform extends Fragment implements BackFragment {
                     fragmentTransaction.addToBackStack(null);
                 }
             }, 50);
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
         }
     }
     @Override
@@ -106,7 +105,7 @@ public class platform extends Fragment implements BackFragment {
                 }
                 Collections.reverse(posts);
                 if(!posts.isEmpty()) {
-                    PostList postAdapter = new PostList(platform.this.getActivity(), posts);
+                    PostAdapter postAdapter = new PostAdapter(platform.this.getActivity(), posts);
                     postAdapter.notifyDataSetChanged();
                     listViewPosts.setAdapter(postAdapter);
                 }

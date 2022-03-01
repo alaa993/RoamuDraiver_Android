@@ -64,16 +64,16 @@ public class NoteFragment extends Fragment implements BackFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             travel_id = bundle.getString("travel_id");
-            Log.i("ibraim", "NoteFragment");
-            Log.i("ibraim", travel_id);
-            Log.i("ibraim", SessionManager.getKEY());
+            //log.i("ibraim", "NoteFragment");
+            //log.i("ibraim", travel_id);
+            //log.i("ibraim", SessionManager.getKEY());
             getNoteRequest(travel_id);
         }
         return view;
     }
 
     public void getNoteRequest(String travel_id) {
-        Log.i("ibrahim", "getAcceptedRequest");
+        //log.i("ibrahim", "getAcceptedRequest");
         final RequestParams params = new RequestParams();
         params.put("travel_id", travel_id);
         Server.setHeader(SessionManager.getKEY());
@@ -92,9 +92,9 @@ public class NoteFragment extends Fragment implements BackFragment {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                         }.getType());
-                        Log.i("ibrahim_list", list.toString());
-                        Log.i("ibrahim_list", response.getString("data"));
-                        Log.i("ibrahim_list", "-----------");
+                        //log.i("ibrahim_list", list.toString());
+                        //log.i("ibrahim_list", response.getString("data"));
+                        //log.i("ibrahim_list", "-----------");
                         if (response.has("data") && response.getJSONArray("data").length() == 0) {
 //                            txt_error.setVisibility(View.VISIBLE);
                             NoteAdapter acceptedRequestAdapter = new NoteAdapter(list);

@@ -223,7 +223,7 @@ public class RegisterActivity extends ActivityManagePermission implements Google
                                 } catch (IOException | IllegalArgumentException e) {
 
                                     //  e.printStackTrace();
-                                    Log.e("data", e.toString());
+                                    //log.e("data", e.toString());
                                 }
                             } else {
                                 latitude = "0.0";
@@ -239,7 +239,9 @@ public class RegisterActivity extends ActivityManagePermission implements Google
                             state = "null";
                             country = "null";
                         }
-                    } catch (Exception e) {
+                    } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
                         latitude = "0.0";
                         longitude = "0.0";
                         city = "null";
@@ -371,7 +373,7 @@ public class RegisterActivity extends ActivityManagePermission implements Google
         switch (requestCode) {
             case 1: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.e("permisson", "granted");
+                    //log.e("permisson", "granted");
                     TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(RegisterActivity.this)
                             .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
                                 @Override
@@ -429,15 +431,17 @@ public class RegisterActivity extends ActivityManagePermission implements Google
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e("success", response.toString());
+                //log.e("success", response.toString());
                 try {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         String url = response.getJSONObject("data").getString("avatar");
 
                         try {
-                            Log.i("ibrahim", "url");
-                            Log.i("ibrahim", url);
+                            //log.i("ibrahim", "url");
+                            //log.i("ibrahim", url);
                             Glide.with(RegisterActivity.this).load(photoURL).apply(new RequestOptions().error(R.drawable.user_default)).into(imageProfile);
+                        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
                         } catch (Exception e) {
                         }
                         User user = SessionManager.getUser();
@@ -457,6 +461,8 @@ public class RegisterActivity extends ActivityManagePermission implements Google
                             Map<String, Object> userObject = new HashMap<>();
                             userObject.put("photoURL", url);
                             databaseRef.updateChildren(userObject);
+                        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
                         } catch (Exception e) {
                         }
 
@@ -657,12 +663,12 @@ public class RegisterActivity extends ActivityManagePermission implements Google
                 try {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
 
-                        Log.i("ibrahim was here", response.toString());
+                        //log.i("ibrahim was here", response.toString());
 
                         if (response.has("data")) {
                             JSONObject data = response.getJSONObject("data");
                             int user_id = Integer.parseInt(data.getString("user_id"));
-//                            Log.i("ibrahim travel_id", String.valueOf(travel_id));
+//                            //log.i("ibrahim travel_id", String.valueOf(travel_id));
                             Date currentDate = Calendar.getInstance().getTime();
                             Date currentTime = Calendar.getInstance().getTime();
                             SavePrivatePost("pickup_address", "drop_address", currentDate.toString(), currentTime.toString(), user_id);
@@ -681,7 +687,7 @@ public class RegisterActivity extends ActivityManagePermission implements Google
                                 }
                             }
                         } else {
-//                            Log.i("ibrahim_response", "no travel id");
+//                            //log.i("ibrahim_response", "no travel id");
                         }
                     } else {
 
@@ -712,7 +718,7 @@ public class RegisterActivity extends ActivityManagePermission implements Google
         // params.put("password", password);
         params.put("utype", "1");
         params.put("gcm_token", token);
-//        Log.e("TOKEN",token);
+//        //log.e("TOKEN",token);
         Server.post(Server.LOGIN, params, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -732,8 +738,8 @@ public class RegisterActivity extends ActivityManagePermission implements Google
 
                         Gson gson = new Gson();
                         User user = gson.fromJson(response.getJSONObject("data").toString(), User.class);
-                        Log.i("ibrahim", "response.getJSONObject(\"data\").toString()");
-                        Log.i("ibrahim", response.getJSONObject("data").toString());
+                        //log.i("ibrahim", "response.getJSONObject(\"data\").toString()");
+                        //log.i("ibrahim", response.getJSONObject("data").toString());
                         SessionManager.setUser(gson.toJson(user));
                         SessionManager.setIsLogin();
                         upload_pic(format);
@@ -768,8 +774,8 @@ public class RegisterActivity extends ActivityManagePermission implements Google
                         + getString(R.string.Travel_to) + " " + Drop_address + System.getProperty("line.separator")
                         + getString(R.string.Travel_on) + " " + date_time_value + System.getProperty("line.separator")
                         + getString(R.string.the_clock) + " " + time_value;
-//                log.i("tag","success by ibrahim");
-//                log.i("tag", UserName);
+//                //log.i("tag","success by ibrahim");
+//                //log.i("tag", UserName);
                 // Firebase code here
                 DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("private_posts").child(String.valueOf(travel_id));
                 Map<String, Object> author = new HashMap<>();

@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 import com.alaan.roamudriver.R;
 import com.alaan.roamudriver.Server.Server;
 import com.alaan.roamudriver.acitivities.AddPostActivity;
+import com.alaan.roamudriver.acitivities.GoogleMapsActivity;
 import com.alaan.roamudriver.acitivities.HomeActivity;
 import com.alaan.roamudriver.custom.CheckConnection;
 import com.alaan.roamudriver.pojo.Pass;
@@ -90,12 +92,14 @@ public class SearchUser extends Fragment implements BackFragment {
 
     Pass pass;
     Button search_for_users_btn, add_travel;
+    Button map_btn, promo_btn;
     TextView date_time_search;
     TextView pickup_location, drop_location;
-    EditText mPickupPoint;
+    EditText mPickupPoint, mPickupPointLocation;
     private int PLACE_PICKER_REQUEST = 7896;
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1234;
     private int POINT_PICKER_REQUEST = 12345;
+    private int POINTLocation_PICKER_REQUEST = 54321;
 
     private String date_time_value;
     private CheckBox Checkbox;
@@ -147,6 +151,9 @@ public class SearchUser extends Fragment implements BackFragment {
 
         search_for_users_btn = (Button) rootView.findViewById(R.id.search_for_users_btn);
         add_travel = (Button) rootView.findViewById(R.id.ride_add_btn);
+
+        map_btn = (Button) rootView.findViewById(R.id.map_btn);
+        promo_btn = (Button) rootView.findViewById(R.id.promo_btn);
 
         pickup_location.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,6 +222,7 @@ public class SearchUser extends Fragment implements BackFragment {
                         final EditText mPrice = (EditText) mView.findViewById(R.id.etPrice);
                         final EditText etNotes = (EditText) mView.findViewById(R.id.etNotes);
                         mPickupPoint = (EditText) mView.findViewById(R.id.etPickupPoint);
+                        mPickupPointLocation = (EditText) mView.findViewById(R.id.etPickupPointLocation);
                         Button mSubmit = (Button) mView.findViewById(R.id.btnSubmitDialog);
                         Button mCancel = (Button) mView.findViewById(R.id.btnCancelDialog);
                         Checkbox = (CheckBox) mView.findViewById(R.id.checkBox);
@@ -223,21 +231,40 @@ public class SearchUser extends Fragment implements BackFragment {
                         mBuilder.setView(mView);
                         final android.app.AlertDialog dialog = mBuilder.create();
                         dialog.show();
-                        mPickupPoint.setOnClickListener(new View.OnClickListener() {
+                        mPickupPoint.setOnTouchListener(new View.OnTouchListener() {
                             @Override
-                            public void onClick(View view) {
-                                Places.initialize(getActivity(), getString(R.string.google_android_map_api_key));
-                                List<com.google.android.libraries.places.api.model.Place.Field> fields =
-                                        Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID,
-                                                com.google.android.libraries.places.api.model.Place.Field.NAME,
-                                                com.google.android.libraries.places.api.model.Place.Field.ADDRESS,
-                                                com.google.android.libraries.places.api.model.Place.Field.LAT_LNG);
-                                Intent intent = new Autocomplete.IntentBuilder(
-                                        AutocompleteActivityMode.FULLSCREEN, fields)
-                                        .build(getActivity());
-                                startActivityForResult(intent, POINT_PICKER_REQUEST);
+                            public boolean onTouch(View view, MotionEvent motionEvent) {
+                                int action = motionEvent.getAction() & MotionEvent.ACTION_MASK;
+
+                                if (action == MotionEvent.ACTION_DOWN) {
+                                    Places.initialize(getActivity(), getString(R.string.google_android_map_api_key));
+                                    List<com.google.android.libraries.places.api.model.Place.Field> fields =
+                                            Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID,
+                                                    com.google.android.libraries.places.api.model.Place.Field.NAME,
+                                                    com.google.android.libraries.places.api.model.Place.Field.ADDRESS,
+                                                    com.google.android.libraries.places.api.model.Place.Field.LAT_LNG);
+                                    Intent intent = new Autocomplete.IntentBuilder(
+                                            AutocompleteActivityMode.FULLSCREEN, fields)
+                                            .build(getActivity());
+                                    startActivityForResult(intent, POINT_PICKER_REQUEST);
+                                }
+                                return false;
                             }
                         });
+
+                        mPickupPointLocation.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View view, MotionEvent motionEvent) {
+                                int action = motionEvent.getAction() & MotionEvent.ACTION_MASK;
+
+                                if (action == MotionEvent.ACTION_DOWN) {
+                                    Intent intent = new Intent(getActivity(), GoogleMapsActivity.class);
+                                    startActivityForResult(intent, POINTLocation_PICKER_REQUEST);
+                                }
+                                return false;
+                            }
+                        });
+
                         mSubmit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -281,6 +308,28 @@ public class SearchUser extends Fragment implements BackFragment {
             }
         });
 
+        map_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (CheckConnection.haveNetworkConnection(getActivity())) {
+                    ((HomeActivity) getActivity()).changeFragment(new HomeFragment(), getString(R.string.home));
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.network), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        promo_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (CheckConnection.haveNetworkConnection(getActivity())) {
+                    ((HomeActivity) getActivity()).changeFragment(new PromoFragment(), getString(R.string.promocodes));
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.network), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
         return rootView;
     }
 
@@ -299,8 +348,8 @@ public class SearchUser extends Fragment implements BackFragment {
                         + getString(R.string.Travel_to) + " " + Drop_address + System.getProperty("line.separator")
                         + getString(R.string.Travel_on) + " " + date_time_value + System.getProperty("line.separator")
                         + getString(R.string.the_clock) + " " + time_value;
-//                log.i("tag","success by ibrahim");
-//                log.i("tag", UserName);
+//                //log.i("tag","success by ibrahim");
+//                //log.i("tag", UserName);
                 // Firebase code here
                 DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("posts").push();
                 Map<String, Object> author = new HashMap<>();
@@ -342,8 +391,8 @@ public class SearchUser extends Fragment implements BackFragment {
                         + getString(R.string.Travel_to) + " " + Drop_address + System.getProperty("line.separator")
                         + getString(R.string.Travel_on) + " " + date_time_value + System.getProperty("line.separator")
                         + getString(R.string.the_clock) + " " + time_value;
-//                log.i("tag","success by ibrahim");
-//                log.i("tag", UserName);
+//                //log.i("tag","success by ibrahim");
+//                //log.i("tag", UserName);
                 // Firebase code here
                 DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("private_posts").child(String.valueOf(travel_id));
                 Map<String, Object> author = new HashMap<>();
@@ -374,6 +423,8 @@ public class SearchUser extends Fragment implements BackFragment {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().addToBackStack(null);
             fragmentTransaction.replace(R.id.frame, fragment, fragmenttag);
             fragmentTransaction.commit();
+        } catch (NullPointerException e) {
+            System.err.println("Null pointer exception");
         } catch (Exception e) {
         }
     }
@@ -412,7 +463,7 @@ public class SearchUser extends Fragment implements BackFragment {
 
 //                        date_time = String.format("%04d-%02d-%02d", year, 1 + monthOfYear, dayOfMonth);
                         date_time = formatDateWithPattern1(String.format("%04d-%02d-%02d", year, 1 + monthOfYear, dayOfMonth));
-                        Log.i("ibrahim", date_time);
+                        //log.i("ibrahim", date_time);
                         //date_time = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                         tiemPicker();
                     }
@@ -460,7 +511,7 @@ public class SearchUser extends Fragment implements BackFragment {
                 pickup_location.setText(pickup.getName());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(data);
-                Log.e(TAG, status.toString());
+                //log.e(TAG, status.toString());
                 Toast.makeText(getActivity(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
@@ -475,9 +526,24 @@ public class SearchUser extends Fragment implements BackFragment {
             if (resultCode == RESULT_OK) {
                 point = Autocomplete.getPlaceFromIntent(data);
                 mPickupPoint.setText(point.getName());
+                mPickupPointLocation.setText(point.getLatLng().toString());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Toast.makeText(getActivity(), status.getStatusMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+        if (requestCode == POINTLocation_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                try {
+                    String placeName = data.getStringExtra("placeName");
+                    String placeLatLong = data.getStringExtra("placeLatLong");
+                    p = placeLatLong;
+                    mPickupPoint.setText(placeName);
+                    mPickupPointLocation.setText(placeLatLong);
+                } catch (NullPointerException e) {
+                    System.err.println("Null pointer exception");
+                }
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
             }
         }
     }

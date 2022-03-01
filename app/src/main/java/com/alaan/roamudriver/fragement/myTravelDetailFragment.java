@@ -9,17 +9,14 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,7 +29,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -48,17 +44,13 @@ import com.alaan.roamudriver.Server.GoogMatrixRequest;
 import com.alaan.roamudriver.Server.Server;
 import com.alaan.roamudriver.acitivities.HomeActivity;
 import com.alaan.roamudriver.acitivities.LoginActivity;
-import com.alaan.roamudriver.adapter.AcceptedRequestAdapter;
 import com.alaan.roamudriver.adapter.MyAcceptedRequestAdapter;
-import com.alaan.roamudriver.adapter.myTravelsAdapter;
 import com.alaan.roamudriver.custom.GPSTracker;
 import com.alaan.roamudriver.custom.Utils;
 import com.alaan.roamudriver.pojo.Notification;
 import com.alaan.roamudriver.pojo.PendingRequestPojo;
 import com.alaan.roamudriver.pojo.Post;
-import com.alaan.roamudriver.pojo.PostList;
 import com.alaan.roamudriver.pojo.firebaseClients;
-import com.alaan.roamudriver.pojo.firebaseRide;
 import com.alaan.roamudriver.pojo.firebaseTravel;
 import com.alaan.roamudriver.pojo.firebaseTravelCounters;
 import com.alaan.roamudriver.session.SessionManager;
@@ -82,13 +74,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
@@ -103,10 +93,7 @@ import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
-import com.thebrownarrow.permissionhelper.PermissionResult;
 import com.thebrownarrow.permissionhelper.PermissionUtils;
-
-import net.skoumal.fragmentback.BackFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -115,7 +102,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -229,25 +215,25 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 firebaseTravel fbTravel = dataSnapshot.getValue(firebaseTravel.class);
-                Log.i("ibrahim", "onDataChange");
-                Log.i("ibrahim ride", "----------");
+                //log.i("ibrahim", "onDataChange");
+                //log.i("ibrahim ride", "----------");
                 if (fbTravel != null) {
-                    Log.i("ibrahim", "fbTravel");
-                    Log.i("Counters.ACCEPTED", String.valueOf(fbTravel.Counters.ACCEPTED));
-//                    Log.i("Counters.PENDING", String.valueOf(fbTravel.Counters.PENDING));
-                    Log.i("Counters.COMPLETED", String.valueOf(fbTravel.Counters.COMPLETED));
-//                    Log.i("Counters.CANCELLED", String.valueOf(fbTravel.Counters.CANCELLED));
-                    Log.i("Counters.PAID", String.valueOf(fbTravel.Counters.PAID));
-                    Log.i("Counters.OFFLINE", String.valueOf(fbTravel.Counters.OFFLINE));
+                    //log.i("ibrahim", "fbTravel");
+                    //log.i("Counters.ACCEPTED", String.valueOf(fbTravel.Counters.ACCEPTED));
+//                    //log.i("Counters.PENDING", String.valueOf(fbTravel.Counters.PENDING));
+                    //log.i("Counters.COMPLETED", String.valueOf(fbTravel.Counters.COMPLETED));
+//                    //log.i("Counters.CANCELLED", String.valueOf(fbTravel.Counters.CANCELLED));
+                    //log.i("Counters.PAID", String.valueOf(fbTravel.Counters.PAID));
+                    //log.i("Counters.OFFLINE", String.valueOf(fbTravel.Counters.OFFLINE));
 //                    if (travel_status != null && !travel_status.equals("") && travel_status.equalsIgnoreCase("STARTED")) {
 //                        if (fbTravel.Counters.ACCEPTED + fbTravel.Counters.COMPLETED == fbTravel.Counters.PAID && fbTravel.Counters.PAID > 0) {
-//                            Log.i("ibrahim", "COMPLETED");
+//                            //log.i("ibrahim", "COMPLETED");
 //                            approve.setVisibility(View.GONE);
 //                            start.setVisibility(View.GONE);
 //                            complete.setVisibility(View.VISIBLE);
 //                            cancel.setVisibility(View.GONE);
 //                        } else if (fbTravel.Counters.ACCEPTED + fbTravel.Counters.COMPLETED == fbTravel.Counters.OFFLINE && fbTravel.Counters.OFFLINE > 0) {
-//                            Log.i("ibrahim", "approve");
+//                            //log.i("ibrahim", "approve");
 //                            approve.setVisibility(View.VISIBLE);
 //                            complete.setVisibility(View.GONE);
 //                            start.setVisibility(View.GONE);
@@ -268,7 +254,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     @Override
     public void onStart() {
         super.onStart();
-        Log.i("ibrahim", "onStart");
+        //log.i("ibrahim", "onStart");
     }
 
     public void BindView(Bundle savedInstanceState) {
@@ -391,8 +377,8 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("travel_id", travel_id);
-                Log.i("ibrahim", "my_notes_button");
-                Log.i("ibrahim", travel_id);
+                //log.i("ibrahim", "my_notes_button");
+                //log.i("ibrahim", travel_id);
                 NoteFragment noteFragment = new NoteFragment();
                 noteFragment.setArguments(bundle);
                 ((HomeActivity) getActivity()).changeFragment(noteFragment, "fragment_note");
@@ -412,12 +398,12 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                     DrawableCompat.setTintList(DrawableCompat.wrap(switchCompat.getThumbDrawable()), new ColorStateList(states, thumbColors));
 
                     if (isChecked) {
-                        Log.i("ibrhim", "switchCompat");
-                        Log.i("ibrhim", "1");
+                        //log.i("ibrhim", "switchCompat");
+                        //log.i("ibrhim", "1");
                         travel_type_change(rideJson.getTravel_id(), "1", false);
                     } else {
-                        Log.i("ibrhim", "switchCompat");
-                        Log.i("ibrhim", "0");
+                        //log.i("ibrhim", "switchCompat");
+                        //log.i("ibrhim", "0");
                         travel_type_change(rideJson.getTravel_id(), "0", false);
                     }
 
@@ -430,31 +416,31 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     }
 
     public void setupData() {
-        Log.i("ibrahim", "setupData");
+        //log.i("ibrahim", "setupData");
 
         if (bundle != null) {
-            Log.i("ibrahim", "bundle != null");
+            //log.i("ibrahim", "bundle != null");
 
             if (rideJson.getpickup_location() != null && rideJson.getdrop_location() != null) {
-                Log.i("ibrahim", "inside");
-                Log.i("ibrahim", rideJson.getpickup_location());
-                Log.i("ibrahim", rideJson.getdrop_location());
+                //log.i("ibrahim", "inside");
+                //log.i("ibrahim", rideJson.getpickup_location());
+                //log.i("ibrahim", rideJson.getdrop_location());
 
                 String[] pickuplatlong = rideJson.getpickup_location().split(",");
                 double pickuplatitude = Double.parseDouble(pickuplatlong[0]);
                 double pickuplongitude = Double.parseDouble(pickuplatlong[1]);
                 origin = new LatLng(pickuplatitude, pickuplongitude);
 
-                Log.i("ibrahim", origin.toString());
+                //log.i("ibrahim", origin.toString());
 
                 String[] droplatlong = rideJson.getdrop_location().split(",");
                 double droplatitude = Double.parseDouble(droplatlong[0]);
                 double droplongitude = Double.parseDouble(droplatlong[1]);
                 destination = new LatLng(droplatitude, droplongitude);
-                Log.i("ibrahim", destination.toString());
+                //log.i("ibrahim", destination.toString());
             }
-            Log.i("ibrahim", "status");
-            Log.i("ibrahim", travel_status);
+            //log.i("ibrahim", "status");
+            //log.i("ibrahim", travel_status);
             if (!travel_status.equals("") && travel_status.equalsIgnoreCase("PENDING")) {
                 approve.setVisibility(View.GONE);
                 start.setVisibility(View.VISIBLE);
@@ -477,8 +463,8 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                 cancel.setVisibility(View.GONE);
                 checkPayments();
 //                if () {
-//                    Log.i("ibrahim", "checkPayments");
-//                    Log.i("ibrahim", String.valueOf(checkPayments()));
+//                    //log.i("ibrahim", "checkPayments");
+//                    //log.i("ibrahim", String.valueOf(checkPayments()));
 //                    approve.setVisibility(View.VISIBLE);
 //                    complete.setVisibility(View.GONE);
 //                    start.setVisibility(View.GONE);
@@ -539,8 +525,8 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.i("ibrahim", "response.toString()");
-                Log.i("ibrahim", response.toString());
+                //log.i("ibrahim", "response.toString()");
+                //log.i("ibrahim", response.toString());
                 try {
                     Gson gson = new GsonBuilder().create();
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
@@ -561,8 +547,8 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                                 }
                             }
                         }
-                        Log.i("ibrahim", "status");
-                        Log.i("ibrahim", status);
+                        //log.i("ibrahim", "status");
+                        //log.i("ibrahim", status);
                         if (status.equalsIgnoreCase("PENDING")) {
                             approve.setVisibility(View.GONE);
                             start.setVisibility(View.VISIBLE);
@@ -586,15 +572,15 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                         if (status.equalsIgnoreCase("STARTED")) {
                             checkPayments();
 //                            if (checkPayments()) {
-//                                Log.i("ibrahim", "checkPayments_true");
-//                                Log.i("ibrahim", String.valueOf(checkPayments()));
+//                                //log.i("ibrahim", "checkPayments_true");
+//                                //log.i("ibrahim", String.valueOf(checkPayments()));
 //                                approve.setVisibility(View.VISIBLE);
 //                                complete.setVisibility(View.GONE);
 //                                start.setVisibility(View.GONE);
 //                                cancel.setVisibility(View.GONE);
 //                            } else {
-//                                Log.i("ibrahim", "checkPayments_false");
-//                                Log.i("ibrahim", String.valueOf(checkPayments()));
+//                                //log.i("ibrahim", "checkPayments_false");
+//                                //log.i("ibrahim", String.valueOf(checkPayments()));
 //                                approve.setVisibility(View.GONE);
 //                                start.setVisibility(View.GONE);
 //                                complete.setVisibility(View.GONE);
@@ -638,7 +624,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     }
 
     public boolean checkPayments() {
-        Log.i("ibrahim", "checkPayments_inside");
+        //log.i("ibrahim", "checkPayments_inside");
         RequestParams params = new RequestParams();
         params.put("travel_id", travel_id);
         Server.setHeader(SessionManager.getKEY());
@@ -653,15 +639,15 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.i("ibrahim", "response.toString()");
-                Log.i("ibrahim", response.toString());
+                //log.i("ibrahim", "response.toString()");
+                //log.i("ibrahim", response.toString());
                 try {
                     Gson gson = new GsonBuilder().create();
                     if (response.has("status")
                             && response.getString("status").equalsIgnoreCase("success")
                             && response.getString("data").equalsIgnoreCase("true")) {
 //                        checkPayments = true;
-//                        Log.i("ibrahim_checkPayments1", String.valueOf(checkPayments));
+//                        //log.i("ibrahim_checkPayments1", String.valueOf(checkPayments));
                         approve.setVisibility(View.VISIBLE);
 //                        complete.setVisibility(View.GONE);
                         start.setVisibility(View.GONE);
@@ -669,7 +655,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 
                     } else {
 //                        checkPayments = false;
-//                        Log.i("ibrahim_checkPayments2", String.valueOf(checkPayments));
+//                        //log.i("ibrahim_checkPayments2", String.valueOf(checkPayments));
                         approve.setVisibility(View.GONE);
                         start.setVisibility(View.GONE);
 //                        complete.setVisibility(View.GONE);
@@ -677,7 +663,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                     }
                 } catch (JSONException e) {
                     checkPayments = false;
-                    Log.i("ibrahim_checkPayments3", String.valueOf(checkPayments));
+                    //log.i("ibrahim_checkPayments3", String.valueOf(checkPayments));
                 }
             }
 
@@ -687,7 +673,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 //                swipeRefreshLayout.setRefreshing(false);
             }
         });
-        Log.i("ibrahim_checkPayments4", String.valueOf(checkPayments));
+        //log.i("ibrahim_checkPayments4", String.valueOf(checkPayments));
         return checkPayments;
     }
 
@@ -706,8 +692,8 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.i("ibrahim", "response.toString()");
-                Log.i("ibrahim", response.toString());
+                //log.i("ibrahim", "response.toString()");
+                //log.i("ibrahim", response.toString());
                 try {
                     Gson gson = new GsonBuilder().create();
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
@@ -780,20 +766,20 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
 
-                Log.e("FAIl", throwable.toString() + ".." + errorResponse);
+                //log.e("FAIl", throwable.toString() + ".." + errorResponse);
             }
 
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.e("FAIl", throwable.toString() + ".." + errorResponse);
+                //log.e("FAIl", throwable.toString() + ".." + errorResponse);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                Log.e("FAIl", throwable.toString() + ".." + responseString);
+                //log.e("FAIl", throwable.toString() + ".." + responseString);
             }
 
             @Override
@@ -817,19 +803,19 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     }
 
     public void deletePostFirebase() {
-        Log.i("ibrahim", "deletePostFirebase");
+        //log.i("ibrahim", "deletePostFirebase");
         FirebaseDatabase.getInstance().getReference("posts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i("ibrahim", "dataSnapshot");
-                Log.i("ibrahim", dataSnapshot.toString());
+                //log.i("ibrahim", "dataSnapshot");
+                //log.i("ibrahim", dataSnapshot.toString());
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Log.i("ibrahim", "dataSnapshot");
-                    Log.i("ibrahim", postSnapshot.toString());
+                    //log.i("ibrahim", "dataSnapshot");
+                    //log.i("ibrahim", postSnapshot.toString());
                     Post post = postSnapshot.getValue(Post.class);
                     if (rideJson.getTravel_id().equalsIgnoreCase(String.valueOf(post.travel_id))) {
-                        Log.i("ibrahim", "dataSnapshot");
-                        Log.i("ibrahim", post.text);
+                        //log.i("ibrahim", "dataSnapshot");
+                        //log.i("ibrahim", post.text);
                         postSnapshot.getRef().removeValue();
                     }
                 }
@@ -842,19 +828,19 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     }
 
     public void deleteNotificationFirebase(String user_id) {
-        Log.i("ibrahim", "deletePostFirebase");
+        //log.i("ibrahim", "deletePostFirebase");
         FirebaseDatabase.getInstance().getReference("Notifications").child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i("ibrahim", "dataSnapshot");
-                Log.i("ibrahim", dataSnapshot.toString());
+                //log.i("ibrahim", "dataSnapshot");
+                //log.i("ibrahim", dataSnapshot.toString());
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Log.i("ibrahim", "dataSnapshot");
-                    Log.i("ibrahim", postSnapshot.toString());
+                    //log.i("ibrahim", "dataSnapshot");
+                    //log.i("ibrahim", postSnapshot.toString());
                     Notification notification = postSnapshot.getValue(Notification.class);
                     if (rideJson.getTravel_id().equalsIgnoreCase(String.valueOf(notification.travel_id))) {
-                        Log.i("ibrahim", "dataSnapshot");
-                        Log.i("ibrahim", notification.text);
+                        //log.i("ibrahim", "dataSnapshot");
+                        //log.i("ibrahim", notification.text);
                         postSnapshot.getRef().removeValue();
                     }
                 }
@@ -880,7 +866,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     }
 
     public void getMySpecificTravel(String driver_id, String travel_id, String status, String key) {
-        Log.i("ibrahim", "getMyTravels");
+        //log.i("ibrahim", "getMyTravels");
 
         RequestParams params = new RequestParams();
         params.put("driver_id", driver_id);
@@ -921,18 +907,18 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 
 //                                for (int i = 0; i < list.size(); i++) {
 //                                    databaseRide = FirebaseDatabase.getInstance().getReference("rides").child(list.get(i).getRide_id());
-//                                    Log.i("ibrahim", "databaseRide");
-//                                    Log.i("ibrahim", list.get(i).getRide_id());
+//                                    //log.i("ibrahim", "databaseRide");
+//                                    //log.i("ibrahim", list.get(i).getRide_id());
 //                                    databaseRides[i] = databaseRide;
 //                                    listener = databaseRides[i].addValueEventListener(new ValueEventListener() {
 //                                        @Override
 //                                        public void onDataChange(DataSnapshot dataSnapshot) {
 //                                            firebaseRide fbRide = dataSnapshot.getValue(firebaseRide.class);
-//                                            Log.i("ibrahim ride", "----------");
-//                                            Log.i("ibrahim", fbRide.toString());
+//                                            //log.i("ibrahim ride", "----------");
+//                                            //log.i("ibrahim", fbRide.toString());
 //
 //                                            if (fbRide != null) {
-//                                                Log.i("ibrahim", "not null");
+//                                                //log.i("ibrahim", "not null");
 //
 //                                                checkPayments();
 //                                            }
@@ -968,7 +954,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     }
 
     public void getMyTravel(String id) {
-        Log.i("ibrahim", "getMyTravels");
+        //log.i("ibrahim", "getMyTravels");
 
         RequestParams params = new RequestParams();
         params.put("id", id);
@@ -982,21 +968,21 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-//                Log.i("ibrahim","travels");
-                Log.i("ibrahim", "response.toString()");
-                Log.i("ibrahim", response.toString());
+//                //log.i("ibrahim","travels");
+                //log.i("ibrahim", "response.toString()");
+                //log.i("ibrahim", response.toString());
                 try {
                     Gson gson = new GsonBuilder().create();
-//                    Log.e("success", response.toString());
+//                    //log.e("success", response.toString());
 
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         List<PendingRequestPojo> list = gson.fromJson(response.getJSONArray("data").toString(), new TypeToken<List<PendingRequestPojo>>() {
                         }.getType());
-//                        Log.e("success", response.toString());
+//                        //log.e("success", response.toString());
                         if (response.has("data") && response.getJSONArray("data").length() > 0) {
-                            Log.i("ibrahim", "LENGTH>0");
+                            //log.i("ibrahim", "LENGTH>0");
                             if (list.size() > 0) {
-                                Log.i("ibrahim", "SIZE>0");
+                                //log.i("ibrahim", "SIZE>0");
                                 rideJson = list.get(0);
                                 travel_status = rideJson.getStatus();
                                 setupData();
@@ -1041,7 +1027,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
     public void onDirectionSuccess(Direction direction, String rawBody) {
         if (getActivity() != null) {
             if (direction.isOK()) {
-                Log.i("ibrahim", "onDirectionSuccess");
+                //log.i("ibrahim", "onDirectionSuccess");
                 ArrayList<LatLng> directionPositionList = direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
                 myMap.addPolyline(DirectionConverter.createPolyline(getActivity(), directionPositionList, 2, Color.BLUE));
 
@@ -1192,11 +1178,11 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                     databaseTravelRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.i("ibrahim", "onDataChange_1");
+                            //log.i("ibrahim", "onDataChange_1");
                             fbTravel = dataSnapshot.getValue(firebaseTravel.class);
-//                            Log.i("ibrahim", fbTravel.toString());
-//                            Log.i("ibrahim_travel", fbTravel.driver_id);
-//                            Log.i("ibrahim_travel", fbTravel.clients.toString());
+//                            //log.i("ibrahim", fbTravel.toString());
+//                            //log.i("ibrahim_travel", fbTravel.driver_id);
+//                            //log.i("ibrahim_travel", fbTravel.clients.toString());
                             drawMap(fbTravel);
                         }
 
@@ -1208,7 +1194,9 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                 }
                 setCurrentLocation(currentLatitude, currentLongitude);
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
 
@@ -1230,9 +1218,9 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 fbTravel = dataSnapshot.getValue(firebaseTravel.class);
-                Log.i("ibrahim", fbTravel.toString());
-                Log.i("ibrahim_travel", fbTravel.driver_id);
-                Log.i("ibrahim_travel", fbTravel.Clients.toString());
+                //log.i("ibrahim", fbTravel.toString());
+                //log.i("ibrahim_travel", fbTravel.driver_id);
+                //log.i("ibrahim_travel", fbTravel.Clients.toString());
                 drawMap(fbTravel);
             }
 
@@ -1250,7 +1238,9 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             if (mMapView != null) {
                 mMapView.onSaveInstanceState(outState);
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
     }
@@ -1262,7 +1252,9 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             if (mMapView != null) {
                 mMapView.onLowMemory();
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1277,7 +1269,9 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             if (mGoogleApiClient != null) {
                 mGoogleApiClient.disconnect();
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
     }
@@ -1292,7 +1286,9 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
             if (mGoogleApiClient != null) {
                 mGoogleApiClient.connect();
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
     }
@@ -1361,7 +1357,7 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                     myMap.clear();
                     my_marker = myMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("You are here.").icon(BitmapDescriptorFactory.fromResource(R.drawable.taxi)));
                     my_marker.showInfoWindow();
-                    Log.i("ibrahim", "drawRoute");
+                    //log.i("ibrahim", "drawRoute");
                     for (Map.Entry<String, String> entry : fbTravel.Clients.entrySet()) {
                         String key = entry.getKey();
                         String value = entry.getValue();
@@ -1383,14 +1379,16 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
 
                             }
                         });
-                        Log.i("ibrahim", value.toString());
+                        //log.i("ibrahim", value.toString());
                     }
 
 
                 }
                 setCurrentLocation(currentLatitude, currentLongitude);
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
     }
@@ -1412,7 +1410,9 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                 }
 
             });
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
         }
     }
@@ -1507,7 +1507,9 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                     }
 //                    dismiss();
 
-                } catch (Exception e) {
+                } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
 
                 }
 
@@ -1538,7 +1540,9 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                     .to(origin)
                     .transportMode(TransportMode.DRIVING)//.waypoints(Collections.singletonList())
                     .execute(this);
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
         }
     }
 
@@ -1568,7 +1572,9 @@ public class myTravelDetailFragment extends Fragment implements OnMapReadyCallba
                 Point destination = Point.fromLngLat(longitude1, latitude1);
 
                 fetchRoute(origin, destination);
-            } catch (Exception e) {
+            } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
                 Toast.makeText(getActivity(), e.toString() + " ", Toast.LENGTH_SHORT).show();
             }
         } else {

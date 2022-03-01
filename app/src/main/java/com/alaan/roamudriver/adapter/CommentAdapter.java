@@ -1,4 +1,4 @@
-package com.alaan.roamudriver.pojo;
+package com.alaan.roamudriver.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alaan.roamudriver.R;
+import com.alaan.roamudriver.pojo.Comment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,12 +24,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class CommentList extends ArrayAdapter<Comment>{
+public class CommentAdapter extends ArrayAdapter<Comment>{
     private Activity context;
     List<Comment> comments;
 
-    public CommentList(Activity context, List<Comment> comments) {
-        super(context, R.layout.layout_artist_list, comments);
+    public CommentAdapter(Activity context, List<Comment> comments) {
+        super(context, R.layout.post_item, comments);
         this.context = context;
         this.comments = comments;
     }
@@ -39,19 +40,21 @@ public class CommentList extends ArrayAdapter<Comment>{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View listViewItem = inflater.inflate(R.layout.layout_artist_list, null, true);
+        View listViewItem = inflater.inflate(R.layout.post_item, null, true);
 
         TextView textViewName = (TextView) listViewItem.findViewById(R.id.textViewName);
         TextView textViewText = (TextView) listViewItem.findViewById(R.id.textViewText);
         TextView textViewDate = (TextView) listViewItem.findViewById(R.id.textViewDate);
         TextView textViewCommentsNo = (TextView) listViewItem.findViewById(R.id.textViewCommentsNo);
         ImageView CommentAvatar  = (ImageView) listViewItem.findViewById(R.id.image);
+        TextView TripDetail = (TextView) listViewItem.findViewById(R.id.TripDetail);
         View LineSeparator  = (View) listViewItem.findViewById(R.id.LineSeparator);
 
         Comment comment = comments.get(position);
-        textViewName.setText(comment.author.username);
+//        textViewName.setText(comment.author.username);
         textViewText.setText(comment.text);
         textViewCommentsNo.setVisibility(View.GONE);
+        TripDetail.setVisibility(View.GONE);
         LineSeparator.setVisibility(View.GONE);
         if (comment.timestamp != null)
         {
@@ -68,9 +71,10 @@ public class CommentList extends ArrayAdapter<Comment>{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String photoURL = dataSnapshot.child("photoURL").getValue(String.class);
-
+                String UserName = dataSnapshot.child("username").getValue(String.class);
+                textViewName.setText(UserName);
                 if (photoURL != null) {
-                    Glide.with(CommentList.this.getContext()).load(photoURL).apply(new RequestOptions().error(R.drawable.images)).into(CommentAvatar);
+                    Glide.with(CommentAdapter.this.getContext()).load(photoURL).apply(new RequestOptions().error(R.drawable.images)).into(CommentAvatar);
                 }
             }
             @Override

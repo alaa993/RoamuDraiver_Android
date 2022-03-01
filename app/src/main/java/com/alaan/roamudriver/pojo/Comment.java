@@ -8,7 +8,17 @@ public class Comment {
     public Long timestamp;
     public String type;
 
-    public Comment()
-    {
+    public Comment() {
+        this.author = new UserProfile();
+        this.text = "";
+        this.timestamp = Long.valueOf(0);
+        this.type = "";
+    }
+
+    public Comment(UserProfile author, String text, Long timestamp, String type) {
+        this.author = author;
+        this.text = text;
+        this.timestamp = timestamp;
+        this.type = type;
     }
 }

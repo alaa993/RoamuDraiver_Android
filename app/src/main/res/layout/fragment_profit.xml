@@ -8,12 +8,13 @@
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:textSize="16dp"
-        android:textDirection="firstStrong"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:layout_margin="20dp"
-        android:text="@string/profit_str" />
+        android:text="@string/profit_str"
+        android:textAlignment="center"
+        android:textDirection="firstStrong"
+        android:textSize="16dp" />
 
 
 </FrameLayout>

@@ -6,7 +6,6 @@
     <string name="mapboxkey">"pk.eyJ1IjoiaWNhbnN0dWRpb3oiLCJhIjoiY2oyMXQ3dGRpMDAwdDJ3bXpmZHRkdTBtNyJ9.PxslIcrVRj_gVgiv-Y-هرول"</string>
     <string name="CommentsNoSt">التعليقات</string>
     <string name="allow_permission">"اسمح بالسماح"</string>
-
     <string name="mobile_number">"رقم الهاتف المحمول"</string>
     <string name="email">"البريد الإلكتروني"</string>
     <string name="name">الإسم</string>
@@ -85,7 +84,6 @@
     <string name="doo">"فعل"</string>
     <string name="payment_receive_from_customer">"الدفعة المستلمة من المسافر"</string>
     <string name="customer_number">"رقم المسافر"</string>
-
     <string name="Pick_Customer">"اختيار المسافر"</string>
     <string name="Start_Ride">"بدء الرحلة"</string>
     <string name="Start_Travel">ابدأ الرحلة</string>
@@ -93,8 +91,6 @@
     <string name="log_out">الخروج</string>
     <string name="forgot_password">هل نسيت كلمة المرور؟</string>
     <string name="create_an_account">انشئ حساب</string>
-
-
     <string name="total_rides">سجل التنقلات</string>
     <string name="earnings">الأرباح</string>
     <string name="today"> اليوم</string>
@@ -131,7 +127,6 @@
     <string name="search">البحث عن راكب</string>
     <string name="lang">اللغة</string>
     <string name="GOD">إدارة المجموعات</string>
-
     <string name="Rides">رحلاتك</string>
     <string name="Pending_Requests">الطلبات المعلقة</string>
     <string name="AcceptedRequests">الطلبات المقبولة</string>
@@ -166,7 +161,6 @@
     <string name="SetTime">ضبط الوقت</string>
     <string name="SetDate">حدد التاريخ</string>
     <string name="fareperseat">fare per seat</string>
-
     <string name="fare_calculating">حساب التذكرة</string>
     <string name="NoHistoryFound">لا يوجد تاريخ</string>
     <string name="DT">تاريخ &amp; وقت        </string>
@@ -177,9 +171,6 @@
     <string name="ride_complete_msg">اكتمال</string>
     <string name="ride_cancel_msg">إلغاء</string>
     <string name="ride_accept_msg">هل تريد قبول طلب المسافر</string>
-
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drivers">المجموعة</string>
     <string name="phone">الهاتف</string>
@@ -207,8 +198,6 @@
     <string name="add_travel">حفظ</string>
     <string name="find_travel">البحث عن راكب</string>
     <string name="smoking">smoking</string>
-
-
     <string name="btn_advance">Advance (Auth)</string>
     <string name="btn_basic">Basic (No Auth)</string>
     <string name="btn_push">Push</string>
@@ -223,13 +212,8 @@
     <string name="hint_username">Username…</string>
     <string name="menu_chat">Chat</string>
     <string name="menu_logout">Log out</string>
-
     <string name="required">Required</string>
-
     <string name="username">Current username: %s \n\n</string>
-
-    <!--    by ibrahim-->
-
     <string name="enter_number_of_passengers_trip_price">أدخل عدد الركاب وسعر المقعد الواحد</string>
     <string name="number_of_passengers_1">عدد الركاب، 1</string>
     <string name="trip_price">سعر المقعد الواحد</string>
@@ -246,8 +230,6 @@
     <string name="pickup_point">نقطة التقاط</string>
     <string name="platform">منصة التواصل الاجتماعي</string>
     <string name="userComments">تعليقات المسافرين</string>
-
-
     <string name="what_is_on_your_mind">ماذا يدور في ذهنك!!</string>
     <string name="add">أضف</string>
     <string name="post">إضافة</string>
@@ -255,15 +237,12 @@
     <string name="Post_success">تمت إضافة المنشور بنجاح!</string>
     <string name="set_date">اختر الوقت</string>
     <string name="ride_has_been_requested">تمت إضافة الرحلة بنجاح</string>
-    <!--    by ibrahim-->
-
     <string name="Travel_is_going_from">اتمنى لكم رحلة ممتعة معي: </string>
     <string name="Travel_from">من: </string>
     <string name="Travel_to">إلى: </string>
     <string name="Travel_on">بتاريخ: </string>
     <string name="CheckBox">إضافة إلى المنصة </string>
     <string name="the_clock">الساعة: </string>
-
     <string name="notification_0">اختاركم للسفر معه</string>
     <string name="notification_1">اختاركم للسفر معه</string>
     <string name="notification_2">بدأت الرحلة</string>
@@ -273,8 +252,7 @@
     <string name="notification_6">تم الدفع</string>
     <string name="notification_7">اختاركم للسفر معكم</string>
     <string name="notification_8">تم ارسال الطلب وسيصلكم التأكيد في أقرب وقت</string>
-
-
+    <string name="notification_9">تم تأكيد الطلب</string>
     <string-array name="headings">
         <item>Recent</item>
         <item>My Posts</item>
@@ -333,15 +311,12 @@
     <string name="sonething_went_wrong">Something Went Wrong, Please Try Again Later</string>
     <string name="paid_but_not_approved">بانتظار الموافقة على الدفع</string>
     <string name="not_paid">لم يتم الدفع بعد</string>
-
-
     <string name="accepted">مقبولة</string>
     <string name="pending">معلقة</string>
     <string name="cancelled">ملغات</string>
     <string name="completed">مكتملة</string>
     <string name="approve_all">قبول جميع الدفعات</string>
     <string name="full_travel">لايوجد متسع لركاب جدد!</string>
-
     <string name="notification_request">يريد الزبون أن يسافر معكم</string>
     <string name="notification_request_approve">تم تأكيد الطلب من قبل الزبون</string>
     <string name="notification_accepted">قبل الزبون طلبكم</string>
@@ -352,18 +327,14 @@
     <string name="notification_offline_approved">تأكيد الدفع نقدا</string>
     <string name="notification_add_driver">تم اختيارك ضمن مجموعة: </string>
     <string name="notification_del_driver">تم إخراجك من مجموعة: </string>
-
     <string name="addChangeGroup">إضافة مجموعة أو تغيير اسم المجموعة</string>
     <string name="addDeleteDriver">إضافة أو حذف كابتن</string>
-
     <string name="notes_bags_weights">ملاحظات، مثل عدد الحقائب ووزنها (اختياري)</string>
     <string name="notes">الملاحظات</string>
     <string name="invalid_phone_number">رقم الهاتف غير صحيح ، يرجى المحاولة مرة أخرى!</string>
-
     <string name="distance_info">معلومات المسافة والزمن</string>
     <string name="distance1_info">المسافة بين النقطتين</string>
     <string name="distance_time_info">الوقت اللازم للوصول</string>
-
     <string name="edit">تعديل</string>
     <string name="delete">حذف</string>
     <string name="Post_updated_successfully">تم تحديث المنشور بنجاح!</string>
@@ -382,6 +353,38 @@
     <string name="customer_code">كود المسافر</string>
     <string name="scheduled_travel">رحلة مجدولة</string>
     <string name="my_sechduled_travels">رحلاتي المجدولة</string>
-
+    <string name="WalletVC_Title">المحفظة الشخصية</string>
+    <string name="WalletItem0">شحن الحساب</string>
+    <string name="WalletItem1">إرسال نقود</string>
+    <string name="WalletItem2">سحب المبلغ</string>
+    <string name="WalletItem3">قائمة المعاملات</string>
+    <string name="charge_code">رمز الشحن</string>
+    <string name="wallet_id">معرف المحفظة</string>
+    <string name="request">طلب</string>
+    <string name="transaction_type">نوع المعاملة</string>
+    <string name="sender">المرسل</string>
+    <string name="reciver">المستقبل</string>
+    <string name="transaction_date">تاريخ المعاملة</string>
+    <string name="Kurdish">الكردية</string>
+    <string name="message_transactionSuccess">تم إرسال النقود بنجاح!</string>
+    <string name="message_transactionFail">تعذر إرسال النقود ، يرجى المحاولة مرة أخرى لاحقًا!</string>
+    <string name="message_chargeSuccess">تم شحن الحساب بنجاح!</string>
+    <string name="message_chargeFail">تعذر شحن الحساب ، يرجى المحاولة مرة أخرى لاحقًا!</string>
+    <string name="balance">الرصيد</string>
+    <string name="promo">الخصومات</string>
+    <string name="promocodes">الخصومات</string>
+    <string name="no_data_found">لاتوجد بيانات</string>
+    <string name="contact_admin">هناك بعض المشاكل. يرجى الاتصال بالمسؤول الخاص بك.</string>
+    <string name="terms_amp_conditions">الأحكام والشروط</string>
+    <string name="share_application_to_friends_h">!اربح ١٠٠ دينار عند ترشيح روميو لأحد أصدقائك</string>
+    <string name="share_application_to_friends_d">
+        1- أرسل رابط الدعوة لصديقك
+        \n2- يقوم صديقك بتحميل تطبيق روميو على جهازه
+        \n3- يدخل صديقك رمز الترويج
+        \n4- ستحصل على 100 دينار رصيد مجاني وسيحصل صديقك على 100 دينار رصيد مجاني
+    </string>
+    <string name="my_pickupPointLocation">موقع نقطة الالتقاط على الخريطة (اختياري)</string>
+    <string name="confirm_search">تأكيد</string>
+    <string name="address">العنوان</string>
 
 </resources>

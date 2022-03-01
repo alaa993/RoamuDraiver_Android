@@ -8,20 +8,20 @@
 
     <item
         android:id="@+id/home_map"
-        android:icon="@mipmap/ic_home_black_24dp"
+        android:icon="@drawable/ic_map_black_24dp"
         android:title="@string/map"></item>
 
     <item
         android:id="@+id/my_accepted_requests"
         android:icon="@mipmap/ic_hourglass_empty_black_24dp"
-        android:visible="false"
-        android:title="@string/my_accepted_travels" />
+        android:title="@string/my_accepted_travels"
+        android:visible="false" />
 
     <item
         android:id="@+id/my_requests"
-        android:visible="false"
         android:icon="@mipmap/ic_hourglass_empty_black_24dp"
-        android:title="@string/my_travels" />
+        android:title="@string/my_travels"
+        android:visible="false" />
 
     <item
         android:id="@+id/my_travels"
@@ -30,18 +30,28 @@
 
     <item
         android:id="@+id/my_scheduled_travels"
-        android:icon="@mipmap/ic_hourglass_empty_black_24dp"
+        android:icon="@drawable/ic_scheduled_black_24dp"
         android:title="@string/my_sechduled_travels" />
 
-<!--    <item-->
-<!--        android:id="@+id/manage_travel"-->
-<!--        android:icon="@drawable/ic_directions_car_black_24dp"-->
-<!--        android:title="@string/total_rides"></item>-->
+    <!--    <item-->
+    <!--        android:id="@+id/manage_travel"-->
+    <!--        android:icon="@drawable/ic_directions_car_black_24dp"-->
+    <!--        android:title="@string/total_rides"></item>-->
+
+    <item
+        android:id="@+id/nav_wallet_manager"
+        android:icon="@drawable/ic_payment_black_24dp"
+        android:title="@string/WalletVC_Title" />
 
     <item
         android:id="@+id/payment_detail"
         android:icon="@mipmap/ic_payment_black_24dp"
         android:title="@string/payment_history"></item>
+
+    <item
+        android:id="@+id/promo"
+        android:icon="@drawable/ic_promocodes_black_24dp"
+        android:title="@string/promocodes" />
 
     <item
         android:id="@+id/profile"
@@ -54,13 +64,13 @@
         android:title="@string/vehicle_info"></item>
 
     <item
-    android:id="@+id/group_of_drivers"
-    android:icon="@drawable/ic_group_black_24dp"
-    android:title="@string/GOD"></item>
+        android:id="@+id/group_of_drivers"
+        android:icon="@drawable/ic_group_black_24dp"
+        android:title="@string/GOD"></item>
 
     <item
         android:id="@+id/platform"
-        android:icon="@drawable/ic_language_black_24dp"
+        android:icon="@drawable/ic_platform_black_24dp"
         android:title="@string/platform"></item>
 
     <item
@@ -70,7 +80,7 @@
 
     <item
         android:id="@+id/privacy_policy"
-        android:icon="@drawable/ic_enhanced_encryption_black_24dp"
+        android:icon="@drawable/ic_policy_black_24dp"
         android:title="@string/pricvys"></item>
 
     <item
@@ -85,12 +95,12 @@
 
     <item
         android:id="@+id/contact_us"
-        android:icon="@drawable/ic_assignment_black_24dp"
+        android:icon="@drawable/ic_contact_black_24dp"
         android:title="@string/contact_us"></item>
 
     <item
         android:id="@+id/Nominate_Driver"
-        android:icon="@drawable/ic_language_black_24dp"
+        android:icon="@drawable/ic_nominate_black_24dp"
         android:title="@string/nominate_a_driver"></item>
 
     <item
@@ -100,11 +110,12 @@
 
     <item
         android:id="@+id/notifications"
-        android:icon="@drawable/ic_language_black_24dp"
+        android:icon="@drawable/ic_notification_black_24dp"
         android:title="@string/notifications"></item>
+
     <item
         android:id="@+id/shareApp"
-        android:icon="@drawable/ic_language_black_24dp"
+        android:icon="@drawable/ic_share_black_24dp"
         android:title="@string/share_application"></item>
 
     <item

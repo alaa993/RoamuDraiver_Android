@@ -197,8 +197,8 @@ public class ProfileFragment extends FragmentManagePermission {
                 String UserName = dataSnapshot.child("username").getValue(String.class);
                 photoURL = dataSnapshot.child("photoURL").getValue(String.class);
                 Glide.with(getActivity()).load(photoURL).apply(new RequestOptions().error(R.drawable.user_default)).into(profile_pic);
-//                log.i("tag","success by ibrahim");
-//                log.i("tag", UserName);
+//                //log.i("tag","success by ibrahim");
+//                //log.i("tag", UserName);
                 // Firebase code here
                 // User user = SessionManager.getUser();
                 //user.setAvatar(photoURL);
@@ -241,12 +241,14 @@ public class ProfileFragment extends FragmentManagePermission {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e("success", response.toString());
+                //log.e("success", response.toString());
                 try {
                     if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
                         String url = response.getJSONObject("data").getString("avatar");
                         try {
                             Glide.with(getActivity()).load(photoURL).apply(new RequestOptions().error(R.drawable.user_default)).into(profile_pic);
+                        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
                         } catch (Exception e) {
                         }
                         User user = SessionManager.getUser();
@@ -266,6 +268,8 @@ public class ProfileFragment extends FragmentManagePermission {
                             Map<String, Object> userObject = new HashMap<>();
                             userObject.put("photoURL", url);
                             databaseRef.updateChildren(userObject);
+                        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
                         } catch (Exception e) {
                         }
 
@@ -493,7 +497,7 @@ public class ProfileFragment extends FragmentManagePermission {
         switch (requestCode) {
             case 1: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.e("permisson", "granted");
+                    //log.e("permisson", "granted");
                     TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(getActivity())
                             .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
                                 @Override
@@ -526,8 +530,6 @@ public class ProfileFragment extends FragmentManagePermission {
         params.put("vehicle_info", input_vehicle.getText().toString().trim());
         params.put("paypal_id", input_paypalId.getText().toString().trim());
         Server.setHeader(SessionManager.getKEY());
-
-
         params.put("user_id", SessionManager.getUserId());
         Server.post(Server.UPDATE, params, new JsonHttpResponseHandler() {
             @Override
@@ -562,6 +564,18 @@ public class ProfileFragment extends FragmentManagePermission {
                         user.setVehicle_info(vehicle);
                         user.setPaypal_id(paypal_id);
 
+                        try {
+                            FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+                            String uid = fuser.getUid();
+                            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("users/profile").child(uid);
+                            Map<String, Object> userObject = new HashMap<>();
+                            userObject.put("username", user.getName());
+                            databaseRef.updateChildren(userObject);
+                        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
+                        }
+
                         SessionManager.setUser(gson.toJson(user));
 
                         listener.name(user.getName());
@@ -592,8 +606,6 @@ public class ProfileFragment extends FragmentManagePermission {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-
-
     }
 
     public static String getMimeType(Context context, Uri uri) {
@@ -713,6 +725,8 @@ public class ProfileFragment extends FragmentManagePermission {
                 ((TextView) v).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "font/AvenirLTStd_Book.otf"));
             }
 
+        } catch (NullPointerException e) {
+            System.err.println("Null pointer exception");
         } catch (Exception e) {
         }
     }

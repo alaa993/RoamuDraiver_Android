@@ -64,7 +64,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Ho
 
             }
         });
-        log.e("ss",""+list.size());
+        //log.e("ss",""+list.size());
     }
 
     @Override

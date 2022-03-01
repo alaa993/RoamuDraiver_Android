@@ -96,7 +96,9 @@ public class GPSTracker extends Service implements LocationListener {
                 }
             }
 
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
             e.printStackTrace();
         }
 
