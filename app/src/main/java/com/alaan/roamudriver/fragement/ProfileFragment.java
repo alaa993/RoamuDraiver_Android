@@ -122,11 +122,6 @@ public class ProfileFragment extends FragmentManagePermission {
                                         // profile_pic.setImageURI(uri);
                                         String format = getMimeType(getActivity(), uri);
                                         upload_pic(format);
-                                       /* if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("png") || format.equalsIgnoreCase("gif") || format.equalsIgnoreCase("jpeg")) {
-
-                                        } else {
-                                            Toast.makeText(getActivity(), "jpg,png or gif is only accepted", Toast.LENGTH_LONG).show();
-                                        }*/
                                     }
                                 }).setOnErrorListener(new TedBottomPicker.OnErrorListener() {
                                     @Override
@@ -214,7 +209,7 @@ public class ProfileFragment extends FragmentManagePermission {
         });
     }
 
-    public void upload_pic(String type) {
+    public void upload_pic1(String type) {
         progressBar.setVisibility(View.VISIBLE);
         RequestParams params = new RequestParams();
         if (imageFile != null) {
@@ -272,7 +267,7 @@ public class ProfileFragment extends FragmentManagePermission {
                             System.err.println("Null pointer exception");
                         } catch (Exception e) {
                         }
-
+                        Toast.makeText(getActivity(), getString(R.string.profile_uploaded), Toast.LENGTH_LONG).show();
                     } else {
                         progressBar.setVisibility(View.GONE);
                         if (response.has("data")) {
@@ -286,6 +281,12 @@ public class ProfileFragment extends FragmentManagePermission {
             }
 
             @Override
+            public void onFinish() {
+                super.onFinish();
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
                 progressBar.setVisibility(View.GONE);
@@ -293,6 +294,96 @@ public class ProfileFragment extends FragmentManagePermission {
 
             }
         });
+    }
+
+    public void upload_pic(String type) {
+        progressBar.setVisibility(View.VISIBLE);
+        RequestParams params = new RequestParams();
+        if (imageFile != null) {
+            try {
+                if (type.equals("jpg")) {
+                    params.put("avatar", imageFile, "image/jpeg");
+                } else if (type.equals("jpeg")) {
+                    params.put("avatar", imageFile, "image/jpeg");
+                } else if (type.equals("png")) {
+                    params.put("avatar", imageFile, "image/png");
+                } else {
+                    params.put("avatar", imageFile, "image/gif");
+                }
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Log.d("catch", e.toString());
+            }
+        }
+        Server.setHeader(SessionManager.getKEY());
+        params.put("user_id", SessionManager.getUserId());
+        Server.post(Server.UPDATE, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                //log.e("success", response.toString());
+
+                try {
+                    if (response.has("status") && response.getString("status").equalsIgnoreCase("success")) {
+
+                        String rurl = response.getJSONObject("data").getString("avatar");
+                        profile_pic.setImageBitmap(null);
+
+                        Glide.with(ProfileFragment.this).load(rurl).apply(new RequestOptions().error(R.mipmap.ic_account_circle_black_24dp)).into(profile_pic);
+                        SessionManager.setAvatar(rurl);
+                        profileUpdateListener.update(rurl);
+
+                        User user = SessionManager.getUser();
+                        input_name.setText(user.getName());
+                        input_email.setText(user.getEmail());
+                        input_mobile.setText(user.getMobile());
+                        //
+                        try {
+                            FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+                            String uid = fuser.getUid();
+                            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("users/profile").child(uid);
+                            Map<String, Object> userObject = new HashMap<>();
+                            userObject.put("photoURL", rurl);
+                            databaseRef.updateChildren(userObject);
+                        } catch (NullPointerException e) {
+                            System.err.println("Null pointer exception");
+                        } catch (Exception e) {
+//                            e.printStackTrace();
+                        }
+                        //
+                        Toast.makeText(getActivity(), getString(R.string.profile_uploaded), Toast.LENGTH_LONG).show();
+
+                    } else {
+
+                        Toast.makeText(getActivity(), response.getString("data"), Toast.LENGTH_LONG).show();
+
+                    }
+                } catch (NullPointerException e) {
+                    System.err.println("Null pointer exception");
+                } catch (JSONException e) {
+                    //log.e("catch", e.toString());
+                    Toast.makeText(getActivity(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                //log.e("fail", responseString);
+
+                Toast.makeText(getActivity(), getString(R.string.profile_uploaded), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
     }
 
     private void getUserInfoOnline() {

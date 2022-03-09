@@ -249,7 +249,7 @@ public class SessionManager {
         return getUser() == null ? "" : getUser().getAvatar();
     }
 
-    public void setAvatar(String avatar) {
+    public static void setAvatar(String avatar) {
 
 
     }
